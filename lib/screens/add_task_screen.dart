@@ -1,3 +1,4 @@
+import 'package:ciao_app/model/task.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'dart:math';
+import 'package:hive/hive.dart';
 
 class AddTaskScreen extends StatefulWidget {
   //String newTask;
@@ -22,6 +24,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   static DateFormat dateFormat = DateFormat('DD-MM-yyyy');
   String formattedDate = dateFormat.format(DateTime.now());
   final Duration duration = Duration(milliseconds: 150);
+
+  void addTask(Task task) {
+    final tasksBox = Hive.box('tasks');
+    tasksBox.add(task);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -275,13 +282,19 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     BorderRadius.all(Radius.circular(20))),
                             onPressed: () {
                               //Add task to the list
-                              Provider.of<TaskData>(context, listen: false)
-                                  .addTaskToDB(
-                                      taskId: random.nextInt(1000000),
-                                      title: newTaskTile,
-                                      category: newTaskCategory,
-                                      dueDate: formattedDate,
-                                      isDone: 0);
+                              Task task = Task();
+                              task.name = newTaskTile;
+                              task.category = newTaskCategory;
+                              task.dueDate = formattedDate;
+                              task.isDone = false;
+                              addTask(task);
+                              // Provider.of<TaskData>(context, listen: false)
+                              //     .addTaskToDB(
+                              //         taskId: random.nextInt(1000000),
+                              //         title: newTaskTile,
+                              //         category: newTaskCategory,
+                              //         dueDate: formattedDate,
+                              //         isDone: 0);
                               Navigator.pop(context);
                             },
                             child: Icon(

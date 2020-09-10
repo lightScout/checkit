@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class TaskTile extends StatefulWidget {
   final String title;
   final Function deleteTask;
-  final int isChecked;
+  final bool isChecked;
   final Function isCheckCallBack;
   final String category;
   final String dueDate;
@@ -14,7 +14,7 @@ class TaskTile extends StatefulWidget {
   TaskTile(
       {this.title,
       this.deleteTask,
-      this.isChecked = 0,
+      this.isChecked = false,
       this.isCheckCallBack,
       this.category = 'Main',
       this.dueDate});

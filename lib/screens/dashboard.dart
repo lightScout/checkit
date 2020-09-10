@@ -8,6 +8,7 @@ import 'package:ciao_app/widgets/list_builder.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:ciao_app/icons/menu_bar_icon_icons.dart';
 import 'dart:math';
+import 'package:hive/hive.dart';
 
 class DashboardScreen extends StatefulWidget {
   final Duration duration;
@@ -30,9 +31,11 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   bool isCollapsed = true;
   bool isMainSelected = true;
+  final tasksBox = Hive.box('tasks');
 
   @override
   Widget build(BuildContext context) {
+    int tasksCount = tasksBox.length;
     return AnimatedPositioned(
       curve: Curves.ease,
       duration: widget.duration,
@@ -131,14 +134,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     SizedBox(
                       height: 70,
                     ),
-                    !Provider.of<TaskData>(context).isEmpty
+                    Hive.box('tasks').isNotEmpty
                         ? Column(
                             children: <Widget>[
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    '${Provider.of<TaskData>(context).taskCountMain}',
+                                    '$tasksCount',
                                     style: TextStyle(
                                       color: Color(0xFFdb4c40),
                                       fontSize: 100,
@@ -149,7 +152,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 60),
                                     child: Text(
-                                      'To do',
+                                      'checKit.',
                                       style: TextStyle(
                                         color: Color(0xFFdb4c40),
                                         fontSize: 19,
