@@ -1,4 +1,4 @@
-# ciao_app
+# checkIt_app
 
 A new Flutter application.
 
