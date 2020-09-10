@@ -50,35 +50,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [Color(0xFF6B0F1A), Color(0xFF31081F)]),
+                colors: [Color(0xFF8DE9D5), Color(0xFF0F8099)]),
           ),
-          child: CustomPaint(
-            painter: CurvePainterDashboard(),
-            child: Material(
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
-              ),
-              color: Colors.transparent,
-              //elevation: 280,
+          child: Material(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20),
+            ),
+            color: Colors.transparent,
+            //elevation: 280,
 //            shadowColor: Colors.red,
-              child: Container(
-                padding: EdgeInsets.only(left: 16, right: 16, top: 48),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // Top Section 'AppBar'
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        InkWell(
-                          child: Icon(
+            child: Container(
+              padding: EdgeInsets.only(left: 16, right: 16, top: 48),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // Top Section 'AppBar'
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      InkWell(
+                        child: Icon(
 //                            isCollapsed ? Icons.menu : LineIcons.hand_o_right,
-                            LineIcons.cog,
-                            color: Color(0xFFFFFFFF),
-                            size: isCollapsed ? 33 : 55,
-                          ),
-                          onTap: () {
+                          LineIcons.cog,
+                          color: Color(0xFFFFFFFF),
+                          size: isCollapsed ? 33 : 55,
+                        ),
+                        onTap: () {
 //                            setState(() {
 //                              if (isCollapsed) {
 //                                widget.controller.forward();
@@ -87,34 +85,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
 //                              }
 //                              isCollapsed = !isCollapsed;
 //                            });
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) => SingleChildScrollView(
-                                  child: Container(
-                                child: SettingsScreen(),
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom),
-                              )),
-                              backgroundColor: Colors.transparent,
-                            );
-                          },
-                        ),
-                        Text(
-                          'checKit.',
-                          style: TextStyle(
-                              fontSize: 32,
-                              color: Color(0xFFdb4c40),
-                              fontWeight: FontWeight.w100,
-                              fontFamily: 'PoiretOne'),
-                        ),
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) => SingleChildScrollView(
+                                child: Container(
+                              child: SettingsScreen(),
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom),
+                            )),
+                            backgroundColor: Colors.transparent,
+                          );
+                        },
+                      ),
+                      // Text(
+                      //   'checKit.',
+                      //   style: TextStyle(
+                      //       fontSize: 32,
+                      //       color: Color(0xFFdb4c40),
+                      //       fontWeight: FontWeight.w100,
+                      //       fontFamily: 'PoiretOne'),
+                      // ),
 //                        Icon(Icons.settings, color: Colors.white),
-                      ],
-                    ),
+                    ],
+                  ),
 
-                    /// 'Must Do' Row
+                  /// 'Must Do' Row
 //                    Text(
 //                      'Most Do',
 //                      style: TextStyle(
@@ -131,44 +128,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
 //                        listCategory: 'MustDo',
 //                      ),
 //                    ),
-                    SizedBox(
-                      height: 70,
-                    ),
-                    Hive.box('tasks').isNotEmpty
-                        ? Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    '$tasksCount',
+                  SizedBox(
+                    height: 70,
+                  ),
+                  Hive.box('tasks').isNotEmpty
+                      ? Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  '$tasksCount',
+                                  style: TextStyle(
+                                    color: Color(0xFF0F8099),
+                                    fontSize: 100,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'PoiretOne',
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 60),
+                                  child: Text(
+                                    'checKit.',
                                     style: TextStyle(
-                                      color: Color(0xFFdb4c40),
-                                      fontSize: 100,
+                                      color: Color(0xFF0F8099),
+                                      fontSize: 19,
                                       fontWeight: FontWeight.w600,
                                       fontFamily: 'PoiretOne',
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 60),
-                                    child: Text(
-                                      'checKit.',
-                                      style: TextStyle(
-                                        color: Color(0xFFdb4c40),
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: 'PoiretOne',
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                )
+                              ],
+                            ),
 
-                              ///
-                              ///
-                              ///Separator and more
-                              ///
-                              ///
+                            ///
+                            ///
+                            ///Separator and more
+                            ///
+                            ///
 //                              Row(
 //                                mainAxisSize: MainAxisSize.max,
 //                                mainAxisAlignment:
@@ -250,40 +247,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
 //                                      : SizedBox(),
 //                                ],
 //                              ),
-                            ],
-                          )
+                          ],
+                        )
 
-                        /// NO TASK text
-                        : Padding(
-                            padding: const EdgeInsets.only(top: 260),
-                            child: Center(
-                              child: Opacity(
-                                opacity: .4,
-                                child: Text('NO TASK',
-                                    style: TextStyle(
-                                        fontSize: 52,
-                                        color: Color(0xFFdb4c40),
-                                        fontWeight: FontWeight.w100,
-                                        fontFamily: 'PoiretOne')),
-                              ),
+                      /// NO TASK text
+                      : Padding(
+                          padding: const EdgeInsets.only(top: 260),
+                          child: Center(
+                            child: Opacity(
+                              opacity: .4,
+                              child: Text('NO TASK',
+                                  style: TextStyle(
+                                      fontSize: 52,
+                                      color: Color(0xFFdb4c40),
+                                      fontWeight: FontWeight.w100,
+                                      fontFamily: 'PoiretOne')),
                             ),
                           ),
+                        ),
 
-                    /// Category Row Selection
-                    ///Task Lists
-                    isMainSelected
-                        ? Flexible(
-                            child: Container(
-                              width: 400,
-                              height: 540,
-                              child: ListBuilder(listCategory: 'Main'),
-                            ),
-                          )
-                        : Expanded(
-                            child: ListBuilder(listCategory: 'Dream'),
-                          )
-                  ],
-                ),
+                  /// Category Row Selection
+                  ///Task Lists
+                  isMainSelected
+                      ? Flexible(
+                          child: Container(
+                            width: 400,
+                            height: 540,
+                            child: ListBuilder(listCategory: 'Main'),
+                          ),
+                        )
+                      : Expanded(
+                          child: ListBuilder(listCategory: 'Dream'),
+                        )
+                ],
               ),
             ),
           ),

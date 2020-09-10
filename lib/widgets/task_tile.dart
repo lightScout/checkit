@@ -14,7 +14,7 @@ class TaskTile extends StatefulWidget {
   TaskTile(
       {this.title,
       this.deleteTask,
-      this.isChecked = false,
+      this.isChecked,
       this.isCheckCallBack,
       this.category = 'Main',
       this.dueDate});
@@ -26,12 +26,6 @@ class TaskTile extends StatefulWidget {
 class _TaskTileState extends State<TaskTile> {
   @override
   Widget build(BuildContext context) {
-    bool check;
-    if (widget.isChecked == 0) {
-      check = false;
-    } else {
-      check = true;
-    }
     return ListTile(
       leading: Container(
         decoration: BoxDecoration(
@@ -43,9 +37,9 @@ class _TaskTileState extends State<TaskTile> {
            * **/
           boxShadow: [
             BoxShadow(
-              color: !check ? Colors.red : Color(0xFFA3320B),
+              color: !widget.isChecked ? Colors.white : Color(0xFF8DE9D5),
               offset: Offset(0.0, 0.0),
-              blurRadius: 10.0,
+              blurRadius: 20.0,
               spreadRadius: 5.4,
             ),
           ],
@@ -54,13 +48,14 @@ class _TaskTileState extends State<TaskTile> {
           onTap: widget.isCheckCallBack,
           child: CircleAvatar(
             radius: 16,
-            child: check
+            child: widget.isChecked
                 ? Icon(
                     LineIcons.dot_circle_o,
                     color: Colors.white,
                   )
                 : null,
-            backgroundColor: check ? Color(0xFFA3320B) : Colors.white,
+            backgroundColor:
+                widget.isChecked ? Color(0xFF8DE9D5) : Colors.white,
           ),
         ),
       ),
@@ -79,13 +74,13 @@ class _TaskTileState extends State<TaskTile> {
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.w700,
-            decoration: check ? TextDecoration.lineThrough : null),
+            decoration: widget.isChecked ? TextDecoration.lineThrough : null),
       ),
       subtitle: Text(
         widget.dueDate,
         style: TextStyle(
             fontSize: 15,
-            color: Colors.grey[600],
+            color: Colors.white60,
             fontWeight: FontWeight.w700,
             fontFamily: 'PoiretOne'),
       ),
