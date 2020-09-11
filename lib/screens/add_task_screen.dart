@@ -40,7 +40,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         gradient: LinearGradient(
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
-            colors: [Colors.black, Colors.black]),
+            colors: [Color(0xFF1D8CA0), Color(0xFF0F8099)]),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(50.0),
           topRight: Radius.circular(50.0),
@@ -94,7 +94,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 //                            LineIcons.font,
 //                            color: Colors.black,
 //                          ),
-                          helperText: 'Task Name',
+//                           helperText: 'Task Name',
                           hintText: 'Buy Mangos',
                           hintStyle: TextStyle(
                             color: Colors.black54,
@@ -278,8 +278,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         children: <Widget>[
                           FlatButton(
                             shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(15),
+                              ),
+                            ),
                             onPressed: () {
                               //Add task to the list
                               Task task = Task();
@@ -300,7 +302,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                             child: Icon(
                               Icons.add,
                               size: 30,
-                              color: Colors.redAccent,
+                              color: Color(0xFFFF47DA),
                             ),
                             color: Colors.white,
                           ),

@@ -16,7 +16,10 @@ void main() async {
       await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
   Hive.registerAdapter(TaskAdapter());
-  final tasksBox = await Hive.openBox('tasks');
+  final tasksBox =
+      await Hive.openBox('tasks', compactionStrategy: (int total, int deleted) {
+    return deleted > 0;
+  });
   runApp(WatchBoxBuilder(box: tasksBox, builder: (context, box) => MyApp()));
 }
 
@@ -48,6 +51,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
+    Hive.box('tasks').compact();
     Hive.close();
     super.dispose();
   }

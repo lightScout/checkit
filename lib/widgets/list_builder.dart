@@ -15,46 +15,49 @@ class ListBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     // final tasksBox = Hive.box('tasks');
     return WatchBoxBuilder(
-      box: Hive.box('tasks'),
-      builder: (context, tasksBox){
-        return SingleChildScrollView(
-          child: ListView.separated(
-            scrollDirection: Axis.vertical,
-            controller: ScrollController(keepScrollOffset: true),
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              final task = tasksBox.get(index) as Task;
-              return Dismissible(
-                key: Key('${task.name}${index.toString()}'),
-                direction: DismissDirection.horizontal,
-                child: TaskTile(
-                  title: task.name,
-                  category: task.category,
-                  dueDate: task.dueDate,
-                  isChecked: task.isDone,
-                  isCheckCallBack: () {
-                    // you gonna have to create another task
-                    // and add it to the same index
-                    // that should update the UI as well
-                    ;
-                    print(task.isDone);
-                  },
-                  // deleteTask: () {
-                  //   taskData.deleteTask(task);
-                  // },
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Divider(
-                height: 16,
-              );
-            },
-            itemCount: tasksBox.length,
-          ),
-        );
-      }
-    );
+        box: Hive.box('tasks'),
+        builder: (context, tasksBox) {
+          return SingleChildScrollView(
+            child: ListView.separated(
+              scrollDirection: Axis.vertical,
+              controller: ScrollController(keepScrollOffset: true),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                print(tasksBox.keys);
+                print(tasksBox.keys.toList()[index]);
+                final task =
+                    tasksBox.get(tasksBox.keys.toList()[index]) as Task;
+                return Dismissible(
+                  key: Key('${task.name}${index.toString()}'),
+                  direction: DismissDirection.horizontal,
+                  child: TaskTile(
+                    title: task.name,
+                    category: task.category,
+                    dueDate: task.dueDate,
+                    isChecked: task.isDone,
+                    isCheckCallBack: () {
+                      // you gonna have to create another task
+                      // and add it to the same index
+                      // that should update the UI as well
+
+                      task.toggleDone();
+                      return tasksBox.putAt(index, task);
+                    },
+                    deleteTask: () {
+                      tasksBox.deleteAt(index);
+                    },
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider(
+                  height: 16,
+                );
+              },
+              itemCount: tasksBox.length,
+            ),
+          );
+        });
   }
 }
 

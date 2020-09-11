@@ -56,12 +56,12 @@ class _StackLayoutState extends State<StackLayout>
           child: Scaffold(
             backgroundColor: Colors.transparent,
             floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.white,
+                backgroundColor: Color(0xFF8DE9D5),
                 child: InkWell(
                   child: Icon(
                     Icons.add,
-                    color: Colors.black,
-                    size: 35,
+                    color: Colors.white,
+                    size: 38,
                   ),
                 ),
                 onPressed: () {

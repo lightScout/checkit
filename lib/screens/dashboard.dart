@@ -129,7 +129,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 //                      ),
 //                    ),
                   SizedBox(
-                    height: 70,
+                    height: 20,
                   ),
                   Hive.box('tasks').isNotEmpty
                       ? Column(
@@ -247,6 +247,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 //                                      : SizedBox(),
 //                                ],
 //                              ),
+                            Container(
+                              width: 400,
+                              child: ListBuilder(listCategory: 'Main'),
+                            )
                           ],
                         )
 
@@ -255,11 +259,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           padding: const EdgeInsets.only(top: 260),
                           child: Center(
                             child: Opacity(
-                              opacity: .4,
-                              child: Text('NO TASK',
+                              opacity: 1,
+                              child: Text('checkIt.',
                                   style: TextStyle(
                                       fontSize: 52,
-                                      color: Color(0xFFdb4c40),
+                                      color: Color(0xFF8DE9D5),
                                       fontWeight: FontWeight.w100,
                                       fontFamily: 'PoiretOne')),
                             ),
@@ -268,17 +272,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                   /// Category Row Selection
                   ///Task Lists
-                  isMainSelected
-                      ? Flexible(
-                          child: Container(
-                            width: 400,
-                            height: 540,
-                            child: ListBuilder(listCategory: 'Main'),
-                          ),
-                        )
-                      : Expanded(
-                          child: ListBuilder(listCategory: 'Dream'),
-                        )
+                  // Flexible(
+                  //   child: Container(
+                  //     width: 400,
+                  //     height: 540,
+                  //     child: ListBuilder(listCategory: 'Main'),
+                  //   ),
+                  // )
                 ],
               ),
             ),
