@@ -111,23 +111,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ],
                   ),
 
-                  /// 'Must Do' Row
-//                    Text(
-//                      'Most Do',
-//                      style: TextStyle(
-//                        color: Color(0xFFdb4c40),
-//                        fontSize: 16,
-//                        fontWeight: FontWeight.w100,
-//                        fontFamily: 'BungeeInLine',
-//                      ),
-//                    ),
-
-//                    Container(
-//                      height: 70,
-//                      child: ListBuilder(
-//                        listCategory: 'MustDo',
-//                      ),
-//                    ),
                   SizedBox(
                     height: 20,
                   ),
@@ -135,12 +118,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ? Column(
                           children: <Widget>[
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
                                   '$tasksCount',
                                   style: TextStyle(
-                                    color: Color(0xFF0F8099),
+                                    color: Colors.white,
                                     fontSize: 100,
                                     fontWeight: FontWeight.w600,
                                     fontFamily: 'PoiretOne',
@@ -149,10 +132,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 60),
                                   child: Text(
-                                    'checKit.',
+                                    'checKit',
                                     style: TextStyle(
-                                      color: Color(0xFF0F8099),
-                                      fontSize: 19,
+                                      color: Colors.white,
+                                      fontSize: 30,
                                       fontWeight: FontWeight.w600,
                                       fontFamily: 'PoiretOne',
                                     ),
@@ -160,93 +143,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 )
                               ],
                             ),
-
-                            ///
-                            ///
-                            ///Separator and more
-                            ///
-                            ///
-//                              Row(
-//                                mainAxisSize: MainAxisSize.max,
-//                                mainAxisAlignment:
-//                                    MainAxisAlignment.spaceEvenly,
-//                                children: <Widget>[
-//                                  //Categories
-//                                  Expanded(
-//                                    child: Container(
-//                                      decoration: BoxDecoration(
-////                              borderRadius:
-////                                  BorderRadius.all(Radius.circular(80)),
-//                                        border: isMainSelected
-//                                            ? Border(
-//                                                bottom: BorderSide(
-//                                                    width: .5,
-//                                                    color: Colors.white),
-//                                              )
-//                                            : Border(
-//                                                bottom: BorderSide(
-//                                                    width: .5,
-//                                                    color: Colors.white),
-//                                              ),
-//                                      ),
-////                            child: Text(
-////                              'Main',
-////                              textAlign: TextAlign.right,
-////                              style: TextStyle(
-////                                  fontFamily: 'PoiretOne',
-////                                  color: isMainSelected
-////                                      ? Color(0xFFdb4c40)
-////                                      : Colors.white,
-////                                  fontSize: isMainSelected ? 27 : 20,
-////                                  fontWeight: FontWeight.w100),
-////                            ),
-//                                    ),
-//                                  ),
-//                                  Provider.of<TaskData>(context)
-//                                          .isDreamTaskCategory()
-//                                      ? Expanded(
-//                                          child: Container(
-//                                            decoration: isMainSelected
-//                                                ? BoxDecoration(
-//                                                    border: Border(
-//                                                      bottom: BorderSide(
-//                                                          width: .5,
-//                                                          color: Colors.white),
-//                                                    ),
-//                                                  )
-//                                                : BoxDecoration(
-//                                                    border: Border(
-//                                                      bottom: BorderSide(
-//                                                          width: 2.0,
-//                                                          color: Colors.white),
-//                                                    ),
-//                                                  ),
-//                                            child: FlatButton(
-//                                              onPressed: () {
-//                                                setState(() {
-//                                                  if (isMainSelected)
-//                                                    isMainSelected =
-//                                                        !isMainSelected;
-//                                                });
-//                                              },
-//                                              child: Text(
-//                                                'Dream',
-//                                                style: TextStyle(
-//                                                    fontFamily: 'PoiretOne',
-//                                                    color: isMainSelected
-//                                                        ? Colors.white
-//                                                        : Colors.redAccent,
-//                                                    fontWeight: FontWeight.w100,
-//                                                    fontSize: isMainSelected
-//                                                        ? 20
-//                                                        : 27),
-//                                              ),
-//                                            ),
-//                                          ),
-//                                        )
-//                                      : SizedBox(),
-//                                ],
-//                              ),
                             Container(
                               width: 400,
                               child: ListBuilder(listCategory: 'Main'),
@@ -260,7 +156,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: Center(
                             child: Opacity(
                               opacity: 1,
-                              child: Text('checkIt.',
+                              child: Text('checkIt',
                                   style: TextStyle(
                                       fontSize: 52,
                                       color: Color(0xFF8DE9D5),
@@ -269,16 +165,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           ),
                         ),
-
-                  /// Category Row Selection
-                  ///Task Lists
-                  // Flexible(
-                  //   child: Container(
-                  //     width: 400,
-                  //     height: 540,
-                  //     child: ListBuilder(listCategory: 'Main'),
-                  //   ),
-                  // )
                 ],
               ),
             ),

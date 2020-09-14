@@ -26,63 +26,79 @@ class TaskTile extends StatefulWidget {
 class _TaskTileState extends State<TaskTile> {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          /**
-           *
-           * Circular Shadows
-           *
-           * **/
-          boxShadow: [
-            BoxShadow(
-              color: !widget.isChecked ? Colors.white : Color(0xFF8DE9D5),
-              offset: Offset(0.0, 0.0),
-              blurRadius: 20.0,
-              spreadRadius: 5.4,
-            ),
-          ],
+    return Container(
+      decoration: BoxDecoration(
+        gradient: widget.isChecked
+            ? LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Color(0xFF00458E), Color(0xFF000328)])
+            : LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Color(0xFF8DE9D5), Color(0xFF0F8099)]),
+        borderRadius: BorderRadius.all(
+          Radius.circular(30),
         ),
-        child: InkWell(
-          onTap: widget.isCheckCallBack,
-          child: CircleAvatar(
-            radius: 16,
-            child: widget.isChecked
-                ? Icon(
-                    LineIcons.dot_circle_o,
-                    color: Colors.white,
-                  )
-                : null,
-            backgroundColor:
-                widget.isChecked ? Color(0xFF8DE9D5) : Colors.white,
+      ),
+      child: ListTile(
+        leading: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            /**
+             *
+             * Circular Shadows
+             *
+             * **/
+            boxShadow: [
+              BoxShadow(
+                color: !widget.isChecked ? Colors.white : Color(0xFF00458E),
+                offset: Offset(0.0, 0.0),
+                blurRadius: 20.0,
+                spreadRadius: 5.4,
+              ),
+            ],
+          ),
+          child: InkWell(
+            onTap: widget.isCheckCallBack,
+            child: CircleAvatar(
+              radius: 16,
+              child: widget.isChecked
+                  ? Icon(
+                      LineIcons.dot_circle_o,
+                      color: Colors.white,
+                    )
+                  : null,
+              backgroundColor:
+                  widget.isChecked ? Color(0xFF00458E) : Colors.white,
+            ),
           ),
         ),
-      ),
-      trailing: InkWell(
-        child: Icon(
-          Icons.delete,
-          color: Colors.white,
-          size: 30,
+        // trailing: InkWell(
+        //   child: Icon(
+        //     Icons.delete,
+        //     color: Colors.white,
+        //     size: 30,
+        //   ),
+        //   onTap: widget.deleteTask,
+        // ),
+        title: Text(
+          widget.title,
+          style: TextStyle(
+              fontFamily: 'PoiretOne',
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              decoration: widget.isChecked ? TextDecoration.lineThrough : null),
         ),
-        onTap: widget.deleteTask,
-      ),
-      title: Text(
-        widget.title,
-        style: TextStyle(
-            fontFamily: 'PoiretOne',
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            decoration: widget.isChecked ? TextDecoration.lineThrough : null),
-      ),
-      subtitle: Text(
-        widget.dueDate,
-        style: TextStyle(
-            fontSize: 15,
-            color: Colors.white60,
-            fontWeight: FontWeight.w700,
-            fontFamily: 'PoiretOne'),
+        subtitle: Text(
+          widget.dueDate,
+          style: TextStyle(
+              fontSize: 15,
+              color: Colors.white60,
+              fontWeight: FontWeight.w700,
+              fontFamily: 'PoiretOne'),
+        ),
       ),
     );
   }

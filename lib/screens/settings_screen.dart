@@ -1,5 +1,6 @@
 import 'package:ciao_app/model/task_data.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +42,7 @@ class SettingsScreen extends StatelessWidget {
             height: 20,
           ),
           Text(
-            '${Provider.of<TaskData>(context).taskOverallCount}',
+            '0',
             style: TextStyle(
               color: Color(0xFFdb4c40),
               fontSize: 100,
@@ -50,7 +51,7 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           Text(
-            'checKit.',
+            'checKit',
             style: TextStyle(
               color: Colors.grey,
               fontSize: 18,

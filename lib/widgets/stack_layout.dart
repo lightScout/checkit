@@ -1,5 +1,6 @@
 import 'package:ciao_app/screens/menu_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'curve_painter_menu.dart';
 import 'package:ciao_app/screens/dashboard.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
@@ -25,6 +26,39 @@ class _StackLayoutState extends State<StackLayout>
   Animation<double> _menuScaleAnimation;
   Animation<Offset> _slideAnimation;
   double screenWidth, screenHeight;
+
+  // user defined function
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("Delete all tasks?"),
+          content: Text("This will delete all tasks from this device."),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: Text("Accept"),
+              onPressed: () {
+                var keysList = Hive.box('tasks').keys;
+                Hive.box('tasks').deleteAll(keysList);
+                Navigator.of(context).pop();
+              },
+            ),
+
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -55,28 +89,51 @@ class _StackLayoutState extends State<StackLayout>
         child: Container(
           child: Scaffold(
             backgroundColor: Colors.transparent,
-            floatingActionButton: FloatingActionButton(
-                backgroundColor: Color(0xFF8DE9D5),
-                child: InkWell(
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 38,
-                  ),
+            floatingActionButton: FabCircularMenu(
+                ringDiameter: MediaQuery.of(context).size.width * 0.55,
+                ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.20,
+                animationDuration: Duration(milliseconds: 300),
+                fabCloseColor: Colors.white,
+                fabOpenColor: Colors.white,
+                ringColor: Color(0xFF343E3D),
+                fabCloseIcon:
+                    Icon(Icons.close, size: 30, color: Color(0xFFF68080)),
+                fabOpenIcon: Icon(
+                  Icons.trip_origin,
+                  size: 40,
+                  color: Color(0xFFF68080),
                 ),
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context) => SingleChildScrollView(
-                        child: Container(
-                      child: AddTaskScreen(),
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
-                    )),
-                    backgroundColor: Colors.transparent,
-                  );
-                }),
+                children: <Widget>[
+                  InkWell(
+                      child: Icon(
+                        Icons.delete_forever,
+                        size: 35,
+                        color: Colors.white,
+                      ),
+                      onTap: () {
+                        _showDialog();
+                      }),
+                  InkWell(
+                      child: Icon(
+                        LineIcons.pencil,
+                        color: Colors.white,
+                        size: 45,
+                      ),
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => SingleChildScrollView(
+                              child: Container(
+                            child: AddTaskScreen(),
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom),
+                          )),
+                          backgroundColor: Colors.transparent,
+                        );
+                      })
+                ]),
             body: Stack(
               children: <Widget>[
                 MenuScreen(

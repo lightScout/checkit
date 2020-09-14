@@ -28,6 +28,38 @@ class ListBuilder extends StatelessWidget {
                 final task =
                     tasksBox.get(tasksBox.keys.toList()[index]) as Task;
                 return Dismissible(
+                  background: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [Color(0xFFF9B16E), Color(0xFFF68080)]),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30),
+                      ),
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Center(
+                            child: Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  secondaryBackground: Container(
+                    color: Colors.transparent,
+                  ),
+                  dismissThresholds: {DismissDirection.endToStart: 1.0},
+                  onDismissed: (DismissDirection direction) {
+                    tasksBox.deleteAt(index);
+                  },
                   key: Key('${task.name}${index.toString()}'),
                   direction: DismissDirection.horizontal,
                   child: TaskTile(
@@ -36,10 +68,6 @@ class ListBuilder extends StatelessWidget {
                     dueDate: task.dueDate,
                     isChecked: task.isDone,
                     isCheckCallBack: () {
-                      // you gonna have to create another task
-                      // and add it to the same index
-                      // that should update the UI as well
-
                       task.toggleDone();
                       return tasksBox.putAt(index, task);
                     },
