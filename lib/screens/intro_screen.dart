@@ -31,33 +31,33 @@ class IntroScreen extends StatelessWidget {
         child: svgPhoto1,
       ),
     ),
-    PageViewModel(
-      decoration: PageDecoration(pageColor: Colors.white),
-      title: "Title of first page",
-      body:
-          "Here you can write the description of the page, to explain someting...",
-      image: Center(
-        child: svgPhoto2,
-      ),
-    ),
-    PageViewModel(
-      decoration: PageDecoration(pageColor: Colors.white),
-      title: "Title of first page",
-      body:
-          "Here you can write the description of the page, to explain someting...",
-      image: Center(
-        child: svgPhoto3,
-      ),
-    ),
-    PageViewModel(
-      decoration: PageDecoration(pageColor: Colors.white),
-      title: "Title of first page",
-      body:
-          "Here you can write the description of the page, to explain someting...",
-      image: Center(
-        child: svgPhoto4,
-      ),
-    ),
+    // PageViewModel(
+    //   decoration: PageDecoration(pageColor: Colors.white),
+    //   title: "Title of first page",
+    //   body:
+    //       "Here you can write the description of the page, to explain someting...",
+    //   image: Center(
+    //     child: svgPhoto2,
+    //   ),
+    // ),
+    // PageViewModel(
+    //   decoration: PageDecoration(pageColor: Colors.white),
+    //   title: "Title of first page",
+    //   body:
+    //       "Here you can write the description of the page, to explain someting...",
+    //   image: Center(
+    //     child: svgPhoto3,
+    //   ),
+    // ),
+    // PageViewModel(
+    //   decoration: PageDecoration(pageColor: Colors.white),
+    //   title: "Title of first page",
+    //   body:
+    //       "Here you can write the description of the page, to explain someting...",
+    //   image: Center(
+    //     child: svgPhoto4,
+    //   ),
+    // ),
   ];
   @override
   Widget build(BuildContext context) {

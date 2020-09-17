@@ -10,6 +10,7 @@ class TaskTile extends StatefulWidget {
   final Function isCheckCallBack;
   final String category;
   final String dueDate;
+  final String fontFamily = 'PressStart2P';
 
   TaskTile(
       {this.title,
@@ -85,19 +86,18 @@ class _TaskTileState extends State<TaskTile> {
         title: Text(
           widget.title,
           style: TextStyle(
-              fontFamily: 'PoiretOne',
+              fontFamily: widget.fontFamily,
               color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
+              fontSize: 19,
               decoration: widget.isChecked ? TextDecoration.lineThrough : null),
         ),
         subtitle: Text(
           widget.dueDate,
           style: TextStyle(
-              fontSize: 15,
+              fontSize: 10,
               color: Colors.white60,
               fontWeight: FontWeight.w700,
-              fontFamily: 'PoiretOne'),
+              fontFamily: widget.fontFamily),
         ),
       ),
     );

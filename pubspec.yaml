@@ -51,6 +51,9 @@ flutter:
     - family: PoiretOne
       fonts:
         - asset: assets/fonts/PoiretOne-Regular.ttf
+    - family: PressStart2P
+      fonts:
+        - asset: assets/fonts/PressStart2P-Regular.ttf
 
     - family:  FireAppIcon
       fonts:

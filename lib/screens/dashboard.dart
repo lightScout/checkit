@@ -117,31 +117,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Hive.box('tasks').isNotEmpty
                       ? Column(
                           children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  '$tasksCount',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 100,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'PoiretOne',
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    '$tasksCount',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 44,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'PressStart2P',
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 60),
-                                  child: Text(
+                                  Text(
                                     'checKit',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 30,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w600,
-                                      fontFamily: 'PoiretOne',
+                                      fontFamily: 'PressStart2P',
                                     ),
-                                  ),
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             ),
                             Container(
                               width: 400,
@@ -153,17 +154,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       /// NO TASK text
                       : Padding(
                           padding: const EdgeInsets.only(top: 260),
-                          child: Center(
-                            child: Opacity(
-                              opacity: 1,
-                              child: Text('checkIt',
-                                  style: TextStyle(
-                                      fontSize: 52,
-                                      color: Color(0xFF8DE9D5),
-                                      fontWeight: FontWeight.w100,
-                                      fontFamily: 'PoiretOne')),
-                            ),
-                          ),
+                          // child: Center(
+                          //   child: Opacity(
+                          //     opacity: 1,
+                          //     child: Text('checKit',
+                          //         style: TextStyle(
+                          //             shadows: [
+                          //               Shadow(
+                          //                 blurRadius: 2.0,
+                          //                 color: Colors.blue,
+                          //                 offset: Offset(5.0, 5.0),
+                          //               ),
+                          //               Shadow(
+                          //                 color: Colors.white,
+                          //                 blurRadius: 6.0,
+                          //                 offset: Offset(2.0, 2.0),
+                          //               ),
+                          //             ],
+                          //             fontSize: 32,
+                          //             color: Color(0xFF071F86),
+                          //             fontWeight: FontWeight.bold,
+                          //             fontFamily: 'PressStart2P')),
+                          //   ),
+                          // ),
                         ),
                 ],
               ),

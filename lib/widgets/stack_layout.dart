@@ -90,24 +90,25 @@ class _StackLayoutState extends State<StackLayout>
           child: Scaffold(
             backgroundColor: Colors.transparent,
             floatingActionButton: FabCircularMenu(
-                ringDiameter: MediaQuery.of(context).size.width * 0.55,
-                ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.20,
+                ringDiameter: MediaQuery.of(context).size.width * 0.65,
+                ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
                 animationDuration: Duration(milliseconds: 300),
                 fabCloseColor: Colors.white,
-                fabOpenColor: Colors.white,
-                ringColor: Color(0xFF343E3D),
-                fabCloseIcon:
-                    Icon(Icons.close, size: 30, color: Color(0xFFF68080)),
+                fabElevation: 10,
+                fabMargin: EdgeInsets.only(right: 40, bottom: 40),
+                fabOpenColor: Color(0xFF071F86),
+                ringColor: Color(0xFFFA9700),
+                fabCloseIcon: Icon(Icons.close, size: 30, color: Colors.white),
                 fabOpenIcon: Icon(
-                  Icons.trip_origin,
-                  size: 40,
-                  color: Color(0xFFF68080),
+                  Icons.add,
+                  size: 35,
+                  color: Color(0xFF071F86),
                 ),
                 children: <Widget>[
                   InkWell(
                       child: Icon(
-                        Icons.delete_forever,
-                        size: 35,
+                        Icons.minimize,
+                        size: 44,
                         color: Colors.white,
                       ),
                       onTap: () {
@@ -115,9 +116,9 @@ class _StackLayoutState extends State<StackLayout>
                       }),
                   InkWell(
                       child: Icon(
-                        LineIcons.pencil,
+                        Icons.add,
                         color: Colors.white,
-                        size: 45,
+                        size: 44,
                       ),
                       onTap: () {
                         showModalBottomSheet(
