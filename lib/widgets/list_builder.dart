@@ -14,11 +14,11 @@ class ListBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final tasksBox = Hive.box('tasks');
-    return WatchBoxBuilder(
-        box: Hive.box('tasks'),
-        builder: (context, tasksBox) {
-          return SingleChildScrollView(
-            child: ListView.separated(
+    return SingleChildScrollView(
+      child: WatchBoxBuilder(
+          box: Hive.box('tasks'),
+          builder: (context, tasksBox) {
+            return ListView.separated(
               scrollDirection: Axis.vertical,
               controller: ScrollController(keepScrollOffset: true),
               shrinkWrap: true,
@@ -83,9 +83,9 @@ class ListBuilder extends StatelessWidget {
                 );
               },
               itemCount: tasksBox.length,
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 }
 

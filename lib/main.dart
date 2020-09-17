@@ -1,4 +1,6 @@
+import 'package:ciao_app/icons/add_task_icon_icons.dart';
 import 'package:ciao_app/model/task.dart';
+import 'package:ciao_app/screens/add_task_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -7,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'model/task_data.dart';
 import 'package:flutter/services.dart';
-import 'package:ciao_app/screens/intro_screen.dart';
+import 'screens/add_task_screen.dart';
 import 'screens/splash_screen.dart';
 
 void main() async {
@@ -44,6 +46,7 @@ class _MyAppState extends State<MyApp> {
         routes: {
           StackLayout.id: (context) => StackLayout(),
           SplashScreen.id: (context) => SplashScreen(),
+          AddTaskScreen.id: (context) => AddTaskScreen(),
         },
         home: StackLayout(),
       ),

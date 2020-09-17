@@ -102,7 +102,7 @@ class _StackLayoutState extends State<StackLayout>
                 fabOpenIcon: Icon(
                   Icons.add,
                   size: 35,
-                  color: Color(0xFF071F86),
+                  color: Color(0xFFFA9700),
                 ),
                 children: <Widget>[
                   InkWell(
@@ -121,18 +121,19 @@ class _StackLayoutState extends State<StackLayout>
                         size: 44,
                       ),
                       onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (context) => SingleChildScrollView(
-                              child: Container(
-                            child: AddTaskScreen(),
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).viewInsets.bottom),
-                          )),
-                          backgroundColor: Colors.transparent,
-                        );
+                        Navigator.pushNamed(context, AddTaskScreen.id);
+                        // showModalBottomSheet(
+                        //   context: context,
+                        //   isScrollControlled: true,
+                        //   builder: (context) => SingleChildScrollView(
+                        //       child: Container(
+                        //     child: AddTaskScreen(),
+                        //     padding: EdgeInsets.only(
+                        //         bottom:
+                        //             MediaQuery.of(context).viewInsets.bottom),
+                        //   )),
+                        //   backgroundColor: Colors.transparent,
+                        // );
                       })
                 ]),
             body: Stack(

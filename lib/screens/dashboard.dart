@@ -35,6 +35,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
     int tasksCount = tasksBox.length;
     return AnimatedPositioned(
       curve: Curves.ease,
@@ -65,18 +66,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // Top Section 'AppBar'
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      InkWell(
-                        child: Icon(
+                  Flexible(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        InkWell(
+                          child: Icon(
 //                            isCollapsed ? Icons.menu : LineIcons.hand_o_right,
-                          LineIcons.cog,
-                          color: Color(0xFFFFFFFF),
-                          size: isCollapsed ? 33 : 55,
-                        ),
-                        onTap: () {
+                            LineIcons.cog,
+                            color: Color(0xFFFFFFFF),
+                            size: isCollapsed ? 33 : 55,
+                          ),
+                          onTap: () {
 //                            setState(() {
 //                              if (isCollapsed) {
 //                                widget.controller.forward();
@@ -85,98 +87,90 @@ class _DashboardScreenState extends State<DashboardScreen> {
 //                              }
 //                              isCollapsed = !isCollapsed;
 //                            });
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (context) => SingleChildScrollView(
-                                child: Container(
-                              child: SettingsScreen(),
-                              padding: EdgeInsets.only(
-                                  bottom:
-                                      MediaQuery.of(context).viewInsets.bottom),
-                            )),
-                            backgroundColor: Colors.transparent,
-                          );
-                        },
-                      ),
-                      // Text(
-                      //   'checKit.',
-                      //   style: TextStyle(
-                      //       fontSize: 32,
-                      //       color: Color(0xFFdb4c40),
-                      //       fontWeight: FontWeight.w100,
-                      //       fontFamily: 'PoiretOne'),
-                      // ),
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) => SingleChildScrollView(
+                                  child: Container(
+                                child: SettingsScreen(),
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom),
+                              )),
+                              backgroundColor: Colors.transparent,
+                            );
+                          },
+                        ),
+                        // Text(
+                        //   'checKit.',
+                        //   style: TextStyle(
+                        //       fontSize: 32,
+                        //       color: Color(0xFFdb4c40),
+                        //       fontWeight: FontWeight.w100,
+                        //       fontFamily: 'PoiretOne'),
+                        // ),
 //                        Icon(Icons.settings, color: Colors.white),
-                    ],
+                      ],
+                    ),
                   ),
 
                   SizedBox(
                     height: 20,
                   ),
                   Hive.box('tasks').isNotEmpty
-                      ? Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    '$tasksCount',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 44,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: 'PressStart2P',
+                      ? Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Flexible(
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 20.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text(
+                                            '$tasksCount',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 44,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'PressStart2P',
+                                            ),
+                                          ),
+                                          Text(
+                                            'checKit',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'PressStart2P',
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    'checKit',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: 'PressStart2P',
+                                    SizedBox(
+                                      height: 20,
                                     ),
-                                  )
-                                ],
+                                    Container(
+                                      width: 400,
+                                      height: 650,
+                                      child: ListBuilder(listCategory: 'Main'),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              width: 400,
-                              child: ListBuilder(listCategory: 'Main'),
-                            )
-                          ],
+                            ],
+                          ),
                         )
 
-                      /// NO TASK text
-                      : Padding(
-                          padding: const EdgeInsets.only(top: 260),
-                          // child: Center(
-                          //   child: Opacity(
-                          //     opacity: 1,
-                          //     child: Text('checKit',
-                          //         style: TextStyle(
-                          //             shadows: [
-                          //               Shadow(
-                          //                 blurRadius: 2.0,
-                          //                 color: Colors.blue,
-                          //                 offset: Offset(5.0, 5.0),
-                          //               ),
-                          //               Shadow(
-                          //                 color: Colors.white,
-                          //                 blurRadius: 6.0,
-                          //                 offset: Offset(2.0, 2.0),
-                          //               ),
-                          //             ],
-                          //             fontSize: 32,
-                          //             color: Color(0xFF071F86),
-                          //             fontWeight: FontWeight.bold,
-                          //             fontFamily: 'PressStart2P')),
-                          //   ),
-                          // ),
+                      /// NO TASK section
+                      : SizedBox(
+                          width: 1,
                         ),
                 ],
               ),
