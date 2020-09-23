@@ -1,4 +1,6 @@
+import 'package:ciao_app/screens/add_task_screen2.dart';
 import 'package:ciao_app/screens/menu_screen.dart';
+import 'package:ciao_app/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'curve_painter_menu.dart';
@@ -9,6 +11,9 @@ import 'package:provider/provider.dart';
 import 'package:ciao_app/model/task_data.dart';
 import 'package:ciao_app/icons/add_task_icon_icons.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:ciao_app/others/constants.dart' as Constant;
+
+import 'list_builder.dart';
 
 final Color bgColor = Color(0xFF4A5A58);
 
@@ -20,13 +25,7 @@ class StackLayout extends StatefulWidget {
 
 class _StackLayoutState extends State<StackLayout>
     with SingleTickerProviderStateMixin {
-  final Duration duration = Duration(milliseconds: 150);
-  AnimationController _controller;
-  Animation<double> _scaleAnimation;
-  Animation<double> _menuScaleAnimation;
-  Animation<Offset> _slideAnimation;
-  double screenWidth, screenHeight;
-
+  final tasksBox = Hive.box('tasks');
   // user defined function
   void _showDialog() {
     // flutter defined function
@@ -61,96 +60,159 @@ class _StackLayoutState extends State<StackLayout>
   }
 
   @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this, duration: duration);
-    _scaleAnimation = Tween<double>(begin: 1, end: 0.6).animate(_controller);
-    _menuScaleAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
-    _slideAnimation = Tween<Offset>(
-      begin: Offset(-1, 0),
-      end: Offset(0, 0),
-    ).animate(_controller);
-    Provider.of<TaskData>(context, listen: false).generateTaskList();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      color: Color(0xFFFFFFF),
-      child: CustomPaint(
-        painter: CurvePainterMenu(),
-        child: Container(
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            floatingActionButton: FabCircularMenu(
-                ringDiameter: MediaQuery.of(context).size.width * 0.65,
-                ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
-                animationDuration: Duration(milliseconds: 300),
-                fabCloseColor: Colors.white,
-                fabElevation: 10,
-                fabMargin: EdgeInsets.only(right: 40, bottom: 40),
-                fabOpenColor: Color(0xFF071F86),
-                ringColor: Color(0xFFFA9700),
-                fabCloseIcon: Icon(Icons.close, size: 30, color: Colors.white),
-                fabOpenIcon: Icon(
-                  Icons.add,
-                  size: 35,
-                  color: Color(0xFFFA9700),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      floatingActionButton: FabCircularMenu(
+          ringDiameter: MediaQuery.of(context).size.width * 0.65,
+          ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
+          animationDuration: Duration(milliseconds: 300),
+          fabCloseColor: Color(0xFF071F86),
+          fabElevation: 10,
+          fabMargin: EdgeInsets.only(right: 40, bottom: 40),
+          fabOpenColor: Color(0xFFFF1d1d),
+          ringColor: Color(0xFFFA9700),
+          fabCloseIcon: Icon(
+            Icons.close,
+            size: 33,
+            color: Colors.white,
+          ),
+          fabOpenIcon: Icon(
+            Icons.add,
+            size: 35,
+            color: Colors.white,
+          ),
+          children: <Widget>[
+            InkWell(
+                child: Icon(
+                  Icons.minimize,
+                  size: 55,
+                  color: Color(0xFFf8f0bc),
                 ),
+                onTap: () {
+                  _showDialog();
+                }),
+            GestureDetector(
+                child: Icon(
+                  Icons.add,
+                  color: Color(0xFFf8f0bc),
+                  size: 55,
+                ),
+                onTap: () {
+                  // Navigator.pushNamed(context, AddTaskScreen.id);
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: AddTaskScreen2(),
+                      ),
+                    ),
+                    backgroundColor: Colors.transparent,
+                  );
+                })
+          ]),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Color(0xFF8DE9D5), Color(0xFF0F8099)]),
+        ),
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding:
+                  EdgeInsets.only(left: 22, right: 22, top: 48, bottom: 22),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   InkWell(
-                      child: Icon(
-                        Icons.minimize,
-                        size: 44,
-                        color: Colors.white,
-                      ),
-                      onTap: () {
-                        _showDialog();
-                      }),
-                  InkWell(
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 44,
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, AddTaskScreen.id);
-                        // showModalBottomSheet(
-                        //   context: context,
-                        //   isScrollControlled: true,
-                        //   builder: (context) => SingleChildScrollView(
-                        //       child: Container(
-                        //     child: AddTaskScreen(),
-                        //     padding: EdgeInsets.only(
-                        //         bottom:
-                        //             MediaQuery.of(context).viewInsets.bottom),
-                        //   )),
-                        //   backgroundColor: Colors.transparent,
-                        // );
-                      })
-                ]),
-            body: Stack(
-              children: <Widget>[
-                MenuScreen(
-                  slideAnimation: _slideAnimation,
-                ),
-                DashboardScreen(
-                  width: size.width,
-                  height: size.height,
-                  duration: duration,
-                  controller: _controller,
-                  scaleAnimation: _scaleAnimation,
-                ),
-              ],
+                    child: Icon(
+//                            isCollapsed ? Icons.menu : LineIcons.hand_o_right,
+                      Icons.menu,
+                      color: Color(0xFFFFFFFF),
+                      size: 33,
+                    ),
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) => SingleChildScrollView(
+                            child: Container(
+                          child: SettingsScreen(),
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                        )),
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 55.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          '${tasksBox.length}',
+                          style: Constant.Klogo.copyWith(
+                            fontSize: 44,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.blue,
+                                offset: Offset(5.0, 5.0),
+                              ),
+                              Shadow(
+                                color: Colors.white,
+                                blurRadius: 6.0,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          'checKit',
+                          style: Constant.Klogo.copyWith(
+                            fontSize: 20,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.blue,
+                                offset: Offset(5.0, 5.0),
+                              ),
+                              Shadow(
+                                color: Colors.white,
+                                blurRadius: 6.0,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  // DashboardScreen(),
+                ],
+              ),
             ),
-          ),
+            Hive.box('tasks').isNotEmpty
+                ? Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: ListBuilder(listCategory: 'Main'),
+                    ),
+                  )
+
+                /**
+             * NO task section
+             * **/
+                : SizedBox(
+                    width: 1,
+                  ),
+          ],
         ),
       ),
     );

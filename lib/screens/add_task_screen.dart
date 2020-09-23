@@ -87,10 +87,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               'Add Task',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontFamily: fontFamily,
-                                fontSize: 22.0,
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                fontFamily: fontFamily,
+                                shadows: [
+                                  BoxShadow(
+                                    color: Colors.blue,
+                                    offset: Offset(0.0, 0.0),
+                                    blurRadius: 10.0,
+                                    spreadRadius: 5.4,
+                                  ),
+                                ],
                               ),
                             ),
                           ],
