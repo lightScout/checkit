@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:ciao_app/widgets/dashboard.dart';
 import 'package:flutter/material.dart';
-import 'package:ciao_app/widgets/stack_layout.dart';
 
 class SplashScreen extends StatefulWidget {
   static const id = 'SplashScreen';

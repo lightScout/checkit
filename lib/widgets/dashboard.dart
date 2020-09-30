@@ -1,17 +1,9 @@
+import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/screens/add_task_screen2.dart';
-import 'package:ciao_app/screens/menu_screen.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
+import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'curve_painter_menu.dart';
-import 'package:ciao_app/screens/dashboard.dart';
-import 'package:fab_circular_menu/fab_circular_menu.dart';
-import 'package:ciao_app/screens/add_task_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:ciao_app/model/task_data.dart';
-import 'package:ciao_app/icons/add_task_icon_icons.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:ciao_app/others/constants.dart' as Constant;
 
 import 'list_builder.dart';
 
@@ -19,6 +11,7 @@ final Color bgColor = Color(0xFF4A5A58);
 
 class StackLayout extends StatefulWidget {
   static const id = 'stackLayout';
+
   @override
   _StackLayoutState createState() => _StackLayoutState();
 }
@@ -26,6 +19,7 @@ class StackLayout extends StatefulWidget {
 class _StackLayoutState extends State<StackLayout>
     with SingleTickerProviderStateMixin {
   final tasksBox = Hive.box('tasks');
+
   // user defined function
   void _showDialog() {
     // flutter defined function
@@ -86,7 +80,7 @@ class _StackLayoutState extends State<StackLayout>
             InkWell(
                 child: Icon(
                   Icons.minimize,
-                  size: 55,
+                  size: 44,
                   color: Color(0xFFf8f0bc),
                 ),
                 onTap: () {
@@ -96,7 +90,7 @@ class _StackLayoutState extends State<StackLayout>
                 child: Icon(
                   Icons.add,
                   color: Color(0xFFf8f0bc),
-                  size: 55,
+                  size: 44,
                 ),
                 onTap: () {
                   // Navigator.pushNamed(context, AddTaskScreen.id);
@@ -115,12 +109,13 @@ class _StackLayoutState extends State<StackLayout>
                 })
           ]),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [Color(0xFF8DE9D5), Color(0xFF0F8099)]),
-        ),
+        color: Color(0xFF8ddffd),
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //       begin: Alignment.topRight,
+        //       end: Alignment.bottomLeft,
+        //       colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
+        // ),
         child: Column(
           children: <Widget>[
             Container(
@@ -133,7 +128,7 @@ class _StackLayoutState extends State<StackLayout>
                     child: Icon(
 //                            isCollapsed ? Icons.menu : LineIcons.hand_o_right,
                       Icons.menu,
-                      color: Color(0xFFFFFFFF),
+                      color: Color(0xFF071F86),
                       size: 33,
                     ),
                     onTap: () {
@@ -142,10 +137,10 @@ class _StackLayoutState extends State<StackLayout>
                         isScrollControlled: true,
                         builder: (context) => SingleChildScrollView(
                             child: Container(
-                          child: SettingsScreen(),
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
-                        )),
+                              child: SettingsScreen(),
+                              padding: EdgeInsets.only(
+                                  bottom: MediaQuery.of(context).viewInsets.bottom),
+                            )),
                         backgroundColor: Colors.transparent,
                       );
                     },
@@ -155,6 +150,24 @@ class _StackLayoutState extends State<StackLayout>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
+                        Text(
+                          'checKit',
+                          style: Constant.Klogo.copyWith(
+                            fontSize: 20,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.blue,
+                                offset: Offset(5.0, 5.0),
+                              ),
+                              Shadow(
+                                color: Colors.white,
+                                blurRadius: 6.0,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
+                          ),
+                        ),
                         Text(
                           '${tasksBox.length}',
                           style: Constant.Klogo.copyWith(
@@ -173,24 +186,6 @@ class _StackLayoutState extends State<StackLayout>
                             ],
                           ),
                         ),
-                        Text(
-                          'checKit',
-                          style: Constant.Klogo.copyWith(
-                            fontSize: 20,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 2.0,
-                                color: Colors.blue,
-                                offset: Offset(5.0, 5.0),
-                              ),
-                              Shadow(
-                                color: Colors.white,
-                                blurRadius: 6.0,
-                                offset: Offset(2.0, 2.0),
-                              ),
-                            ],
-                          ),
-                        )
                       ],
                     ),
                   ),
@@ -200,18 +195,18 @@ class _StackLayoutState extends State<StackLayout>
             ),
             Hive.box('tasks').isNotEmpty
                 ? Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: ListBuilder(listCategory: 'Main'),
-                    ),
-                  )
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: ListBuilder(listCategory: 'Main'),
+              ),
+            )
 
-                /**
+            /**
              * NO task section
              * **/
                 : SizedBox(
-                    width: 1,
-                  ),
+              width: 1,
+            ),
           ],
         ),
       ),

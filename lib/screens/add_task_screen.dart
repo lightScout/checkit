@@ -1,13 +1,7 @@
 import 'package:ciao_app/model/task.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:provider/provider.dart';
-import 'package:ciao_app/model/task_data.dart';
-import 'package:intl/intl.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'dart:math';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 
 class AddTaskScreen extends StatefulWidget {
   //String newTask;

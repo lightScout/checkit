@@ -1,27 +1,30 @@
+import 'package:ciao_app/model/task.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 import 'task_tile.dart';
-import 'package:ciao_app/model/task.dart';
 
 class ListBuilder extends StatelessWidget {
   final String listCategory;
   final Color dismissibleBackGroundColor1 = Color(0xFFF9B16E);
   final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
+
   ListBuilder({this.listCategory});
+
   @override
   Widget build(BuildContext context) {
-    return WatchBoxBuilder(
-        box: Hive.box('tasks'),
-        builder: (context, tasksBox) {
+    return ValueListenableBuilder(
+        valueListenable: Hive.box('tasks').listenable(),
+        builder: (context, box, widget) {
           return ListView.separated(
             scrollDirection: Axis.vertical,
             controller: ScrollController(keepScrollOffset: true),
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              print(tasksBox.keys);
-              print(tasksBox.keys.toList()[index]);
-              final task = tasksBox.get(tasksBox.keys.toList()[index]) as Task;
+              print(box.keys);
+              print(box.keys.toList()[index]);
+              final task = box.get(box.keys.toList()[index]) as Task;
               return Dismissible(
                 background: DismissibleBackGround(
                   color1: dismissibleBackGroundColor1,
@@ -32,7 +35,7 @@ class ListBuilder extends StatelessWidget {
                 ),
                 dismissThresholds: {DismissDirection.endToStart: 1.0},
                 onDismissed: (DismissDirection direction) {
-                  tasksBox.deleteAt(index);
+                  box.deleteAt(index);
                 },
                 key: Key('${task.name}${index.toString()}'),
                 direction: DismissDirection.horizontal,
@@ -43,10 +46,10 @@ class ListBuilder extends StatelessWidget {
                   isChecked: task.isDone,
                   isCheckCallBack: () {
                     task.toggleDone();
-                    return tasksBox.putAt(index, task);
+                    return box.putAt(index, task);
                   },
                   deleteTask: () {
-                    tasksBox.deleteAt(index);
+                    box.deleteAt(index);
                   },
                 ),
               );
@@ -56,7 +59,7 @@ class ListBuilder extends StatelessWidget {
                 height: 16,
               );
             },
-            itemCount: tasksBox.length,
+            itemCount: box.length,
           );
         });
   }
@@ -65,6 +68,7 @@ class ListBuilder extends StatelessWidget {
 class DismissibleBackGround extends StatelessWidget {
   final Color color1;
   final Color color2;
+
   DismissibleBackGround({this.color1, this.color2});
 
   @override

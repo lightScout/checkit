@@ -1,10 +1,7 @@
 import 'package:ciao_app/model/task.dart';
-import 'package:ciao_app/model/task_data.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:lite_rolling_switch/lite_rolling_switch.dart';
-import 'package:provider/provider.dart';
 
 class AddTaskScreen2 extends StatefulWidget {
   static DateFormat dateFormat = DateFormat('DD-MM-yyyy');
@@ -21,22 +18,46 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
   String newTaskCategory = 'Main';
 
   String formattedDate = AddTaskScreen2.dateFormat.format(DateTime.now());
+
   void addTask(Task task) {
     final tasksBox = Hive.box('tasks');
     tasksBox.add(task);
   }
 
-  @override
-  void dispose() {
-    FocusScope.of(context).unfocus();
-    super.dispose();
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          backgroundColor: Colors.black,
+          content: Text(
+            "Task without a name can not be added.",
+            style: TextStyle(fontFamily: 'PressStart2P', color: Colors.white),
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: Text(
+                'OK',
+                style: TextStyle(fontFamily: 'PressStart2P'),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Color(0xFFFF1d1d),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(50.0),
           topRight: Radius.circular(50.0),
@@ -52,17 +73,17 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
             child: Text(
               'Add Task',
               style: TextStyle(
-                color: Colors.white,
+                color: Color(0xFFf6e3d1),
                 fontSize: 25,
                 fontFamily: fontFamily,
-                shadows: [
-                  BoxShadow(
-                    color: Colors.blue,
-                    offset: Offset(0.0, 0.0),
-                    blurRadius: 10.0,
-                    spreadRadius: 5.4,
-                  ),
-                ],
+                // shadows: [
+                //   BoxShadow(
+                //     color: Colors.white,
+                //     offset: Offset(0.0, 0.0),
+                //     blurRadius: 10.0,
+                //     spreadRadius: 5.4,
+                //   ),
+                // ],
               ),
             ),
           ),
@@ -80,7 +101,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                     fontSize: 16,
                     fontFamily: 'PoiretOne',
                     fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    color: Color(0xFFf6e3d1),
                   ),
                 ),
                 SizedBox(
@@ -94,13 +115,14 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 //                            color: Colors.black,
 //                          ),
 //                           helperText: 'Task Name',
-                      hintText: 'Buy Mangoes',
-                      hintStyle: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white),
+                    hintText: 'Buy Mangoes',
+                    hintStyle: TextStyle(
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    filled: true,
+                    fillColor: Color(0xFFf6e3d1),
+                  ),
 //                  textAlign: TextAlign.center,
                   autofocus: true,
                   onChanged: (value) {
@@ -122,22 +144,26 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                           ),
                         ),
                         onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          //Add task to the list
-                          Task task = Task();
-                          task.name = newTaskTile;
-                          task.category = newTaskCategory;
-                          task.dueDate = formattedDate;
-                          task.isDone = false;
-                          addTask(task);
-                          Navigator.pop(context);
+                          if (newTaskTile == null) {
+                            _showDialog();
+                          } else {
+                            FocusScope.of(context).unfocus();
+                            //Add task to the list
+                            Task task = Task();
+                            task.name = newTaskTile;
+                            task.category = newTaskCategory;
+                            task.dueDate = formattedDate;
+                            task.isDone = false;
+                            addTask(task);
+                            Navigator.pop(context);
+                          }
                         },
                         child: Icon(
                           Icons.add,
                           size: 30,
-                          color: Color(0xFF071F86),
+                          color: Color(0xFFF4a780),
                         ),
-                        color: Colors.white,
+                        color: Color(0xFFf6e3d1),
                       ),
                     ],
                   ),

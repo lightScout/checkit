@@ -1,16 +1,15 @@
-import 'package:ciao_app/icons/add_task_icon_icons.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/screens/add_task_screen.dart';
+import 'package:ciao_app/screens/info_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'widgets/stack_layout.dart';
-import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
-import 'model/task_data.dart';
-import 'package:flutter/services.dart';
+
 import 'screens/add_task_screen.dart';
 import 'screens/splash_screen.dart';
+import 'widgets/dashboard.dart';
 
 void main() async {
   // Hive initialisation
@@ -19,11 +18,15 @@ void main() async {
       await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
   Hive.registerAdapter(TaskAdapter());
-  final tasksBox =
-      await Hive.openBox('tasks', compactionStrategy: (int total, int deleted) {
-    return deleted > 0;
-  });
-  runApp(WatchBoxBuilder(box: tasksBox, builder: (context, box) => MyApp()));
+  final tasksBox = await Hive.openBox(
+    'tasks',
+    compactionStrategy: (int total, int deleted) {
+      return deleted > 0;
+    },
+  );
+  runApp(ValueListenableBuilder(
+      valueListenable: tasksBox.listenable(),
+      builder: (context, box, widget) => MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -39,17 +42,16 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return ChangeNotifierProvider<TaskData>(
-      create: (context) => TaskData(),
-      child: MaterialApp(
-        initialRoute: SplashScreen.id,
-        routes: {
-          StackLayout.id: (context) => StackLayout(),
-          SplashScreen.id: (context) => SplashScreen(),
-          AddTaskScreen.id: (context) => AddTaskScreen(),
-        },
-        home: StackLayout(),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: SplashScreen.id,
+      routes: {
+        StackLayout.id: (context) => StackLayout(),
+        SplashScreen.id: (context) => SplashScreen(),
+        AddTaskScreen.id: (context) => AddTaskScreen(),
+        InfoScreen.id: (context) => InfoScreen(),
+      },
+      home: StackLayout(),
     );
   }
 
@@ -60,20 +62,3 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 }
-
-// FutureBuilder(
-// future: Hive.openBox('tasks'),
-// builder: (BuildContext context, AsyncSnapshot snapshot) {
-// if (snapshot.connectionState == ConnectionState.done) {
-// if (snapshot.hasError) {
-// return Text(snapshot.error.toString());
-// } else {
-// return StackLayout();
-// }
-// } else {
-// return Center(
-// child: CircularProgressIndicator(),
-// );
-// }
-// },
-// ),
