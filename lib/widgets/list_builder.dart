@@ -1,27 +1,42 @@
-import 'package:ciao_app/model/database_helpers.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:ciao_app/model/task_data.dart';
-import 'must_do_tile.dart';
-import 'task_tile.dart';
 import 'package:ciao_app/model/task.dart';
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'task_tile.dart';
 
 class ListBuilder extends StatelessWidget {
   final String listCategory;
+  final Color dismissibleBackGroundColor1 = Color(0xFFF9B16E);
+  final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
+
   ListBuilder({this.listCategory});
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskData>(
-      builder: (context, taskData, child) {
-        return SingleChildScrollView(
-          child: ListView.separated(
+    return ValueListenableBuilder(
+        valueListenable: Hive.box('tasks').listenable(),
+        builder: (context, box, widget) {
+          return ListView.separated(
             scrollDirection: Axis.vertical,
             controller: ScrollController(keepScrollOffset: true),
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              taskData.generateTaskList();
-              final task = taskData.tasksList(listCategory)[index];
+              print(box.keys);
+              print(box.keys.toList()[index]);
+              final task = box.get(box.keys.toList()[index]) as Task;
               return Dismissible(
+                background: DismissibleBackGround(
+                  color1: dismissibleBackGroundColor1,
+                  color2: dismissibleBackGroundColor2,
+                ),
+                secondaryBackground: Container(
+                  color: Colors.transparent,
+                ),
+                dismissThresholds: {DismissDirection.endToStart: 1.0},
+                onDismissed: (DismissDirection direction) {
+                  box.deleteAt(index);
+                },
                 key: Key('${task.name}${index.toString()}'),
                 direction: DismissDirection.horizontal,
                 child: TaskTile(
@@ -30,11 +45,11 @@ class ListBuilder extends StatelessWidget {
                   dueDate: task.dueDate,
                   isChecked: task.isDone,
                   isCheckCallBack: () {
-                    taskData.updateTask(task);
-                    print(task.isDone);
+                    task.toggleDone();
+                    return box.putAt(index, task);
                   },
                   deleteTask: () {
-                    taskData.deleteTask(task);
+                    box.deleteAt(index);
                   },
                 ),
               );
@@ -44,10 +59,44 @@ class ListBuilder extends StatelessWidget {
                 height: 16,
               );
             },
-            itemCount: taskData.taskCount(listCategory),
+            itemCount: box.length,
+          );
+        });
+  }
+}
+
+class DismissibleBackGround extends StatelessWidget {
+  final Color color1;
+  final Color color2;
+
+  DismissibleBackGround({this.color1, this.color2});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [color1, color2]),
+        borderRadius: BorderRadius.all(
+          Radius.circular(30),
+        ),
+      ),
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 30),
+            child: Center(
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+                size: 40,
+              ),
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }

@@ -1,12 +1,11 @@
-import 'package:ciao_app/model/task_data.dart';
+import 'package:ciao_app/screens/info_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:lite_rolling_switch/lite_rolling_switch.dart';
-import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 22, vertical: 22),
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.only(
@@ -20,44 +19,48 @@ class SettingsScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           SizedBox(
-            height: 20,
+            height: 22,
           ),
           Text(
             'Settings',
             style: TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-              shadows: [
-                BoxShadow(
-                  color: Color(0xFFA3320B),
-                  offset: Offset(0.0, 0.0),
-                  blurRadius: 10.0,
-                  spreadRadius: 5.4,
-                ),
-              ],
-            ),
+                color: Colors.white, fontSize: 15, fontFamily: 'PressStart2P'),
           ),
           SizedBox(
-            height: 20,
+            height: 40,
           ),
-          Text(
-            '${Provider.of<TaskData>(context).taskOverallCount}',
-            style: TextStyle(
-              color: Color(0xFFdb4c40),
-              fontSize: 100,
-              fontWeight: FontWeight.w600,
-              fontFamily: 'PoiretOne',
+
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, InfoScreen.id);
+            },
+            child: ListTile(
+              leading: Icon(
+                Icons.info,
+                color: Colors.white,
+              ),
+              title: Text(
+                'About checKit',
+                style: TextStyle(
+                    fontFamily: 'PressStart2P',
+                    color: Colors.white,
+                    fontSize: 12),
+              ),
             ),
           ),
-          Text(
-            'checKit.',
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 18,
-              fontFamily: 'PoiretOne',
-              fontWeight: FontWeight.w800,
+          ListTile(
+            leading: Icon(
+              Icons.star,
+              color: Colors.white,
             ),
-          ),
+            title: Text(
+              'Pro - Coming Soon!',
+              style: TextStyle(
+                  fontFamily: 'PressStart2P',
+                  color: Colors.white,
+                  fontSize: 12),
+            ),
+          )
 //          SizedBox(
 //            height: 20,
 //          ),

@@ -4,7 +4,7 @@ import 'package:ciao_app/widgets/task_tile.dart';
 class MustDoTaskTile extends StatefulWidget {
   final String title;
   final Function deleteTask;
-  final int isChecked;
+  final bool isChecked;
   final Function isCheckCallBack;
 
   MustDoTaskTile({
