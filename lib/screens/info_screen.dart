@@ -2,7 +2,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 
 class InfoScreen extends StatelessWidget {
-  static const id = 'addTaskScreen';
+  static const id = 'infoScreen';
 
   @override
   Widget build(BuildContext context) {

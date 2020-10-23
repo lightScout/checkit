@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ciao_app/widgets/dashboard.dart';
+import 'package:ciao_app/screens/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -70,11 +70,8 @@ class _SplashScreenState extends State<SplashScreen>
                   Padding(
                     padding: const EdgeInsets.only(top: 22.0, left: 100),
                     child: Text(
-                      'FROM J&J',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'PressStart2P',
-                          color: Colors.white70),
+                      'from JJ Lightscout',
+                      style: TextStyle(fontSize: 14, color: Colors.white70),
                     ),
                   ),
                   Padding(

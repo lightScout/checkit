@@ -1,5 +1,4 @@
 import 'package:ciao_app/model/task.dart';
-import 'package:ciao_app/screens/add_task_screen.dart';
 import 'package:ciao_app/screens/info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,9 +6,8 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
-import 'screens/add_task_screen.dart';
+import 'screens/dashboard_screen.dart';
 import 'screens/splash_screen.dart';
-import 'widgets/dashboard.dart';
 
 void main() async {
   // Hive initialisation
@@ -17,7 +15,9 @@ void main() async {
   final appDocumentDirectory =
       await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
-  Hive.registerAdapter(TaskAdapter());
+  Hive.registerAdapter(
+    TaskAdapter(),
+  );
   final tasksBox = await Hive.openBox(
     'tasks',
     compactionStrategy: (int total, int deleted) {
@@ -48,7 +48,6 @@ class _MyAppState extends State<MyApp> {
       routes: {
         StackLayout.id: (context) => StackLayout(),
         SplashScreen.id: (context) => SplashScreen(),
-        AddTaskScreen.id: (context) => AddTaskScreen(),
         InfoScreen.id: (context) => InfoScreen(),
       },
       home: StackLayout(),

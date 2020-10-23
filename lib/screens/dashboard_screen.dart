@@ -5,12 +5,12 @@ import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-import 'list_builder.dart';
+import '../widgets/list_builder.dart';
 
 final Color bgColor = Color(0xFF4A5A58);
 
 class StackLayout extends StatefulWidget {
-  static const id = 'stackLayout';
+  static const id = 'dashboardScreen';
 
   @override
   _StackLayoutState createState() => _StackLayoutState();
@@ -137,10 +137,10 @@ class _StackLayoutState extends State<StackLayout>
                         isScrollControlled: true,
                         builder: (context) => SingleChildScrollView(
                             child: Container(
-                              child: SettingsScreen(),
-                              padding: EdgeInsets.only(
-                                  bottom: MediaQuery.of(context).viewInsets.bottom),
-                            )),
+                          child: SettingsScreen(),
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                        )),
                         backgroundColor: Colors.transparent,
                       );
                     },
@@ -213,44 +213,3 @@ class _StackLayoutState extends State<StackLayout>
     );
   }
 }
-
-//FabCircularMenu(
-//ringDiameter: MediaQuery.of(context).size.width * 0.55,
-//ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.20,
-//animationDuration: Duration(milliseconds: 400),
-//fabCloseColor: Colors.white,
-//fabOpenColor: Colors.white,
-//ringColor: Colors.black54,
-//fabOpenIcon: Icon(Icons.filter_list),
-//children: <Widget>[
-//InkWell(
-//child: Icon(
-//Icons.delete_forever,
-//size: 35,
-//color: Colors.white,
-//),
-//onTap: () {
-//Provider.of<TaskData>(context, listen: false)
-//    .deleteAllTasks();
-//}),
-//InkWell(
-//child: Icon(
-//LineIcons.pencil,
-//color: Colors.white,
-//size: 45,
-//),
-//onTap: () {
-//showModalBottomSheet(
-//context: context,
-//isScrollControlled: true,
-//builder: (context) => SingleChildScrollView(
-//child: Container(
-//child: AddTaskScreen(),
-//padding: EdgeInsets.only(
-//bottom:
-//MediaQuery.of(context).viewInsets.bottom),
-//)),
-//backgroundColor: Colors.transparent,
-//);
-//})
-//]),
