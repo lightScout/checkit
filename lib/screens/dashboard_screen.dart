@@ -195,18 +195,18 @@ class _StackLayoutState extends State<StackLayout>
             ),
             Hive.box('tasks').isNotEmpty
                 ? Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: ListBuilder(listCategory: 'Main'),
-              ),
-            )
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: ListBuilder(listCategory: 'Main'),
+                    ),
+                  )
 
-            /**
+                /**
              * NO task section
              * **/
                 : SizedBox(
-              width: 1,
-            ),
+                    width: 1,
+                  ),
           ],
         ),
       ),
