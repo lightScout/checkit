@@ -9,8 +9,9 @@ class ListBuilder extends StatelessWidget {
   final String listCategory;
   final Color dismissibleBackGroundColor1 = Color(0xFFF9B16E);
   final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
+  ScrollController hideButtonController;
 
-  ListBuilder({this.listCategory});
+  ListBuilder({this.listCategory, this.hideButtonController});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class ListBuilder extends StatelessWidget {
         builder: (context, box, widget) {
           return ListView.separated(
             scrollDirection: Axis.vertical,
-            controller: ScrollController(keepScrollOffset: true),
+            controller: hideButtonController,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               print(box.keys);

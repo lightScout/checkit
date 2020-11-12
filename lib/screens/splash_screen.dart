@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen>
         .animate(_controller);
 
     Timer(Duration(seconds: 2), () {
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => StackLayout()),
       );
     });

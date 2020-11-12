@@ -3,6 +3,7 @@ import 'package:ciao_app/screens/add_task_screen2.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 
 import '../widgets/list_builder.dart';
@@ -19,7 +20,10 @@ class StackLayout extends StatefulWidget {
 class _StackLayoutState extends State<StackLayout>
     with SingleTickerProviderStateMixin {
   final tasksBox = Hive.box('tasks');
-
+  ScrollController hideButtonController =
+      ScrollController(keepScrollOffset: true);
+  AnimationController _hideFabController;
+  Animation _hideFabAnimation;
   // user defined function
   void _showDialog() {
     // flutter defined function
@@ -54,160 +58,196 @@ class _StackLayoutState extends State<StackLayout>
   }
 
   @override
+  void initState() {
+    super.initState();
+    _hideFabController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 190));
+    _hideFabAnimation =
+        CurvedAnimation(parent: _hideFabController, curve: Curves.easeIn);
+    _hideFabController.forward();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    hideButtonController.removeListener(() {});
+    _hideFabController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      floatingActionButton: FabCircularMenu(
-          ringDiameter: MediaQuery.of(context).size.width * 0.65,
-          ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
-          animationDuration: Duration(milliseconds: 300),
-          fabCloseColor: Color(0xFF071F86),
-          fabElevation: 10,
-          fabMargin: EdgeInsets.only(right: 40, bottom: 40),
-          fabOpenColor: Color(0xFFFF1d1d),
-          ringColor: Color(0xFFFA9700),
-          fabCloseIcon: Icon(
-            Icons.close,
-            size: 33,
-            color: Colors.white,
-          ),
-          fabOpenIcon: Icon(
-            Icons.add,
-            size: 35,
-            color: Colors.white,
-          ),
-          children: <Widget>[
-            InkWell(
-                child: Icon(
-                  Icons.minimize,
-                  size: 44,
-                  color: Color(0xFFf8f0bc),
-                ),
-                onTap: () {
-                  _showDialog();
-                }),
-            GestureDetector(
-                child: Icon(
-                  Icons.add,
-                  color: Color(0xFFf8f0bc),
-                  size: 44,
-                ),
-                onTap: () {
-                  // Navigator.pushNamed(context, AddTaskScreen.id);
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context) => SingleChildScrollView(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
-                        child: AddTaskScreen2(),
-                      ),
-                    ),
-                    backgroundColor: Colors.transparent,
-                  );
-                })
-          ]),
-      body: Container(
-        color: Color(0xFF8ddffd),
-        // decoration: BoxDecoration(
-        //   gradient: LinearGradient(
-        //       begin: Alignment.topRight,
-        //       end: Alignment.bottomLeft,
-        //       colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
-        // ),
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding:
-                  EdgeInsets.only(left: 22, right: 22, top: 48, bottom: 22),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  InkWell(
+    return NotificationListener(
+      onNotification: (t) {
+        if (t is ScrollStartNotification) {
+          _hideFabController.reverse();
+        } else if (t is ScrollEndNotification) {
+          _hideFabController.forward();
+        }
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        floatingActionButton: ScaleTransition(
+          scale: _hideFabAnimation,
+          alignment: Alignment.bottomRight,
+          child: FabCircularMenu(
+              ringDiameter: MediaQuery.of(context).size.width * 0.65,
+              ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
+              animationDuration: Duration(milliseconds: 300),
+              fabCloseColor: Color(0xFF071F86),
+              fabElevation: 10,
+              fabMargin: EdgeInsets.only(right: 40, bottom: 40),
+              fabOpenColor: Color(0xFFFF1d1d),
+              ringColor: Color(0xFFFA9700),
+              fabCloseIcon: Icon(
+                Icons.close,
+                size: 33,
+                color: Colors.white,
+              ),
+              fabOpenIcon: Icon(
+                Icons.add,
+                size: 35,
+                color: Colors.white,
+              ),
+              children: <Widget>[
+                InkWell(
                     child: Icon(
-//                            isCollapsed ? Icons.menu : LineIcons.hand_o_right,
-                      Icons.menu,
-                      color: Color(0xFF071F86),
-                      size: 33,
+                      Icons.minimize,
+                      size: 44,
+                      color: Color(0xFFf8f0bc),
                     ),
                     onTap: () {
+                      _showDialog();
+                    }),
+                GestureDetector(
+                    child: Icon(
+                      Icons.add,
+                      color: Color(0xFFf8f0bc),
+                      size: 44,
+                    ),
+                    onTap: () {
+                      // Navigator.pushNamed(context, AddTaskScreen.id);
                       showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
                         builder: (context) => SingleChildScrollView(
-                            child: Container(
-                          child: SettingsScreen(),
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
-                        )),
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom),
+                            child: AddTaskScreen2(),
+                          ),
+                        ),
                         backgroundColor: Colors.transparent,
                       );
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 55.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'checKit',
-                          style: Constant.Klogo.copyWith(
-                            fontSize: 20,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 2.0,
-                                color: Colors.blue,
-                                offset: Offset(5.0, 5.0),
-                              ),
-                              Shadow(
-                                color: Colors.white,
-                                blurRadius: 6.0,
-                                offset: Offset(2.0, 2.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text(
-                          '${tasksBox.length}',
-                          style: Constant.Klogo.copyWith(
-                            fontSize: 44,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 2.0,
-                                color: Colors.blue,
-                                offset: Offset(5.0, 5.0),
-                              ),
-                              Shadow(
-                                color: Colors.white,
-                                blurRadius: 6.0,
-                                offset: Offset(2.0, 2.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    })
+              ]),
+        ),
+        body: Container(
+          color: Color(0xFF8ddffd),
+          // decoration: BoxDecoration(
+          //   gradient: LinearGradient(
+          //       begin: Alignment.topRight,
+          //       end: Alignment.bottomLeft,
+          //       colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
+          // ),
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding:
+                    EdgeInsets.only(left: 22, right: 22, top: 48, bottom: 22),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    InkWell(
+                      child: Icon(
+//                            isCollapsed ? Icons.menu : LineIcons.hand_o_right,
+                        Icons.menu,
+                        color: Color(0xFF071F86),
+                        size: 33,
+                      ),
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => SingleChildScrollView(
+                              child: Container(
+                            child: SettingsScreen(),
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom),
+                          )),
+                          backgroundColor: Colors.transparent,
+                        );
+                      },
                     ),
-                  ),
-                  // DashboardScreen(),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 55.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'checKit',
+                            style: Constant.Klogo.copyWith(
+                              fontSize: 20,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 2.0,
+                                  color: Colors.blue,
+                                  offset: Offset(5.0, 5.0),
+                                ),
+                                Shadow(
+                                  color: Colors.white,
+                                  blurRadius: 6.0,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            '${tasksBox.length}',
+                            style: Constant.Klogo.copyWith(
+                              fontSize: 44,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 2.0,
+                                  color: Colors.blue,
+                                  offset: Offset(5.0, 5.0),
+                                ),
+                                Shadow(
+                                  color: Colors.white,
+                                  blurRadius: 6.0,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // DashboardScreen(),
+                  ],
+                ),
               ),
-            ),
-            Hive.box('tasks').isNotEmpty
-                ? Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: ListBuilder(listCategory: 'Main'),
-                    ),
-                  )
+              Hive.box('tasks').isNotEmpty
+                  ? Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: ListBuilder(
+                            listCategory: 'Main',
+                            hideButtonController: hideButtonController),
+                      ),
+                    )
 
-                /**
-             * NO task section
-             * **/
-                : SizedBox(
-                    width: 1,
-                  ),
-          ],
+                  /**
+               * NO task section
+               * **/
+                  : SizedBox(
+                      width: 1,
+                    ),
+            ],
+          ),
         ),
       ),
     );
