@@ -154,15 +154,21 @@ class _StackLayoutState extends State<StackLayout>
           // ),
           child: Column(
             children: <Widget>[
+              //
+              //Top bar section - Menu bar, title and more
+              //
               Container(
                 padding:
                     EdgeInsets.only(left: 22, right: 22, top: 48, bottom: 22),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    //
+                    // Menu Button
+                    //
                     InkWell(
                       child: Icon(
-//                            isCollapsed ? Icons.menu : LineIcons.hand_o_right,
                         Icons.menu,
                         color: Color(0xFF071F86),
                         size: 33,
@@ -182,6 +188,10 @@ class _StackLayoutState extends State<StackLayout>
                         );
                       },
                     ),
+
+                    //
+                    // Title and task counter
+                    //
                     Padding(
                       padding: const EdgeInsets.only(top: 55.0),
                       child: Row(
@@ -205,6 +215,7 @@ class _StackLayoutState extends State<StackLayout>
                               ],
                             ),
                           ),
+                          // Number of Tasks - Text Widget show the number of taks in de database
                           Text(
                             '${tasksBox.length}',
                             style: Constant.Klogo.copyWith(
@@ -226,10 +237,12 @@ class _StackLayoutState extends State<StackLayout>
                         ],
                       ),
                     ),
-                    // DashboardScreen(),
                   ],
                 ),
               ),
+              //
+              //Bottom bar section - Task List builder
+              //
               Hive.box('tasks').isNotEmpty
                   ? Expanded(
                       child: Container(
@@ -240,9 +253,9 @@ class _StackLayoutState extends State<StackLayout>
                       ),
                     )
 
-                  /**
-               * NO task section
-               * **/
+                  //
+                  // NO task section
+                  //
                   : SizedBox(
                       width: 1,
                     ),

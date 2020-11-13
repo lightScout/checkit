@@ -1,5 +1,6 @@
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/screens/info_screen.dart';
+import 'package:ciao_app/screens/test_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -49,6 +50,7 @@ class _MyAppState extends State<MyApp> {
         StackLayout.id: (context) => StackLayout(),
         SplashScreen.id: (context) => SplashScreen(),
         InfoScreen.id: (context) => InfoScreen(),
+        TestScreen.id: (context) => TestScreen(),
       },
       home: StackLayout(),
     );

@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -19,12 +20,24 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 
   String formattedDate = AddTaskScreen2.dateFormat.format(DateTime.now());
 
+  var selectedCategory = "Daily";
+
+  List<String> userCategoriesList = <String>['Daily', 'Work'];
+
+  List<Widget> sliderUserCategoriesList = <Widget>[];
+
+  void buildSliderList() {
+    userCategoriesList.forEach((element) {
+      sliderUserCategoriesList.add(sliderCategory(element));
+    });
+  }
+
   void addTask(Task task) {
     final tasksBox = Hive.box('tasks');
     tasksBox.add(task);
   }
 
-  void _showDialog() {
+  void _showNoTaskNameDialog() {
     // flutter defined function
     showDialog(
       context: context,
@@ -50,6 +63,141 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
           ],
         );
       },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    buildSliderList();
+  }
+
+  Widget categorySelector() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Color(0xFFFF1d1d),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(50.0),
+          topRight: Radius.circular(50.0),
+        ),
+      ),
+      height: 300,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 33.0),
+            child: Text(
+              "Task Category",
+              style: TextStyle(
+                  fontFamily: 'PressStart2P',
+                  color: Colors.white,
+                  fontSize: 22),
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          //
+          //CarouselSlider containg the list of categories available
+          //
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //
+              //Category slider
+              //
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white24,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50.0),
+                      topRight: Radius.circular(50.0),
+                      bottomLeft: Radius.circular(50.0),
+                      bottomRight: Radius.circular(50.0)),
+                ),
+                height: 100,
+                width: 250,
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                      viewportFraction: .48,
+                      aspectRatio: 3.8,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: false,
+                      onPageChanged: (index, reason) {
+                        print(userCategoriesList[index]);
+                        setState(() {
+                          selectedCategory = userCategoriesList[index];
+                        });
+                      }),
+                  items: sliderUserCategoriesList,
+                ),
+              ),
+            ],
+          ),
+          //
+          //
+          //
+          Padding(
+            padding: const EdgeInsets.only(top: 33.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                //
+                //Add new category flat button
+                //
+                FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Icon(
+                    Icons.add,
+                    size: 30,
+                    color: Color(0xFFF4a780),
+                  ),
+                  color: Color(0xFFf6e3d1),
+                ),
+                //
+                //Select/Dismiss page flat button
+                //
+                FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.done,
+                    size: 30,
+                    color: Color(0xFFF4a780),
+                  ),
+                  color: Color(0xFFf6e3d1),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void _showTaskCategoryBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => SingleChildScrollView(
+        child: Container(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: categorySelector(),
+        ),
+      ),
+      backgroundColor: Colors.transparent,
     );
   }
 
@@ -130,10 +278,42 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                     print(newTaskTile);
                   },
                 ),
-
-                //Add button
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  'Task Category',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'PoiretOne',
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFFf6e3d1),
+                  ),
+                ),
+                SizedBox(
+                  height: 3,
+                ),
+                //
+                //FlatButton used to navigate to the task gategory page bottomsheet
+                //
+                FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    _showTaskCategoryBottomSheet();
+                  },
+                  child: Text(selectedCategory),
+                  color: Color(0xFFf6e3d1),
+                ),
+                //
+                //Flatbutton used to triger the addition of the new task into the database
+                //
                 Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(25.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -145,13 +325,14 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                         ),
                         onPressed: () {
                           if (newTaskTile == null) {
-                            _showDialog();
+                            _showNoTaskNameDialog();
                           } else {
+                            //unfocusing the keyboard to avoid UI break
                             FocusScope.of(context).unfocus();
                             //Add task to the list
                             Task task = Task();
                             task.name = newTaskTile;
-                            task.category = newTaskCategory;
+                            task.category = selectedCategory;
                             task.dueDate = formattedDate;
                             task.isDone = false;
                             addTask(task);
@@ -165,6 +346,9 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                         ),
                         color: Color(0xFFf6e3d1),
                       ),
+//
+//
+//
                     ],
                   ),
                 ),
@@ -214,4 +398,24 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
       ),
     );
   }
+}
+
+sliderCategory(String categoryTitle) {
+  String title = categoryTitle;
+  return Container(
+    height: 75,
+    width: 75,
+    decoration: BoxDecoration(
+      color: Colors.black,
+      borderRadius: BorderRadius.all(
+        Radius.circular(50.0),
+      ),
+    ),
+    child: Center(
+        child: Text(
+      title,
+      style: TextStyle(
+          fontFamily: 'PressStart2P', fontSize: 11, color: Colors.white),
+    )),
+  );
 }
