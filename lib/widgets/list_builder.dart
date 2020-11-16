@@ -9,7 +9,7 @@ class ListBuilder extends StatelessWidget {
   final String listCategory;
   final Color dismissibleBackGroundColor1 = Color(0xFFF9B16E);
   final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
-  ScrollController hideButtonController;
+  final ScrollController hideButtonController;
 
   ListBuilder({this.listCategory, this.hideButtonController});
 

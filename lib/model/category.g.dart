@@ -1,41 +1,32 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'task.dart';
+part of 'category.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TaskAdapter extends TypeAdapter<Task> {
+class CategoryAdapter extends TypeAdapter<Category> {
   @override
-  Task read(BinaryReader reader) {
+  Category read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Task(
+    return Category(
       name: fields[0] as String,
-      isDone: fields[3] as bool,
-      category: fields[1] as String,
-      dueDate: fields[2] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Task obj) {
+  void write(BinaryWriter writer, Category obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.category)
-      ..writeByte(2)
-      ..write(obj.dueDate)
-      ..writeByte(3)
-      ..write(obj.isDone);
+      ..writeByte(0)
+      ..write(obj.name);
   }
 
   @override
   // TODO: implement typeId
-  int get typeId => 1;
+  int get typeId => 2;
 }
