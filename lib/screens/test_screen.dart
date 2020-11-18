@@ -73,9 +73,9 @@ Widget testList() {
     children: [
       Expanded(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: ListBuilder(listCategory: 'Main'),
-        ),
+            // padding: EdgeInsets.symmetric(horizontal: 20),
+            // child: ListBuilder(listCategory: 'Main'),
+            ),
       )
     ],
   );

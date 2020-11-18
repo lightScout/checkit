@@ -6,63 +6,71 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'task_tile.dart';
 
 class ListBuilder extends StatelessWidget {
-  final String listCategory;
+  final Box tasksBox;
+  final listCategory;
   final Color dismissibleBackGroundColor1 = Color(0xFFF9B16E);
   final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
   final ScrollController hideButtonController;
 
-  ListBuilder({this.listCategory, this.hideButtonController});
+  ListBuilder({this.tasksBox, this.listCategory, this.hideButtonController});
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: Hive.box('tasks').listenable(),
-        builder: (context, box, widget) {
-          return ListView.separated(
-            scrollDirection: Axis.vertical,
-            controller: hideButtonController,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              print(box.keys);
-              print(box.keys.toList()[index]);
-              final task = box.get(box.keys.toList()[index]) as Task;
-              return Dismissible(
-                background: DismissibleBackGround(
-                  color1: dismissibleBackGroundColor1,
-                  color2: dismissibleBackGroundColor2,
-                ),
-                secondaryBackground: Container(
-                  color: Colors.transparent,
-                ),
-                dismissThresholds: {DismissDirection.endToStart: 1.0},
-                onDismissed: (DismissDirection direction) {
-                  box.deleteAt(index);
-                },
-                key: Key('${task.name}${index.toString()}'),
-                direction: DismissDirection.horizontal,
-                child: TaskTile(
-                  title: task.name,
-                  category: task.category,
-                  dueDate: task.dueDate,
-                  isChecked: task.isDone,
-                  isCheckCallBack: () {
-                    task.toggleDone();
-                    return box.putAt(index, task);
-                  },
-                  deleteTask: () {
-                    box.deleteAt(index);
-                  },
-                ),
-              );
+    List<Task> listOfTask = [];
+    List listOfKeys = tasksBox.keys.toList();
+
+    listOfKeys.forEach((element) {
+      Task task = tasksBox.get(element) as Task;
+      if (task.category == listCategory) {
+        listOfTask.add(task);
+      }
+    });
+
+    return ListView.separated(
+      scrollDirection: Axis.vertical,
+      controller: hideButtonController,
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        // print(box.keys);
+        // print(box.keys.toList()[index]);
+        final task = listOfTask[index];
+        print(task.category);
+        return Dismissible(
+          background: DismissibleBackGround(
+            color1: dismissibleBackGroundColor1,
+            color2: dismissibleBackGroundColor2,
+          ),
+          secondaryBackground: Container(
+            color: Colors.transparent,
+          ),
+          dismissThresholds: {DismissDirection.endToStart: 1.0},
+          onDismissed: (DismissDirection direction) {
+            // box.deleteAt(index);
+          },
+          key: Key('${task.name}${index.toString()}'),
+          direction: DismissDirection.horizontal,
+          child: TaskTile(
+            title: task.name,
+            category: task.category,
+            dueDate: task.dueDate,
+            isChecked: task.isDone,
+            isCheckCallBack: () {
+              // task.toggleDone();
+              // return box.putAt(index, task);
             },
-            separatorBuilder: (context, index) {
-              return Divider(
-                height: 16,
-              );
+            deleteTask: () {
+              // box.deleteAt(index);
             },
-            itemCount: box.length,
-          );
-        });
+          ),
+        );
+      },
+      separatorBuilder: (context, index) {
+        return Divider(
+          height: 16,
+        );
+      },
+      itemCount: listOfTask.length,
+    );
   }
 }
 

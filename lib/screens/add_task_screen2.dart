@@ -422,6 +422,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                   //unfocusing the keyboard to avoid UI break
                                   FocusScope.of(context).unfocus();
                                   //Add task to the list
+
                                   Task task = Task();
                                   task.name = newTaskTile;
                                   task.category = selectedCategory;

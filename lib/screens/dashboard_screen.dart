@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/screens/add_task_screen2.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
@@ -5,6 +6,7 @@ import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../widgets/list_builder.dart';
 
@@ -19,6 +21,7 @@ class StackLayout extends StatefulWidget {
 
 class _StackLayoutState extends State<StackLayout>
     with SingleTickerProviderStateMixin {
+  int _current = 0;
   final tasksBox = Hive.box('tasks');
   ScrollController hideButtonController =
       ScrollController(keepScrollOffset: true);
@@ -167,55 +170,66 @@ class _StackLayoutState extends State<StackLayout>
                     //
                     // Menu Button
                     //
-                    InkWell(
-                      child: Icon(
-                        Icons.menu,
-                        color: Color(0xFF071F86),
-                        size: 33,
-                      ),
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (context) => SingleChildScrollView(
-                              child: Container(
-                            child: SettingsScreen(),
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).viewInsets.bottom),
-                          )),
-                          backgroundColor: Colors.transparent,
-                        );
-                      },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          child: Icon(
+                            Icons.menu,
+                            color: Color(0xFF071F86),
+                            size: 33,
+                          ),
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) => SingleChildScrollView(
+                                  child: Container(
+                                child: SettingsScreen(),
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom),
+                              )),
+                              backgroundColor: Colors.transparent,
+                            );
+                          },
+                        ),
+                        //
+                        //Title
+                        //
+                        Text(
+                          'checKit',
+                          style: Constant.Klogo.copyWith(
+                            fontSize: 20,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 2.0,
+                                color: Colors.blue,
+                                offset: Offset(5.0, 5.0),
+                              ),
+                              Shadow(
+                                color: Colors.white,
+                                blurRadius: 6.0,
+                                offset: Offset(2.0, 2.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
 
                     //
-                    // Title and task counter
+                    // Task counter
                     //
                     Padding(
                       padding: const EdgeInsets.only(top: 55.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          Text(
-                            'checKit',
-                            style: Constant.Klogo.copyWith(
-                              fontSize: 20,
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 2.0,
-                                  color: Colors.blue,
-                                  offset: Offset(5.0, 5.0),
-                                ),
-                                Shadow(
-                                  color: Colors.white,
-                                  blurRadius: 6.0,
-                                  offset: Offset(2.0, 2.0),
-                                ),
-                              ],
-                            ),
-                          ),
+                          //
                           // Number of Tasks - Text Widget show the number of taks in de database
+                          //
                           Text(
                             '${tasksBox.length}',
                             style: Constant.Klogo.copyWith(
@@ -243,22 +257,28 @@ class _StackLayoutState extends State<StackLayout>
               //
               //Bottom bar section - Task List builder
               //
-              Hive.box('tasks').isNotEmpty
-                  ? Expanded(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: ListBuilder(
-                            listCategory: 'Main',
-                            hideButtonController: hideButtonController),
-                      ),
-                    )
-
-                  //
-                  // NO task section
-                  //
-                  : SizedBox(
-                      width: 1,
-                    ),
+              Column(
+                children: [
+                  ValueListenableBuilder(
+                      valueListenable: tasksBox.listenable(),
+                      builder: (context, box, widget) {
+                        return CarouselSlider(
+                          options: CarouselOptions(
+                              aspectRatio: 1.0,
+                              enlargeCenterPage: true,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _current = index;
+                                });
+                              }),
+                          items: [
+                            createTaskList('Daily', box),
+                            createTaskList('Work', box),
+                          ],
+                        );
+                      }),
+                ],
+              )
             ],
           ),
         ),
@@ -266,3 +286,33 @@ class _StackLayoutState extends State<StackLayout>
     );
   }
 }
+
+Widget createTaskList(String category, Box tasksBox) {
+  return Column(
+    children: [
+      Expanded(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: ListBuilder(listCategory: category, tasksBox: tasksBox),
+        ),
+      )
+    ],
+  );
+}
+
+// Hive.box('tasks').isNotEmpty
+//                   ? Expanded(
+//                       child: Container(
+//                         padding: EdgeInsets.symmetric(horizontal: 20),
+//                         child: ListBuilder(
+//                             listCategory: 'Main',
+//                             hideButtonController: hideButtonController),
+//                       ),
+//                     )
+
+//                   //
+//                   // NO task section
+//                   //
+//                   : SizedBox(
+//                       width: 1,
+//                     ),
