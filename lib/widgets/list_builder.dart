@@ -18,9 +18,12 @@ class ListBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Task> listOfTask = [];
     List listOfKeys = tasksBox.keys.toList();
+    print(listOfKeys);
 
     listOfKeys.forEach((element) {
       Task task = tasksBox.get(element) as Task;
+      task.key = element;
+      print(task.key);
       if (task.category == listCategory) {
         listOfTask.add(task);
       }
@@ -45,7 +48,8 @@ class ListBuilder extends StatelessWidget {
           ),
           dismissThresholds: {DismissDirection.endToStart: 1.0},
           onDismissed: (DismissDirection direction) {
-            // box.deleteAt(index);
+            tasksBox.delete(task.key);
+            // listOfTask.remove(task);
           },
           key: Key('${task.name}${index.toString()}'),
           direction: DismissDirection.horizontal,
@@ -55,11 +59,11 @@ class ListBuilder extends StatelessWidget {
             dueDate: task.dueDate,
             isChecked: task.isDone,
             isCheckCallBack: () {
-              // task.toggleDone();
-              // return box.putAt(index, task);
+              task.toggleDone();
+              return tasksBox.put(task.key, task);
             },
             deleteTask: () {
-              // box.deleteAt(index);
+              tasksBox.delete(key);
             },
           ),
         );

@@ -168,7 +168,7 @@ class _StackLayoutState extends State<StackLayout>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     //
-                    // Menu Button
+                    // Menu Button and Title
                     //
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -259,24 +259,29 @@ class _StackLayoutState extends State<StackLayout>
               //
               Column(
                 children: [
-                  ValueListenableBuilder(
-                      valueListenable: tasksBox.listenable(),
-                      builder: (context, box, widget) {
-                        return CarouselSlider(
-                          options: CarouselOptions(
-                              aspectRatio: 1.0,
-                              enlargeCenterPage: true,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  _current = index;
-                                });
-                              }),
-                          items: [
-                            createTaskList('Daily', box),
-                            createTaskList('Work', box),
-                          ],
-                        );
-                      }),
+                  Hive.box('tasks').isNotEmpty
+                      ? ValueListenableBuilder(
+                          valueListenable: tasksBox.listenable(),
+                          builder: (context, box, widget) {
+                            return CarouselSlider(
+                              options: CarouselOptions(
+                                  aspectRatio: 1.0,
+                                  enlargeCenterPage: true,
+                                  enableInfiniteScroll: false,
+                                  onPageChanged: (index, reason) {
+                                    setState(() {
+                                      _current = index;
+                                    });
+                                  }),
+                              items: [
+                                createTaskList('Daily', box),
+                                createTaskList('Work', box),
+                              ],
+                            );
+                          })
+                      : SizedBox(
+                          width: 1,
+                        ),
                 ],
               )
             ],
@@ -287,20 +292,55 @@ class _StackLayoutState extends State<StackLayout>
   }
 }
 
+///
+///Windget utilize for creation of task lists by category
+///
 Widget createTaskList(String category, Box tasksBox) {
-  return Column(
-    children: [
-      Expanded(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: ListBuilder(listCategory: category, tasksBox: tasksBox),
+  return Container(
+    decoration: BoxDecoration(
+      color: Color(0xff70D7FD),
+      borderRadius: BorderRadius.all(
+        Radius.circular(30),
+      ),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              category,
+              style: Constant.Klogo.copyWith(
+                fontSize: 20,
+                shadows: [
+                  Shadow(
+                    blurRadius: 2.0,
+                    color: Colors.blue,
+                    offset: Offset(5.0, 5.0),
+                  ),
+                  Shadow(
+                    color: Colors.white,
+                    blurRadius: 6.0,
+                    offset: Offset(2.0, 2.0),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-      )
-    ],
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: ListBuilder(listCategory: category, tasksBox: tasksBox),
+          ),
+        )
+      ],
+    ),
   );
 }
 
-// Hive.box('tasks').isNotEmpty
+//
 //                   ? Expanded(
 //                       child: Container(
 //                         padding: EdgeInsets.symmetric(horizontal: 20),
