@@ -6,8 +6,10 @@ part 'category.g.dart';
 class Category {
   @HiveField(0)
   String name;
+  @HiveField(1)
+  int key;
 
-  Category({this.name});
+  Category({this.name, this.key});
 
   get categoryName {
     return name;

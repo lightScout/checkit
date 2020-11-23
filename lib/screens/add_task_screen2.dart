@@ -22,17 +22,9 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 
   String formattedDate = AddTaskScreen2.dateFormat.format(DateTime.now());
 
-  var selectedCategory = "Daily";
-
-  List<String> userCategoriesList = <String>['Daily', 'Work'];
+  var selectedCategory = "General";
 
   List<Widget> sliderUserCategoriesList = <Widget>[];
-
-  void buildSliderList() {
-    userCategoriesList.forEach((element) {
-      sliderUserCategoriesList.add(sliderCategory(element));
-    });
-  }
 
   void addTask(Task task) {
     final tasksBox = Hive.box('tasks');
@@ -60,8 +52,6 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
             ],
           ),
           actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -71,12 +61,6 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                   child: TextField(
                     maxLines: null,
                     decoration: InputDecoration(
-//                          prefixIcon: Icon(
-//                            LineIcons.font,
-//                            color: Colors.black,
-//                          ),
-//                           helperText: 'Task Name',
-                      hintText: 'Home',
                       hintStyle: TextStyle(
                         color: Colors.black54,
                         fontWeight: FontWeight.w700,
@@ -84,7 +68,6 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                       filled: true,
                       fillColor: Color(0xFFf6e3d1),
                     ),
-//                  textAlign: TextAlign.center,
                     autofocus: true,
                     onChanged: (value) {
                       newTaskCategory = value;
@@ -148,14 +131,22 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
   }
 
   Widget categorySelector(Box box) {
-    if (sliderUserCategoriesList.isNotEmpty) {
-      sliderUserCategoriesList.clear();
-    }
+    List listOfKey = box.keys.toList();
 
-    box.keys.forEach((element) {
-      Category category = box.getAt(element) as Category;
-      print(category.name);
-      sliderUserCategoriesList.add(sliderCategory(category.name));
+    listOfKey.forEach((element) {
+      Category category = box.get(element) as Category;
+      category.key = element;
+      // print(category.name);
+      Widget a = GestureDetector(
+        onLongPress: () {
+          box.delete(category.key);
+          setState(() {
+            newTaskCategory = 'General';
+          });
+        },
+        child: sliderCategory(category.name),
+      );
+      sliderUserCategoriesList.add(a);
     });
 
     return Container(
@@ -355,7 +346,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 //                            color: Colors.black,
 //                          ),
 //                           helperText: 'Task Name',
-                          hintText: 'Buy Mangoes',
+
                           hintStyle: TextStyle(
                             color: Colors.black54,
                             fontWeight: FontWeight.w700,
@@ -498,7 +489,7 @@ sliderCategory(String categoryTitle) {
   String title = categoryTitle;
   return Container(
     height: 75,
-    width: 75,
+    width: 100,
     decoration: BoxDecoration(
       color: Colors.black,
       borderRadius: BorderRadius.all(

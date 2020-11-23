@@ -46,12 +46,13 @@ void main() async {
     },
   );
   //
-  //Adding permanent category 'Daily' to categories box
+  //Adding permanent category 'General' to categories box
   //
+
   if (categoriesBox.isEmpty) {
-    categoriesBox.add(Category(name: 'Daily'));
+    categoriesBox.add(Category(name: 'General'));
   } else {
-    categoriesBox.putAt(0, Category(name: 'Daily'));
+    categoriesBox.putAt(0, Category(name: 'General'));
   }
 
   runApp(ValueListenableBuilder(

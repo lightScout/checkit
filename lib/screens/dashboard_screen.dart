@@ -259,29 +259,25 @@ class _StackLayoutState extends State<StackLayout>
               //
               Column(
                 children: [
-                  Hive.box('tasks').isNotEmpty
-                      ? ValueListenableBuilder(
-                          valueListenable: tasksBox.listenable(),
-                          builder: (context, box, widget) {
-                            return CarouselSlider(
-                              options: CarouselOptions(
-                                  aspectRatio: 1.0,
-                                  enlargeCenterPage: true,
-                                  enableInfiniteScroll: false,
-                                  onPageChanged: (index, reason) {
-                                    setState(() {
-                                      _current = index;
-                                    });
-                                  }),
-                              items: [
-                                createTaskList('Daily', box),
-                                createTaskList('Work', box),
-                              ],
-                            );
-                          })
-                      : SizedBox(
-                          width: 1,
-                        ),
+                  ValueListenableBuilder(
+                      valueListenable: tasksBox.listenable(),
+                      builder: (context, box, widget) {
+                        return CarouselSlider(
+                          options: CarouselOptions(
+                              aspectRatio: 1.0,
+                              enlargeCenterPage: true,
+                              enableInfiniteScroll: false,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _current = index;
+                                });
+                              }),
+                          items: [
+                            createTaskList('General', box),
+                            addCategoryButton(),
+                          ],
+                        );
+                      })
                 ],
               )
             ],
@@ -296,63 +292,89 @@ class _StackLayoutState extends State<StackLayout>
 ///Windget utilize for creation of task lists by category
 ///
 Widget createTaskList(String category, Box tasksBox) {
-  return Container(
-    decoration: BoxDecoration(
-      color: Color(0xff70D7FD),
-      borderRadius: BorderRadius.all(
-        Radius.circular(30),
-      ),
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              category,
-              style: Constant.Klogo.copyWith(
-                fontSize: 20,
-                shadows: [
-                  Shadow(
-                    blurRadius: 2.0,
-                    color: Colors.blue,
-                    offset: Offset(5.0, 5.0),
-                  ),
-                  Shadow(
-                    color: Colors.white,
-                    blurRadius: 6.0,
-                    offset: Offset(2.0, 2.0),
-                  ),
-                ],
+  return Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Color(0xff70D7FD),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
               ),
             ),
-          ],
-        ),
-        Expanded(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: ListBuilder(listCategory: category, tasksBox: tasksBox),
+            child: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Text(
+                category,
+                style: Constant.Klogo.copyWith(
+                  fontSize: 18,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 2.0,
+                      color: Colors.blue,
+                      offset: Offset(5.0, 5.0),
+                    ),
+                    Shadow(
+                      color: Colors.white,
+                      blurRadius: 6.0,
+                      offset: Offset(2.0, 2.0),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-        )
-      ],
-    ),
+        ],
+      ),
+      Expanded(
+        flex: 1,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color(0xff70D7FD),
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(30),
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child:
+                      ListBuilder(listCategory: category, tasksBox: tasksBox),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    ],
   );
 }
 
-//
-//                   ? Expanded(
-//                       child: Container(
-//                         padding: EdgeInsets.symmetric(horizontal: 20),
-//                         child: ListBuilder(
-//                             listCategory: 'Main',
-//                             hideButtonController: hideButtonController),
-//                       ),
-//                     )
-
-//                   //
-//                   // NO task section
-//                   //
-//                   : SizedBox(
-//                       width: 1,
-//                     ),
+Widget addCategoryButton() {
+  return Container(
+    height: 80,
+    width: 80,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: Colors.white24,
+    ),
+    child: GestureDetector(
+        onTap: () {
+          print('test');
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.grey,
+          size: 40,
+        )),
+  );
+}
