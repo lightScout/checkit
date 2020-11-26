@@ -30,6 +30,5 @@ class CategoryAdapter extends TypeAdapter<Category> {
   }
 
   @override
-  // TODO: implement typeId
   int get typeId => 2;
 }

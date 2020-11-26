@@ -68,6 +68,7 @@ class _StackLayoutState extends State<StackLayout>
   @override
   void initState() {
     super.initState();
+    buildCarouselList();
     _hideFabController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 190));
     _hideFabAnimation =
@@ -77,7 +78,6 @@ class _StackLayoutState extends State<StackLayout>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     hideButtonController.removeListener(() {});
     _hideFabController.dispose();
@@ -85,12 +85,14 @@ class _StackLayoutState extends State<StackLayout>
 
   void buildCarouselList() {
     carouselList.clear();
+
     listOfCategoriesKeys = categoriesBox.keys.toList();
     listOfCategoriesKeys.forEach((element) {
       Category a = categoriesBox.get(element) as Category;
 
       carouselList.add(carouselItem(a.categoryName, tasksBox));
     });
+    carouselList.add(addCategoryButton());
   }
 
   @override
@@ -294,7 +296,25 @@ class _StackLayoutState extends State<StackLayout>
                                 items: carouselList,
                               );
                             });
-                      })
+                      }),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: carouselList.map((item) {
+                      int index = carouselList.indexOf(item);
+                      return Container(
+                        width: 8.0,
+                        height: 8.0,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 2.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _current == index
+                              ? Color.fromRGBO(0, 0, 0, 0.9)
+                              : Color.fromRGBO(0, 0, 0, 0.4),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ],
               )
             ],

@@ -39,6 +39,5 @@ class TaskAdapter extends TypeAdapter<Task> {
   }
 
   @override
-  // TODO: implement typeId
   int get typeId => 1;
 }
