@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/screens/add_task_screen2.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
@@ -23,10 +24,14 @@ class _StackLayoutState extends State<StackLayout>
     with SingleTickerProviderStateMixin {
   int _current = 0;
   final tasksBox = Hive.box('tasks');
+  final categoriesBox = Hive.box('categories');
+
   ScrollController hideButtonController =
       ScrollController(keepScrollOffset: true);
   AnimationController _hideFabController;
   Animation _hideFabAnimation;
+  List<Widget> carouselList = [];
+  List listOfCategoriesKeys = [];
   // user defined function
   void _showDialog() {
     // flutter defined function
@@ -76,6 +81,16 @@ class _StackLayoutState extends State<StackLayout>
     super.dispose();
     hideButtonController.removeListener(() {});
     _hideFabController.dispose();
+  }
+
+  void buildCarouselList() {
+    carouselList.clear();
+    listOfCategoriesKeys = categoriesBox.keys.toList();
+    listOfCategoriesKeys.forEach((element) {
+      Category a = categoriesBox.get(element) as Category;
+
+      carouselList.add(carouselItem(a.categoryName, tasksBox));
+    });
   }
 
   @override
@@ -260,23 +275,25 @@ class _StackLayoutState extends State<StackLayout>
               Column(
                 children: [
                   ValueListenableBuilder(
-                      valueListenable: tasksBox.listenable(),
+                      valueListenable: Hive.box('categories').listenable(),
                       builder: (context, box, widget) {
-                        return CarouselSlider(
-                          options: CarouselOptions(
-                              aspectRatio: 1.0,
-                              enlargeCenterPage: true,
-                              enableInfiniteScroll: false,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  _current = index;
-                                });
-                              }),
-                          items: [
-                            createTaskList('General', box),
-                            addCategoryButton(),
-                          ],
-                        );
+                        buildCarouselList();
+                        return ValueListenableBuilder(
+                            valueListenable: tasksBox.listenable(),
+                            builder: (context, box, widget) {
+                              return CarouselSlider(
+                                options: CarouselOptions(
+                                    aspectRatio: 1.0,
+                                    enlargeCenterPage: true,
+                                    enableInfiniteScroll: false,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        _current = index;
+                                      });
+                                    }),
+                                items: carouselList,
+                              );
+                            });
                       })
                 ],
               )
@@ -291,7 +308,7 @@ class _StackLayoutState extends State<StackLayout>
 ///
 ///Windget utilize for creation of task lists by category
 ///
-Widget createTaskList(String category, Box tasksBox) {
+Widget carouselItem(String category, Box tasksBox) {
   return Column(
     children: [
       Row(

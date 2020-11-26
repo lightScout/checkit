@@ -24,6 +24,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 
   var selectedCategory = "General";
 
+  int sliderIndex = 0;
+
   List<Widget> sliderUserCategoriesList = <Widget>[];
 
   void addTask(Task task) {
@@ -130,7 +132,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
     );
   }
 
-  Widget categorySelector(Box box) {
+  Widget carouselCategoryBuilder(Box box) {
+    sliderUserCategoriesList.clear();
     List listOfKey = box.keys.toList();
 
     listOfKey.forEach((element) {
@@ -142,9 +145,11 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
           box.delete(category.key);
           setState(() {
             newTaskCategory = 'General';
+            selectedCategory = 'General';
+            sliderIndex = 0;
           });
         },
-        child: sliderCategory(category.name),
+        child: sliderCategoryItem(category.name),
       );
       sliderUserCategoriesList.add(a);
     });
@@ -195,6 +200,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                 width: 250,
                 child: CarouselSlider(
                   options: CarouselOptions(
+                      initialPage: sliderIndex,
                       viewportFraction: .48,
                       aspectRatio: 3.8,
                       enlargeCenterPage: true,
@@ -203,6 +209,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                         Category category = box.getAt(index) as Category;
                         setState(() {
                           selectedCategory = category.name;
+                          sliderIndex = index;
                         });
                         print(selectedCategory);
                       }),
@@ -273,7 +280,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
         child: Container(
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: categorySelector(box),
+          child: carouselCategoryBuilder(box),
         ),
       ),
       backgroundColor: Colors.transparent,
@@ -485,7 +492,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
   }
 }
 
-sliderCategory(String categoryTitle) {
+Widget sliderCategoryItem(String categoryTitle) {
   String title = categoryTitle;
   return Container(
     height: 75,

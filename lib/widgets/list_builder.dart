@@ -17,10 +17,10 @@ class ListBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Task> listOfTask = [];
-    List listOfKeys = tasksBox.keys.toList();
-    print(listOfKeys);
+    List listOfTaksKeys = tasksBox.keys.toList();
+    // print(listOfKeys);
 
-    listOfKeys.forEach((element) {
+    listOfTaksKeys.forEach((element) {
       Task task = tasksBox.get(element) as Task;
       task.key = element;
       print(task.key);
