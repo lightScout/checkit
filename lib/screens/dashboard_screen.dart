@@ -165,13 +165,13 @@ class _StackLayoutState extends State<StackLayout>
               ]),
         ),
         body: Container(
-          color: Color(0xFF8ddffd),
-          // decoration: BoxDecoration(
-          //   gradient: LinearGradient(
-          //       begin: Alignment.topRight,
-          //       end: Alignment.bottomLeft,
-          //       colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
-          // ),
+          // color: Color(0xFF8ddffd),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
+          ),
           child: Column(
             children: <Widget>[
               //
@@ -179,7 +179,7 @@ class _StackLayoutState extends State<StackLayout>
               //
               Container(
                 padding:
-                    EdgeInsets.only(left: 22, right: 22, top: 48, bottom: 22),
+                    EdgeInsets.only(left: 22, right: 22, top: 48, bottom: 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,40 +233,39 @@ class _StackLayoutState extends State<StackLayout>
                             ],
                           ),
                         ),
-                      ],
-                    ),
-
-                    //
-                    // Task counter
-                    //
-                    Padding(
-                      padding: const EdgeInsets.only(top: 55.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          //
-                          // Number of Tasks - Text Widget show the number of taks in de database
-                          //
-                          Text(
-                            '${tasksBox.length}',
-                            style: Constant.Klogo.copyWith(
-                              fontSize: 44,
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 2.0,
-                                  color: Colors.blue,
-                                  offset: Offset(5.0, 5.0),
+                        //
+                        // Task counter
+                        //
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              //
+                              // Number of Tasks - Text Widget show the number of taks in de database
+                              //
+                              Text(
+                                '${tasksBox.length}',
+                                style: Constant.Klogo.copyWith(
+                                  fontSize: 44,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 2.0,
+                                      color: Colors.blue,
+                                      offset: Offset(5.0, 5.0),
+                                    ),
+                                    Shadow(
+                                      color: Colors.white,
+                                      blurRadius: 6.0,
+                                      offset: Offset(2.0, 2.0),
+                                    ),
+                                  ],
                                 ),
-                                Shadow(
-                                  color: Colors.white,
-                                  blurRadius: 6.0,
-                                  offset: Offset(2.0, 2.0),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -274,48 +273,54 @@ class _StackLayoutState extends State<StackLayout>
               //
               //Bottom bar section - Task List builder
               //
-              Column(
-                children: [
-                  ValueListenableBuilder(
-                      valueListenable: Hive.box('categories').listenable(),
-                      builder: (context, box, widget) {
-                        buildCarouselList();
-                        return ValueListenableBuilder(
-                            valueListenable: tasksBox.listenable(),
-                            builder: (context, box, widget) {
-                              return CarouselSlider(
-                                options: CarouselOptions(
-                                    aspectRatio: 1.0,
-                                    enlargeCenterPage: true,
-                                    enableInfiniteScroll: false,
-                                    onPageChanged: (index, reason) {
-                                      setState(() {
-                                        _current = index;
-                                      });
-                                    }),
-                                items: carouselList,
-                              );
-                            });
-                      }),
-                  Row(
+              Expanded(
+                child: Container(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: carouselList.map((item) {
-                      int index = carouselList.indexOf(item);
-                      return Container(
-                        width: 8.0,
-                        height: 8.0,
-                        margin: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 2.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _current == index
-                              ? Color.fromRGBO(0, 0, 0, 0.9)
-                              : Color.fromRGBO(0, 0, 0, 0.4),
-                        ),
-                      );
-                    }).toList(),
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      ValueListenableBuilder(
+                          valueListenable: Hive.box('categories').listenable(),
+                          builder: (context, box, widget) {
+                            buildCarouselList();
+                            return ValueListenableBuilder(
+                                valueListenable: tasksBox.listenable(),
+                                builder: (context, box, widget) {
+                                  return CarouselSlider(
+                                    options: CarouselOptions(
+                                        aspectRatio: 1.0,
+                                        enlargeCenterPage: true,
+                                        enableInfiniteScroll: false,
+                                        onPageChanged: (index, reason) {
+                                          setState(() {
+                                            _current = index;
+                                          });
+                                        }),
+                                    items: carouselList,
+                                  );
+                                });
+                          }),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: carouselList.map((item) {
+                          int index = carouselList.indexOf(item);
+                          return Container(
+                            width: 8.0,
+                            height: 8.0,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 2.0),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: _current == index
+                                  ? Color.fromRGBO(0, 0, 0, 0.9)
+                                  : Color.fromRGBO(0, 0, 0, 0.4),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               )
             ],
           ),
@@ -331,64 +336,96 @@ class _StackLayoutState extends State<StackLayout>
 Widget carouselItem(String category, Box tasksBox) {
   return Column(
     children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
+      //
+      //Task list
+      //
+      Expanded(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5.0),
+          child: Container(
+            margin: const EdgeInsets.only(
+                bottom: 20.0, left: 10.0, top: 10.0, right: 10.0),
             decoration: BoxDecoration(
-              color: Color(0xff70D7FD),
+              // border: Border.all(
+              //   color: Colors.blue.withOpacity(.1.8),
+              // ),
+              gradient: LinearGradient(
+                  begin: Alignment.center,
+                  end: Alignment.bottomLeft,
+                  colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(30),
                 topLeft: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: Text(
-                category,
-                style: Constant.Klogo.copyWith(
-                  fontSize: 18,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 2.0,
-                      color: Colors.blue,
-                      offset: Offset(5.0, 5.0),
-                    ),
-                    Shadow(
-                      color: Colors.white,
-                      blurRadius: 6.0,
-                      offset: Offset(2.0, 2.0),
-                    ),
-                  ],
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blueAccent,
+                  offset: Offset(0.0, 5.0), //(x,y)
+                  blurRadius: 10.0,
                 ),
-              ),
+              ],
             ),
-          ),
-        ],
-      ),
-      Expanded(
-        flex: 1,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Color(0xff70D7FD),
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30),
-              bottomLeft: Radius.circular(30),
-              bottomRight: Radius.circular(30),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child:
-                      ListBuilder(listCategory: category, tasksBox: tasksBox),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //
+                //Category Title
+                //
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white12,
+                          // gradient: LinearGradient(
+                          //     begin: Alignment.center,
+                          //     end: Alignment.topRight,
+                          //     colors: [Colors.white12, Color(0xFFEBF8FF)]),
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(30),
+                            bottomLeft: Radius.circular(30),
+                            bottomRight: Radius.circular(30),
+                            topLeft: Radius.circular(30),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(14.0),
+                          child: Text(
+                            category,
+                            style: Constant.Klogo.copyWith(
+                              fontSize: 15,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 2.0,
+                                  color: Colors.blue,
+                                  offset: Offset(5.0, 5.0),
+                                ),
+                                Shadow(
+                                  color: Colors.white,
+                                  blurRadius: 6.0,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              )
-            ],
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child:
+                        ListBuilder(listCategory: category, tasksBox: tasksBox),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -397,21 +434,21 @@ Widget carouselItem(String category, Box tasksBox) {
 }
 
 Widget addCategoryButton() {
-  return Container(
-    height: 80,
-    width: 80,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: Colors.white24,
-    ),
-    child: GestureDetector(
-        onTap: () {
+  return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+    FloatingActionButton(
+        elevation: 5,
+        splashColor: Color(0xFFFF1d1d),
+        backgroundColor: Color(0xFF071F86).withOpacity(.9),
+        child: Icon(Icons.add),
+        onPressed: () {
           print('test');
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.grey,
-          size: 40,
-        )),
-  );
+        }),
+    Padding(
+      padding: const EdgeInsets.only(top: 18.0),
+      child: Text(
+        'Add Category',
+        style: Constant.Klogo.copyWith(fontSize: 14),
+      ),
+    ),
+  ]);
 }
