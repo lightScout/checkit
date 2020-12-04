@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/task.dart';
+import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
@@ -43,45 +44,48 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
         return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(32.0))),
-          backgroundColor: Color(0xFF0E8DB4),
+          backgroundColor: Colors.red[800].withOpacity(0.75),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              //
+              // 'New Categor' alert title
+              //
               Container(
-                decoration: BoxDecoration(
-                  color: Colors.white12,
-                  // gradient: LinearGradient(
-                  //     begin: Alignment.center,
-                  //     end: Alignment.topRight,
-                  //     colors: [Colors.white12, Color(0xFFEBF8FF)]),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(30),
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                    topLeft: Radius.circular(30),
-                  ),
-                ),
+                // decoration: BoxDecoration(
+                //   color: Colors.white12.withOpacity(0.0),
+                //   // gradient: LinearGradient(
+                //   //     begin: Alignment.center,
+                //   //     end: Alignment.topRight,
+                //   //     colors: [Colors.white12, Color(0xFFEBF8FF)]),
+                //   borderRadius: BorderRadius.only(
+                //     topRight: Radius.circular(30),
+                //     bottomLeft: Radius.circular(30),
+                //     bottomRight: Radius.circular(30),
+                //     topLeft: Radius.circular(30),
+                //   ),
+                // ),
                 child: Padding(
-                  padding: const EdgeInsets.all(14.0),
+                  padding: const EdgeInsets.only(
+                      top: 14.0, bottom: 0, left: 14.0, right: 14.0),
                   child: Text(
                     "New Category",
-                    style: TextStyle(
-                      fontFamily: 'PressStart2P',
-                      color: Colors.white,
-                      //TODO: work on UI - title shadows
-                      // shadows: [
-                      //   Shadow(
-                      //     blurRadius: 2.0,
-                      //     color: Colors.blue,
-                      //     offset: Offset(5.0, 5.0),
-                      //   ),
-                      //   Shadow(
-                      //     color: Colors.white,
-                      //     blurRadius: 6.0,
-                      //     offset: Offset(2.0, 2.0),
-                      //   ),
+                    style: Klogo.copyWith(
+                      fontSize: 18,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 2.0,
+                          color: Colors.red,
+                          offset: Offset(5.0, 5.0),
+                        ),
+                        // Shadow(
+                        //   color: Colors.white,
+                        //   blurRadius: 6.0,
+                        //   offset: Offset(2.0, 2.0),
+                        // ),
                       ],
+                      color: Colors.yellowAccent[700],
                     ),
                   ),
                 ),
@@ -93,17 +97,24 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  height: 50,
+                  height: 80,
                   width: 300,
                   child: TextField(
                     maxLines: null,
+                    style: Klogo.copyWith(
+                        fontSize: 22,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            color: Colors.greenAccent,
+                            blurRadius: 6.0,
+                            offset: Offset(0.6, 0.6),
+                          )
+                        ]),
                     decoration: InputDecoration(
-                      hintStyle: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      border: KInputFieldRoundedCorners,
                       filled: true,
-                      fillColor: Color(0xFFf6e3d1),
+                      fillColor: Colors.black,
                     ),
                     autofocus: true,
                     onChanged: (value) {
@@ -112,19 +123,35 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    child: Icon(
-                      Icons.control_point,
-                      size: 40,
-                      color: Colors.white,
+                //TODO: work on pressing animation
+                AnimatedOpacity(
+                  duration: Duration(milliseconds: 300),
+                  opacity: .8,
+                  onEnd: () {
+                    print('opacity');
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      child: Material(
+                        color: Colors.transparent,
+                        elevation: .9,
+                        child: GestureDetector(
+                          child: Icon(
+                            Icons.check,
+                            size: 50,
+                            color: Colors.greenAccent,
+                          ),
+                          onTap: () {
+                            Category newCategory =
+                                Category(name: newTaskCategory);
+                            box.add(newCategory);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
                     ),
-                    onTap: () {
-                      Category newCategory = Category(name: newTaskCategory);
-                      box.add(newCategory);
-                      Navigator.of(context).pop();
-                    },
                   ),
                 ),
               ],
@@ -386,15 +413,13 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                       SizedBox(
                         height: 10,
                       ),
+                      //
+                      // Text Field in charge of capting the new task name
+                      //
                       TextField(
                         maxLines: null,
                         decoration: InputDecoration(
-//                          prefixIcon: Icon(
-//                            LineIcons.font,
-//                            color: Colors.black,
-//                          ),
-//                           helperText: 'Task Name',
-
+                          border: KInputFieldRoundedCorners,
                           hintStyle: TextStyle(
                             color: Colors.black54,
                             fontWeight: FontWeight.w700,
@@ -402,58 +427,34 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                           filled: true,
                           fillColor: Color(0xFFf6e3d1),
                         ),
-//                  textAlign: TextAlign.center,
                         autofocus: true,
                         onChanged: (value) {
                           newTaskTile = value;
                           print(newTaskTile);
                         },
                       ),
-                      // SizedBox(
-                      //   height: 1,
-                      // ),
-                      // Text(
-                      //   'Task Category',
-                      //   style: TextStyle(
-                      //     fontSize: 16,
-                      //     fontFamily: 'PoiretOne',
-                      //     fontWeight: FontWeight.w700,
-                      //     color: Color(0xFFf6e3d1),
-                      //   ),
-                      // ),
 
                       //
-                      //FlatButton used to navigate to the task gategory page bottomsheet
+                      //Task Categories carousel and new category button
                       //
                       Container(
                         child: carouselCategoryBuilder(box),
                       ),
-                      // FlatButton(
-                      //   shape: RoundedRectangleBorder(
-                      //     borderRadius: BorderRadius.all(
-                      //       Radius.circular(15),
-                      //     ),
-                      //   ),
-                      //   onPressed: () {
-                      //     FocusScope.of(context).unfocus();
-                      //     _showTaskCategoryBottomSheet(box);
-                      //   },
-                      //   child: Text(selectedCategory),
-                      //   color: Color(0xFFf6e3d1),
-                      // ),
+
                       //
                       //Flatbutton used to triger the addition of the new task into the database
                       //
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          FlatButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(15),
-                              ),
+                          GestureDetector(
+                            child: Icon(
+                              Icons.control_point_sharp,
+                              size: 50,
+                              color: Colors.white,
                             ),
-                            onPressed: () {
+                            onTap: () {
                               if (newTaskTile == null) {
                                 _showNoTaskNameDialog();
                               } else {
@@ -470,60 +471,12 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                 Navigator.pop(context);
                               }
                             },
-                            child: Icon(
-                              Icons.add,
-                              size: 30,
-                              color: Color(0xFFF4a780),
-                            ),
-                            color: Color(0xFFf6e3d1),
                           ),
-//
-//
-//
                         ],
                       ),
                     ],
                   ),
                 ),
-//          SizedBox(
-//            height: 20,
-//          ),
-//          Padding(
-//            padding: const EdgeInsets.all(8.0),
-//            child: SingleChildScrollView(
-//              child: ListView(
-//                shrinkWrap: true,
-//                children: <Widget>[
-//                  ListTile(
-//                    leading: LiteRollingSwitch(
-//                      //initial value
-//                      animationDuration: Duration(milliseconds: 200),
-//                      value: true,
-//                      textOn: 'ON',
-//                      textOff: 'OFF',
-//                      colorOn: Colors.greenAccent[700],
-//                      colorOff: Colors.redAccent[700],
-//                      iconOn: Icons.done,
-//                      iconOff: Icons.remove_circle_outline,
-//                      textSize: 16.0,
-//                      onChanged: (bool state) {
-//                        //Use it to manage the different states
-//                        print('Current State of SWITCH IS: $state');
-//                      },
-//                    ),
-//                    title: Text(
-//                      'Dream Category',
-//                      style: TextStyle(
-//                          color: Colors.white,
-//                          fontSize: 19,
-//                          fontWeight: FontWeight.w700,
-//                          fontFamily: 'PoiretOne'),
-//                    ),
-//                  )
-//                ],
-//              ),
-//            ),
-//          )
               ],
             ),
           );

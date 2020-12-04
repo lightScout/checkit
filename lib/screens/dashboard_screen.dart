@@ -361,7 +361,7 @@ Widget carouselItem(String category, Box tasksBox) {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.blueAccent,
+                  color: Colors.blueAccent[400],
                   offset: Offset(0.0, 5.0), //(x,y)
                   blurRadius: 10.0,
                 ),
