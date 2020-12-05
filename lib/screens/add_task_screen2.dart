@@ -216,6 +216,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
       category.key = element;
       // print(category.name);
       Widget a = GestureDetector(
+        //TODO: clean this part
         onLongPress: () {
           box.delete(category.key);
           setState(() {
@@ -268,34 +269,45 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                   //Category slider
                   //
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white24,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(50.0),
-                            topRight: Radius.circular(50.0),
-                            bottomLeft: Radius.circular(50.0),
-                            bottomRight: Radius.circular(50.0)),
-                      ),
-                      height: 60,
-                      width: 250,
-                      child: CarouselSlider(
-                        options: CarouselOptions(
-                            initialPage: sliderIndex,
-                            viewportFraction: .44,
-                            aspectRatio: 3.8,
-                            enlargeCenterPage: true,
-                            enableInfiniteScroll: false,
-                            onPageChanged: (index, reason) {
-                              Category category = box.getAt(index) as Category;
-                              setState(() {
-                                selectedCategory = category.name;
-                                sliderIndex = index;
-                              });
-                              print(selectedCategory);
-                            }),
-                        items: sliderUserCategoriesList,
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    child: Material(
+                      elevation: 30,
+                      color: Colors.transparent,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(25),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black12,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(50.0),
+                                  topRight: Radius.circular(50.0),
+                                  bottomLeft: Radius.circular(50.0),
+                                  bottomRight: Radius.circular(50.0)),
+                            ),
+                            height: 60,
+                            width: 240,
+                            child: CarouselSlider(
+                              options: CarouselOptions(
+                                  initialPage: sliderIndex,
+                                  viewportFraction: .44,
+                                  aspectRatio: 3.8,
+                                  enlargeCenterPage: true,
+                                  enableInfiniteScroll: false,
+                                  onPageChanged: (index, reason) {
+                                    Category category =
+                                        box.getAt(index) as Category;
+                                    setState(() {
+                                      selectedCategory = category.name;
+                                      sliderIndex = index;
+                                    });
+                                    print(selectedCategory);
+                                  }),
+                              items: sliderUserCategoriesList,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -326,40 +338,6 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
               ),
             ],
           ),
-          //
-          //
-          //
-          // Padding(
-          //   padding: const EdgeInsets.only(top: 0),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //     children: [
-          //       //
-          //       //Add new category flat button
-          //       //
-          //
-          //       //
-          //       //Select/Dismiss page flat button
-          //       //
-          //       FlatButton(
-          //         shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.all(
-          //             Radius.circular(15),
-          //           ),
-          //         ),
-          //         onPressed: () {
-          //           Navigator.pop(context);
-          //         },
-          //         child: Icon(
-          //           Icons.done,
-          //           size: 30,
-          //           color: Color(0xFFF4a780),
-          //         ),
-          //         color: Color(0xFFf6e3d1),
-          //       ),
-          //     ],
-          //   ),
-          // )
         ],
       ),
     );
@@ -406,7 +384,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 //
                 //OTHER COMPONESTS ON THE PAGE
@@ -424,7 +402,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                         height: 10,
                       ),
                       //
-                      // Text Field in charge of capting the new task name
+                      // TEXT FIELD - in charge of capting the new task name
                       //
                       TextField(
                         style: Klogo.copyWith(
@@ -454,42 +432,52 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                       ),
 
                       //
-                      //Flatbutton used to triger the addition of the new task into the database
+                      //ADD BUTTON - used to triger the addition of the new task into the database
                       //
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           ClipRRect(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(25),
-                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
                             child: Material(
-                              elevation: 1,
-                              color: Color(0xFFDD0426),
-                              child: GestureDetector(
-                                child: Icon(
-                                  Icons.add,
-                                  size: 50,
-                                  color: Color(0xFFE5FCFF),
-                                ),
-                                onTap: () {
-                                  if (newTaskTile == null) {
-                                    _showNoTaskNameDialog();
-                                  } else {
-                                    //unfocusing the keyboard to avoid UI break
-                                    FocusScope.of(context).unfocus();
-                                    //Add task to the list
+                              elevation: 20,
+                              color: Colors.transparent,
+                              child: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(25),
+                                  ),
+                                  child: Material(
+                                    elevation: 1,
+                                    color: Color(0xFFDD0426),
+                                    child: GestureDetector(
+                                      child: Icon(
+                                        Icons.add,
+                                        size: 50,
+                                        color: Color(0xFFE5FCFF),
+                                      ),
+                                      onTap: () {
+                                        if (newTaskTile == null) {
+                                          _showNoTaskNameDialog();
+                                        } else {
+                                          //unfocusing the keyboard to avoid UI break
+                                          FocusScope.of(context).unfocus();
+                                          //Add task to the list
 
-                                    Task task = Task();
-                                    task.name = newTaskTile;
-                                    task.category = selectedCategory;
-                                    task.dueDate = formattedDate;
-                                    task.isDone = false;
-                                    addTask(task);
-                                    Navigator.pop(context);
-                                  }
-                                },
+                                          Task task = Task();
+                                          task.name = newTaskTile;
+                                          task.category = selectedCategory;
+                                          task.dueDate = formattedDate;
+                                          task.isDone = false;
+                                          addTask(task);
+                                          Navigator.pop(context);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -511,7 +499,14 @@ Widget sliderCategoryItem(String categoryTitle) {
     height: 25,
     width: 150,
     decoration: BoxDecoration(
-      color: Color(0xFF264653),
+      border: Border.all(
+        width: 1,
+        color: Colors.white,
+      ),
+      gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomRight,
+          colors: [Colors.red[600], Color(0xFFDD0426)]),
       borderRadius: BorderRadius.all(
         Radius.circular(25.0),
       ),

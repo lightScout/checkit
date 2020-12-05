@@ -49,12 +49,6 @@ void main() async {
   //Adding permanent category 'General' to categories box
   //
 
-  if (categoriesBox.isEmpty) {
-    categoriesBox.add(Category(name: 'General'));
-  } else {
-    categoriesBox.putAt(0, Category(name: 'General'));
-  }
-
   runApp(ValueListenableBuilder(
     valueListenable: categoriesBox.listenable(),
     builder: (context, box, widget) => ValueListenableBuilder(
