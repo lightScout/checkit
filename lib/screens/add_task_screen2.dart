@@ -15,8 +15,6 @@ class AddTaskScreen2 extends StatefulWidget {
 }
 
 class _AddTaskScreen2State extends State<AddTaskScreen2> {
-  final String fontFamily = 'PressStart2p';
-
   String newTaskTile;
 
   String newTaskCategory;
@@ -50,22 +48,9 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //
-              // 'New Categor' alert title
+              // 'New Category' alert title
               //
               Container(
-                // decoration: BoxDecoration(
-                //   color: Colors.white12.withOpacity(0.0),
-                //   // gradient: LinearGradient(
-                //   //     begin: Alignment.center,
-                //   //     end: Alignment.topRight,
-                //   //     colors: [Colors.white12, Color(0xFFEBF8FF)]),
-                //   borderRadius: BorderRadius.only(
-                //     topRight: Radius.circular(30),
-                //     bottomLeft: Radius.circular(30),
-                //     bottomRight: Radius.circular(30),
-                //     topLeft: Radius.circular(30),
-                //   ),
-                // ),
                 child: Padding(
                   padding: const EdgeInsets.only(
                       top: 14.0, bottom: 0, left: 14.0, right: 14.0),
@@ -79,11 +64,6 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                           color: Colors.red,
                           offset: Offset(5.0, 5.0),
                         ),
-                        // Shadow(
-                        //   color: Colors.white,
-                        //   blurRadius: 6.0,
-                        //   offset: Offset(2.0, 2.0),
-                        // ),
                       ],
                       color: Colors.yellowAccent[700],
                     ),
@@ -94,22 +74,22 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
           ),
           actions: <Widget>[
             Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
                   height: 80,
                   width: 300,
                   child: TextField(
-                    maxLines: null,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
                     style: Klogo.copyWith(
                         fontSize: 22,
                         color: Colors.white,
                         shadows: [
-                          Shadow(
-                            color: Colors.greenAccent,
-                            blurRadius: 6.0,
-                            offset: Offset(0.6, 0.6),
-                          )
+                          // Shadow(
+                          //   color: Colors.greenAccent,
+                          //   blurRadius: 6.0,
+                          //   offset: Offset(0.6, 0.6),
+                          // )
                         ]),
                     decoration: InputDecoration(
                       border: KInputFieldRoundedCorners,
@@ -124,32 +104,25 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                   ),
                 ),
                 //TODO: work on pressing animation
-                AnimatedOpacity(
-                  duration: Duration(milliseconds: 300),
-                  opacity: .8,
-                  onEnd: () {
-                    print('opacity');
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                      child: Material(
-                        color: Colors.transparent,
-                        elevation: .9,
-                        child: GestureDetector(
-                          child: Icon(
-                            Icons.check,
-                            size: 50,
-                            color: Colors.greenAccent,
-                          ),
-                          onTap: () {
-                            Category newCategory =
-                                Category(name: newTaskCategory);
-                            box.add(newCategory);
-                            Navigator.of(context).pop();
-                          },
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    child: Material(
+                      color: Color(0xFFDD0426),
+                      elevation: 1,
+                      child: GestureDetector(
+                        child: Icon(
+                          Icons.add,
+                          size: 50,
+                          color: Colors.white,
                         ),
+                        onTap: () {
+                          Category newCategory =
+                              Category(name: newTaskCategory);
+                          box.add(newCategory);
+                          Navigator.of(context).pop();
+                        },
                       ),
                     ),
                   ),
@@ -169,21 +142,64 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          backgroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(32.0),
+            ),
+          ),
+          backgroundColor: Colors.redAccent.withOpacity(.75),
           content: Text(
             "Task without a name can not be added.",
-            style: TextStyle(fontFamily: 'PressStart2P', color: Colors.white),
+            style: Klogo.copyWith(
+              fontSize: 18,
+              shadows: [
+                Shadow(
+                  blurRadius: 2.0,
+                  color: Colors.red,
+                  offset: Offset(5.0, 5.0),
+                ),
+              ],
+              color: Colors.yellowAccent[700],
+            ),
           ),
           actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            FlatButton(
-              child: Text(
-                'OK',
-                style: TextStyle(fontFamily: 'PressStart2P'),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            // Button at the bottom of the dialog
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    child: Material(
+                      elevation: 1,
+                      color: Colors.black12,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          child: Text(
+                            'OK!',
+                            style: Klogo.copyWith(
+                              color: Colors.redAccent[200],
+                              fontSize: 22,
+                              shadows: [
+                                Shadow(
+                                  offset: Offset(5, 5),
+                                  color: Colors.yellowAccent[700],
+                                  blurRadius: 1,
+                                )
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             )
           ],
         );
@@ -230,17 +246,14 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
                 child: Text(
-                  "Task Category",
-                  style: TextStyle(
-                      fontFamily: 'PressStart2P',
-                      color: Colors.white,
-                      fontSize: 12),
+                  "Category",
+                  style: KAddTaskScreenTitles,
                 ),
               ),
             ],
           ),
           SizedBox(
-            height: 10,
+            height: 12,
           ),
           //
           //CarouselSlider containg the list of categories available
@@ -287,15 +300,25 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        _showNewCategoryDialog(box);
-                      },
-                      child: Icon(
-                        Icons.control_point_duplicate,
-                        size: 34,
-                        color: Colors.white,
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: Material(
+                        elevation: 19,
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              _showNewCategoryDialog(box);
+                            },
+                            child: Icon(
+                              Icons.category_rounded,
+                              size: 39,
+                              color: Color(0xFFE5FCFF),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   )
@@ -342,21 +365,6 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
     );
   }
 
-  void _showTaskCategoryBottomSheet(Box box) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => SingleChildScrollView(
-        child: Container(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: carouselCategoryBuilder(box),
-        ),
-      ),
-      backgroundColor: Colors.transparent,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -377,39 +385,41 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(top: 44.0),
-                  child: Text(
-                    'Add Task',
-                    style: TextStyle(
-                      color: Color(0xFFf6e3d1),
-                      fontSize: 25,
-                      fontFamily: fontFamily,
-                      // shadows: [
-                      //   BoxShadow(
-                      //     color: Colors.white,
-                      //     offset: Offset(0.0, 0.0),
-                      //     blurRadius: 10.0,
-                      //     spreadRadius: 5.4,
-                      //   ),
-                      // ],
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white12,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(25),
+                      ),
+                    ),
+                    //
+                    //'ADD TASK' - Page Title
+                    //
+                    child: Padding(
+                      padding: const EdgeInsets.all(14),
+                      child: Text(
+                        'Add Task',
+                        style: KAddTaskScreenTitles.copyWith(fontSize: 25),
+                      ),
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
+                //
+                //OTHER COMPONESTS ON THE PAGE
+                //
                 Padding(
                   padding: const EdgeInsets.all(22.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        'Task Name',
-                        style: TextStyle(
-                            fontFamily: 'PressStart2P',
-                            color: Colors.white,
-                            fontSize: 12),
-                      ),
+                      //
+                      //'NAME' - TEXTFIELD TITLE
+                      //
+                      Text('Name', style: KAddTaskScreenTitles),
                       SizedBox(
                         height: 10,
                       ),
@@ -417,15 +427,17 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                       // Text Field in charge of capting the new task name
                       //
                       TextField(
-                        maxLines: null,
+                        style: Klogo.copyWith(
+                          fontSize: 18,
+                          color: Colors.blueAccent,
+                          shadows: [],
+                        ),
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           border: KInputFieldRoundedCorners,
-                          hintStyle: TextStyle(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.w700,
-                          ),
                           filled: true,
-                          fillColor: Color(0xFFf6e3d1),
+                          fillColor: Colors.white,
                         ),
                         autofocus: true,
                         onChanged: (value) {
@@ -448,29 +460,38 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          GestureDetector(
-                            child: Icon(
-                              Icons.control_point_sharp,
-                              size: 50,
-                              color: Colors.white,
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(25),
                             ),
-                            onTap: () {
-                              if (newTaskTile == null) {
-                                _showNoTaskNameDialog();
-                              } else {
-                                //unfocusing the keyboard to avoid UI break
-                                FocusScope.of(context).unfocus();
-                                //Add task to the list
+                            child: Material(
+                              elevation: 1,
+                              color: Color(0xFFDD0426),
+                              child: GestureDetector(
+                                child: Icon(
+                                  Icons.add,
+                                  size: 50,
+                                  color: Color(0xFFE5FCFF),
+                                ),
+                                onTap: () {
+                                  if (newTaskTile == null) {
+                                    _showNoTaskNameDialog();
+                                  } else {
+                                    //unfocusing the keyboard to avoid UI break
+                                    FocusScope.of(context).unfocus();
+                                    //Add task to the list
 
-                                Task task = Task();
-                                task.name = newTaskTile;
-                                task.category = selectedCategory;
-                                task.dueDate = formattedDate;
-                                task.isDone = false;
-                                addTask(task);
-                                Navigator.pop(context);
-                              }
-                            },
+                                    Task task = Task();
+                                    task.name = newTaskTile;
+                                    task.category = selectedCategory;
+                                    task.dueDate = formattedDate;
+                                    task.isDone = false;
+                                    addTask(task);
+                                    Navigator.pop(context);
+                                  }
+                                },
+                              ),
+                            ),
                           ),
                         ],
                       ),

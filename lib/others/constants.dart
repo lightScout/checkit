@@ -22,6 +22,25 @@ const TextStyle Klogo = TextStyle(
   ],
 );
 
+const TextStyle KAddTaskScreenTitles = TextStyle(
+  fontSize: 12,
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+  fontFamily: 'PressStart2P',
+  shadows: [
+    Shadow(
+      blurRadius: 2,
+      color: Colors.greenAccent,
+      offset: Offset(5, 5),
+    ),
+    Shadow(
+      blurRadius: 6,
+      color: Colors.blueAccent,
+      offset: Offset(2, 2),
+    ),
+  ],
+);
+
 const OutlineInputBorder KInputFieldRoundedCorners = OutlineInputBorder(
   borderRadius: const BorderRadius.all(
     const Radius.circular(25.0),
