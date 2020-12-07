@@ -87,6 +87,7 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     Hive.box('tasks').compact();
     Hive.box('categories').compact();
+    Hive.box('categories').clear();
     Hive.close();
     super.dispose();
   }

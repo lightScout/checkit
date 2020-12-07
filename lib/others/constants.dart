@@ -27,18 +27,7 @@ const TextStyle KAddTaskScreenTitles = TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
   fontFamily: 'PressStart2P',
-  shadows: [
-    Shadow(
-      blurRadius: 2,
-      color: Colors.greenAccent,
-      offset: Offset(5, 5),
-    ),
-    Shadow(
-      blurRadius: 6,
-      color: Colors.blueAccent,
-      offset: Offset(2, 2),
-    ),
-  ],
+  shadows: [],
 );
 
 const OutlineInputBorder KInputFieldRoundedCorners = OutlineInputBorder(

@@ -34,7 +34,7 @@ class _StackLayoutState extends State<StackLayout>
   Animation _hideFabAnimation;
   List<Widget> carouselList = [];
   List listOfCategoriesKeys = [];
-  // user defined function
+
   void _showDeleteAllTasksDialog() {
     // flutter defined function
     showDialog(
@@ -60,7 +60,53 @@ class _StackLayoutState extends State<StackLayout>
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            )
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showNoCategoriesAvailableDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("Attetion"),
+          content: Text(
+              "A category is necessery in order to create a new task. Would you like to have a 'General' category created for you?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: Text("Yes"),
+              onPressed: () {
+                Category newCategory = Category(name: 'General');
+                categoriesBox.add(newCategory);
+                buildCarouselList();
+                Navigator.of(context).pop();
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: AddTaskScreen2(),
+                    ),
+                  ),
+                  backgroundColor: Colors.transparent,
+                );
+              },
+            ),
+
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ],
         );
       },
@@ -188,6 +234,11 @@ class _StackLayoutState extends State<StackLayout>
     _hideFabController.dispose();
   }
 
+  void deleteCategory(int categoryKey) {
+    categoriesBox.delete(categoryKey);
+    buildCarouselList();
+  }
+
   void buildCarouselList() {
     carouselList.clear();
 
@@ -196,9 +247,17 @@ class _StackLayoutState extends State<StackLayout>
       Category a = categoriesBox.get(element) as Category;
       a.key = element;
 
-      carouselList
-          .add(carouselItem(a.categoryName, a.key, tasksBox, categoriesBox));
+      carouselList.add(carouselItem(
+        a.categoryName,
+        a.key,
+        tasksBox,
+        categoriesBox,
+        () {
+          deleteCategory(a.key);
+        },
+      ));
     });
+
     carouselList.add(addCategoryButton(() {
       _showNewCategoryDialog(categoriesBox);
     }));
@@ -257,19 +316,23 @@ class _StackLayoutState extends State<StackLayout>
                       size: 44,
                     ),
                     onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (context) => SingleChildScrollView(
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).viewInsets.bottom),
-                            child: AddTaskScreen2(),
+                      if (categoriesBox.isEmpty) {
+                        _showNoCategoriesAvailableDialog();
+                      } else {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => SingleChildScrollView(
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom),
+                              child: AddTaskScreen2(),
+                            ),
                           ),
-                        ),
-                        backgroundColor: Colors.transparent,
-                      );
+                          backgroundColor: Colors.transparent,
+                        );
+                      }
                     })
               ]),
         ),
@@ -442,8 +505,8 @@ class _StackLayoutState extends State<StackLayout>
 ///
 ///Windget utilize for creation of task lists by category
 ///
-Widget carouselItem(
-    String category, int categoryKey, Box tasksBox, Box categoriesBox) {
+Widget carouselItem(String category, int categoryKey, Box tasksBox,
+    Box categoriesBox, Function function) {
   return Column(
     children: [
       //
@@ -538,9 +601,7 @@ Widget carouselItem(
                         child: FloatingActionButton(
                           backgroundColor: Color(0xFF9bdeff),
                           splashColor: Colors.red,
-                          onPressed: () {
-                            categoriesBox.delete(categoryKey);
-                          },
+                          onPressed: function,
                           child: Icon(
                             Icons.delete,
                             size: 28,
@@ -572,6 +633,7 @@ Widget carouselItem(
 Widget addCategoryButton(Function function) {
   return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
     FloatingActionButton(
+        heroTag: 'addCategory',
         elevation: 5,
         splashColor: Color(0xFF9bdeff),
         backgroundColor: Color(0xFF071F86),
