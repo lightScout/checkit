@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ciao_app/widgets/custom_cliprrect.dart' as CustomClipRRect;
 
 import '../widgets/list_builder.dart';
 
@@ -74,39 +75,154 @@ class _StackLayoutState extends State<StackLayout>
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: Text("Attetion"),
-          content: Text(
-              "A category is necessery in order to create a new task. Would you like to have a 'General' category created for you?"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            FlatButton(
-              child: Text("Yes"),
-              onPressed: () {
-                Category newCategory = Category(name: 'General');
-                categoriesBox.add(newCategory);
-                buildCarouselList();
-                Navigator.of(context).pop();
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) => SingleChildScrollView(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: AddTaskScreen2(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(32.0),
+            ),
+          ),
+          backgroundColor: Colors.black.withOpacity(.75),
+          title: CustomClipRRect.customClipRRect(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Attetion!",
+                textAlign: TextAlign.center,
+                style: Klogo.copyWith(
+                  fontSize: 18,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 2.0,
+                      color: Colors.red,
+                      offset: Offset(5.0, 5.0),
                     ),
-                  ),
-                  backgroundColor: Colors.transparent,
-                );
-              },
+                  ],
+                  color: Colors.white,
+                ),
+              ),
             ),
+          ),
+          content: CustomClipRRect.customClipRRect(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "A category is necessery in order to create a new task. Would you like to have a 'General' category created for you?",
+                style: Klogo.copyWith(
+                  fontSize: 18,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 2.0,
+                      color: Colors.red,
+                      offset: Offset(5.0, 5.0),
+                    ),
+                  ],
+                  color: Colors.yellowAccent[700],
+                ),
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            CustomClipRRect.customClipRRect(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    FloatingActionButton(
+                      heroTag: 'NoCategoryFAB1',
+                      splashColor: Colors.blue,
+                      backgroundColor: Colors.white,
+                      onPressed: () {
+                        Category newCategory = Category(name: 'General');
+                        categoriesBox.add(newCategory);
+                        buildCarouselList();
+                        Navigator.of(context).pop();
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => SingleChildScrollView(
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom),
+                              child: AddTaskScreen2(),
+                            ),
+                          ),
+                          backgroundColor: Colors.transparent,
+                        );
+                      },
+                      child: Text(
+                        'Yes',
+                        style: Klogo.copyWith(
+                          color: Colors.redAccent[200],
+                          fontSize: 16,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(5, 5),
+                              color: Colors.yellowAccent[700],
+                              blurRadius: 1,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    FloatingActionButton(
+                      heroTag: 'NoCategoryFAB2',
+                      splashColor: Colors.blue,
+                      backgroundColor: Colors.white,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'No',
+                        style: Klogo.copyWith(
+                          color: Colors.redAccent[200],
+                          fontSize: 16,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(5, 5),
+                              color: Colors.yellowAccent[700],
+                              blurRadius: 1,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
 
-            FlatButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
+            // FlatButton(
+            //   child: Text("Yes"),
+            //   onPressed: () {
+            //     Category newCategory = Category(name: 'General');
+            //     categoriesBox.add(newCategory);
+            //     buildCarouselList();
+            //     Navigator.of(context).pop();
+            //     showModalBottomSheet(
+            //       context: context,
+            //       isScrollControlled: true,
+            //       builder: (context) => SingleChildScrollView(
+            //         child: Container(
+            //           padding: EdgeInsets.only(
+            //               bottom: MediaQuery.of(context).viewInsets.bottom),
+            //           child: AddTaskScreen2(),
+            //         ),
+            //       ),
+            //       backgroundColor: Colors.transparent,
+            //     );
+            //   },
+            // ),
+
+            // FlatButton(
+            //   child: Text('Cancel'),
+            //   onPressed: () {
+            //     Navigator.of(context).pop();
+            //   },
+            // ),
           ],
         );
       },

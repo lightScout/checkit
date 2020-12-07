@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ciao_app/widgets/custom_cliprrect.dart' as CustumClipRRect;
 
 class AddTaskScreen2 extends StatefulWidget {
   static DateFormat dateFormat = DateFormat('DD-MM-yyyy');
@@ -148,18 +149,46 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
             ),
           ),
           backgroundColor: Colors.redAccent.withOpacity(.75),
-          content: Text(
-            "Task without a name can not be added.",
-            style: Klogo.copyWith(
-              fontSize: 18,
-              shadows: [
-                Shadow(
-                  blurRadius: 2.0,
-                  color: Colors.red,
-                  offset: Offset(5.0, 5.0),
+          title: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(25)),
+            child: Container(
+              color: Colors.white12,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "Attetion!",
+                  style: Klogo.copyWith(
+                    fontSize: 18,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 2.0,
+                        color: Colors.red,
+                        offset: Offset(5.0, 5.0),
+                      ),
+                    ],
+                    color: Colors.white,
+                  ),
                 ),
-              ],
-              color: Colors.yellowAccent[700],
+              ),
+            ),
+          ),
+          content: CustumClipRRect.customClipRRect(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Task without a name can not be added.",
+                style: Klogo.copyWith(
+                  fontSize: 18,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 2.0,
+                      color: Colors.red,
+                      offset: Offset(5.0, 5.0),
+                    ),
+                  ],
+                  color: Colors.yellowAccent[700],
+                ),
+              ),
             ),
           ),
           actions: <Widget>[
@@ -169,32 +198,25 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 12.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(25)),
-                    child: Material(
-                      elevation: 1,
-                      color: Colors.black12,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          child: Text(
-                            'OK!',
-                            style: Klogo.copyWith(
-                              color: Colors.redAccent[200],
-                              fontSize: 22,
-                              shadows: [
-                                Shadow(
-                                  offset: Offset(5, 5),
-                                  color: Colors.yellowAccent[700],
-                                  blurRadius: 1,
-                                )
-                              ],
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
+                  child: FloatingActionButton(
+                    heroTag: 'NoTaskNameFAB',
+                    splashColor: Colors.blue,
+                    backgroundColor: Colors.white,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      'OK',
+                      style: Klogo.copyWith(
+                        color: Colors.redAccent[200],
+                        fontSize: 22,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(5, 5),
+                            color: Colors.yellowAccent[700],
+                            blurRadius: 1,
+                          )
+                        ],
                       ),
                     ),
                   ),
