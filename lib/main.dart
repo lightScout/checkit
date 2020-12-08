@@ -1,4 +1,5 @@
 import 'package:ciao_app/model/task.dart';
+import 'package:ciao_app/screens/home_screen.dart';
 import 'package:ciao_app/screens/info_screen.dart';
 import 'package:ciao_app/screens/test_screen.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 import 'model/category.dart';
-import 'screens/dashboard_screen.dart';
+import 'screens/task_list_screen.dart';
 import 'screens/splash_screen.dart';
 
 void main() async {
@@ -48,7 +49,6 @@ void main() async {
   //
   //Adding permanent category 'General' to categories box
   //
-
   runApp(ValueListenableBuilder(
     valueListenable: categoriesBox.listenable(),
     builder: (context, box, widget) => ValueListenableBuilder(
@@ -74,12 +74,13 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.id,
       routes: {
-        StackLayout.id: (context) => StackLayout(),
+        TaskListScreen.id: (context) => TaskListScreen(),
         SplashScreen.id: (context) => SplashScreen(),
         InfoScreen.id: (context) => InfoScreen(),
         TestScreen.id: (context) => TestScreen(),
+        HomeScreen.id: (context) => HomeScreen(),
       },
-      home: StackLayout(),
+      home: HomeScreen(),
     );
   }
 

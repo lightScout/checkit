@@ -15,14 +15,14 @@ import '../widgets/list_builder.dart';
 
 final Color bgColor = Color(0xFF4A5A58);
 
-class StackLayout extends StatefulWidget {
+class TaskListScreen extends StatefulWidget {
   static const id = 'dashboardScreen';
 
   @override
-  _StackLayoutState createState() => _StackLayoutState();
+  _TaskListScreenState createState() => _TaskListScreenState();
 }
 
-class _StackLayoutState extends State<StackLayout>
+class _TaskListScreenState extends State<TaskListScreen>
     with SingleTickerProviderStateMixin {
   int _current = 0;
   final tasksBox = Hive.box('tasks');
@@ -31,10 +31,15 @@ class _StackLayoutState extends State<StackLayout>
 
   ScrollController hideButtonController =
       ScrollController(keepScrollOffset: true);
-  AnimationController _hideFabController;
-  Animation _hideFabAnimation;
+  AnimationController _animationController;
+  Animation _animation;
   List<Widget> carouselList = [];
   List listOfCategoriesKeys = [];
+  double xOffset = 0;
+  double yOffset = 0;
+  double scaleFactor = 1;
+  double topBorderRadius = 0;
+  bool newTaskScreenToggle = false;
 
   void _showDeleteAllTasksDialog() {
     // flutter defined function
@@ -67,6 +72,8 @@ class _StackLayoutState extends State<StackLayout>
       },
     );
   }
+
+//TODO: create alert for delete category confirmation
 
   void _showNoCategoriesAvailableDialog() {
     // flutter defined function
@@ -336,18 +343,20 @@ class _StackLayoutState extends State<StackLayout>
   void initState() {
     super.initState();
     buildCarouselList();
-    _hideFabController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 190));
-    _hideFabAnimation =
-        CurvedAnimation(parent: _hideFabController, curve: Curves.easeIn);
-    _hideFabController.forward();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 190),
+    );
+    _animation =
+        CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
+    // _animationController.forward();
   }
 
   @override
   void dispose() {
     super.dispose();
     hideButtonController.removeListener(() {});
-    _hideFabController.dispose();
+    _animationController.dispose();
   }
 
   void deleteCategory(int categoryKey) {
@@ -383,20 +392,22 @@ class _StackLayoutState extends State<StackLayout>
   Widget build(BuildContext context) {
     return NotificationListener(
       onNotification: (t) {
-        if (t is ScrollStartNotification) {
-          _hideFabController.reverse();
-        } else if (t is ScrollEndNotification) {
-          _hideFabController.forward();
-        }
+        // if (t is ScrollStartNotification) {
+        //   _hideFabController.reverse();
+        // } else if (t is ScrollEndNotification) {
+        //   _hideFabController.forward();
+        // }
         return true;
       },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.transparent,
-        floatingActionButton: ScaleTransition(
-          scale: _hideFabAnimation,
-          alignment: Alignment.bottomRight,
-          child: FabCircularMenu(
+      child: AnimatedContainer(
+        curve: Curves.ease,
+        transform: Matrix4.translationValues(xOffset, yOffset, 0)
+          ..scale(scaleFactor),
+        duration: Duration(milliseconds: 600),
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.transparent,
+          floatingActionButton: FabCircularMenu(
               ringDiameter: MediaQuery.of(context).size.width * 0.65,
               ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
               animationDuration: Duration(milliseconds: 300),
@@ -432,185 +443,207 @@ class _StackLayoutState extends State<StackLayout>
                       size: 44,
                     ),
                     onTap: () {
-                      if (categoriesBox.isEmpty) {
-                        _showNoCategoriesAvailableDialog();
-                      } else {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (context) => SingleChildScrollView(
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  bottom:
-                                      MediaQuery.of(context).viewInsets.bottom),
-                              child: AddTaskScreen2(),
-                            ),
-                          ),
-                          backgroundColor: Colors.transparent,
-                        );
-                      }
+                      setState(() {
+                        topBorderRadius = 50;
+                        yOffset = MediaQuery.of(context).size.height / 1.2;
+                        newTaskScreenToggle = true;
+                      });
+                      _animationController.forward();
+                      // if (categoriesBox.isEmpty) {
+                      //   _showNoCategoriesAvailableDialog();
+                      // } else {
+                      //   showModalBottomSheet(
+                      //     context: context,
+                      //     isScrollControlled: true,
+                      //     builder: (context) => SingleChildScrollView(
+                      //       child: Container(
+                      //         padding: EdgeInsets.only(
+                      //             bottom: MediaQuery.of(context)
+                      //                 .viewInsets
+                      //                 .bottom),
+                      //         child: AddTaskScreen2(),
+                      //       ),
+                      //     ),
+                      //     backgroundColor: Colors.transparent,
+                      //   );
+                      // }
                     })
               ]),
-        ),
-        body: Container(
-          // color: Color(0xFF8ddffd),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
-          ),
-          child: Column(
-            children: <Widget>[
-              //
-              //Top bar section - Menu bar, title and more
-              //
-              Container(
-                padding:
-                    EdgeInsets.only(left: 22, right: 22, top: 48, bottom: 0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    //
-                    // Menu Button and Title
-                    //
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          child: Icon(
-                            Icons.menu,
-                            color: Color(0xFF071F86),
-                            size: 33,
-                          ),
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) => SingleChildScrollView(
-                                  child: Container(
-                                child: SettingsScreen(),
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom),
-                              )),
-                              backgroundColor: Colors.transparent,
-                            );
-                          },
-                        ),
-                        //
-                        //Title
-                        //
-                        Text(
-                          'checKit',
-                          style: Constant.Klogo.copyWith(
-                            fontSize: 20,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 2.0,
-                                color: Colors.blue,
-                                offset: Offset(5.0, 5.0),
-                              ),
-                              Shadow(
-                                color: Colors.white,
-                                blurRadius: 6.0,
-                                offset: Offset(2.0, 2.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //
-                        // Task counter
-                        //
-                        // Padding(
-                        //   padding: const EdgeInsets.only(left: 10.0),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.end,
-                        //     children: <Widget>[
-                        //       //
-                        //       // Number of Tasks - Text Widget show the number of taks in de database
-                        //       //
-                        //       Text(
-                        //         '${tasksBox.length}',
-                        //         style: Constant.Klogo.copyWith(
-                        //           fontSize: 44,
-                        //           shadows: [
-                        //             Shadow(
-                        //               blurRadius: 2.0,
-                        //               color: Colors.blue,
-                        //               offset: Offset(5.0, 5.0),
-                        //             ),
-                        //             Shadow(
-                        //               color: Colors.white,
-                        //               blurRadius: 6.0,
-                        //               offset: Offset(2.0, 2.0),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                  ],
-                ),
+          body: Container(
+            // color: Color(0xFF8ddffd),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(topBorderRadius),
+                topRight: Radius.circular(topBorderRadius),
               ),
-              //
-              //Bottom bar section - Task List builder
-              //
-              Expanded(
-                child: Container(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
+            ),
+            child: Column(
+              children: <Widget>[
+                //
+                //Top bar section - Menu bar, title and more
+                //
+                Container(
+                  padding:
+                      EdgeInsets.only(left: 22, right: 22, top: 48, bottom: 0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      ValueListenableBuilder(
-                          valueListenable: Hive.box('categories').listenable(),
-                          builder: (context, box, widget) {
-                            buildCarouselList();
-                            return ValueListenableBuilder(
-                                valueListenable: tasksBox.listenable(),
-                                builder: (context, box, widget) {
-                                  return CarouselSlider(
-                                    options: CarouselOptions(
-                                        aspectRatio: 1.0,
-                                        enlargeCenterPage: true,
-                                        enableInfiniteScroll: false,
-                                        onPageChanged: (index, reason) {
-                                          setState(() {
-                                            _current = index;
-                                          });
-                                        }),
-                                    items: carouselList,
-                                  );
-                                });
-                          }),
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      //
+                      // Menu Button and Title
+                      //
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: carouselList.map((item) {
-                          int index = carouselList.indexOf(item);
-                          return Container(
-                            width: 8.0,
-                            height: 8.0,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 2.0),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: _current == index
-                                  ? Color.fromRGBO(0, 0, 0, 0.9)
-                                  : Color.fromRGBO(0, 0, 0, 0.4),
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            child: AnimatedIcon(
+                              progress: _animationController,
+                              icon: AnimatedIcons.menu_close,
+                              color: Color(0xFF071F86),
+                              size: 33,
                             ),
-                          );
-                        }).toList(),
+                            onTap: () {
+                              if (newTaskScreenToggle) {
+                                setState(() {
+                                  topBorderRadius = 0;
+                                  yOffset = 0;
+                                  newTaskScreenToggle = false;
+                                });
+                                _animationController.reverse();
+                              } else {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (context) => SingleChildScrollView(
+                                      child: Container(
+                                    child: SettingsScreen(),
+                                    padding: EdgeInsets.only(
+                                        bottom: MediaQuery.of(context)
+                                            .viewInsets
+                                            .bottom),
+                                  )),
+                                  backgroundColor: Colors.transparent,
+                                );
+                              }
+                            },
+                          ),
+                          //
+                          //Title
+                          //
+                          Text(
+                            'checKit',
+                            style: Constant.Klogo.copyWith(
+                              fontSize: 20,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 2.0,
+                                  color: Colors.blue,
+                                  offset: Offset(5.0, 5.0),
+                                ),
+                                Shadow(
+                                  color: Colors.white,
+                                  blurRadius: 6.0,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          //
+                          // Task counter
+                          //
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 10.0),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.end,
+                          //     children: <Widget>[
+                          //       //
+                          //       // Number of Tasks - Text Widget show the number of taks in de database
+                          //       //
+                          //       Text(
+                          //         '${tasksBox.length}',
+                          //         style: Constant.Klogo.copyWith(
+                          //           fontSize: 44,
+                          //           shadows: [
+                          //             Shadow(
+                          //               blurRadius: 2.0,
+                          //               color: Colors.blue,
+                          //               offset: Offset(5.0, 5.0),
+                          //             ),
+                          //             Shadow(
+                          //               color: Colors.white,
+                          //               blurRadius: 6.0,
+                          //               offset: Offset(2.0, 2.0),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-              )
-            ],
+                //
+                //Bottom bar section - Task List builder
+                //
+                Expanded(
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        ValueListenableBuilder(
+                            valueListenable:
+                                Hive.box('categories').listenable(),
+                            builder: (context, box, widget) {
+                              buildCarouselList();
+                              return ValueListenableBuilder(
+                                  valueListenable: tasksBox.listenable(),
+                                  builder: (context, box, widget) {
+                                    return CarouselSlider(
+                                      options: CarouselOptions(
+                                          aspectRatio: 1.0,
+                                          enlargeCenterPage: true,
+                                          enableInfiniteScroll: false,
+                                          onPageChanged: (index, reason) {
+                                            setState(() {
+                                              _current = index;
+                                            });
+                                          }),
+                                      items: carouselList,
+                                    );
+                                  });
+                            }),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: carouselList.map((item) {
+                            int index = carouselList.indexOf(item);
+                            return Container(
+                              width: 8.0,
+                              height: 8.0,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 2.0),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _current == index
+                                    ? Color.fromRGBO(0, 0, 0, 0.9)
+                                    : Color.fromRGBO(0, 0, 0, 0.4),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
