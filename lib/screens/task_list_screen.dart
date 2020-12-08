@@ -10,6 +10,7 @@ import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ciao_app/widgets/custom_cliprrect.dart' as CustomClipRRect;
+import 'package:animate_icons/animate_icons.dart';
 
 import '../widgets/list_builder.dart';
 
@@ -32,6 +33,7 @@ class _TaskListScreenState extends State<TaskListScreen>
   ScrollController hideButtonController =
       ScrollController(keepScrollOffset: true);
   AnimationController _animationController;
+  AnimateIconController _animateIconController;
   Animation _animation;
   List<Widget> carouselList = [];
   List listOfCategoriesKeys = [];
@@ -143,19 +145,6 @@ class _TaskListScreenState extends State<TaskListScreen>
                         categoriesBox.add(newCategory);
                         buildCarouselList();
                         Navigator.of(context).pop();
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (context) => SingleChildScrollView(
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  bottom:
-                                      MediaQuery.of(context).viewInsets.bottom),
-                              child: AddTaskScreen2(),
-                            ),
-                          ),
-                          backgroundColor: Colors.transparent,
-                        );
                       },
                       child: Text(
                         'Yes',
@@ -343,6 +332,7 @@ class _TaskListScreenState extends State<TaskListScreen>
   void initState() {
     super.initState();
     buildCarouselList();
+    _animateIconController = AnimateIconController();
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 190),
@@ -383,9 +373,9 @@ class _TaskListScreenState extends State<TaskListScreen>
       ));
     });
 
-    carouselList.add(addCategoryButton(() {
-      _showNewCategoryDialog(categoriesBox);
-    }));
+    // carouselList.add(addCategoryButton(() {
+    //   _showNewCategoryDialog(categoriesBox);
+    // }));
   }
 
   @override
@@ -401,18 +391,21 @@ class _TaskListScreenState extends State<TaskListScreen>
       },
       child: AnimatedContainer(
         curve: Curves.ease,
-        transform: Matrix4.translationValues(xOffset, yOffset, 0)
-          ..scale(scaleFactor),
-        duration: Duration(milliseconds: 600),
+        transform: Matrix4.translationValues(
+          xOffset,
+          yOffset,
+          0,
+        )..scale(scaleFactor),
+        duration: Duration(milliseconds: 800),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           floatingActionButton: FabCircularMenu(
-              ringDiameter: MediaQuery.of(context).size.width * 0.65,
+              ringDiameter: MediaQuery.of(context).size.width * 0.75,
               ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
               animationDuration: Duration(milliseconds: 300),
               fabCloseColor: Color(0xFF071F86),
-              fabElevation: 10,
+              fabElevation: 2,
               fabMargin: EdgeInsets.only(right: 40, bottom: 40),
               fabOpenColor: Color(0xFFFF1d1d),
               ringColor: Color(0xFFFA9700),
@@ -422,52 +415,62 @@ class _TaskListScreenState extends State<TaskListScreen>
                 color: Colors.white,
               ),
               fabOpenIcon: Icon(
-                Icons.add,
-                size: 35,
+                Icons.fingerprint,
+                size: 41,
                 color: Colors.white,
               ),
               children: <Widget>[
                 InkWell(
                     child: Icon(
-                      Icons.minimize,
-                      size: 44,
+                      Icons.settings_sharp,
+                      size: 35,
                       color: Color(0xFFf8f0bc),
                     ),
                     onTap: () {
-                      _showDeleteAllTasksDialog();
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) => SingleChildScrollView(
+                            child: Container(
+                          child: SettingsScreen(),
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                        )),
+                        backgroundColor: Colors.transparent,
+                      );
                     }),
+                InkWell(
+                  child: Icon(
+                    Icons.category_sharp,
+                    color: Color(0xFFf8f0bc),
+                    size: 35,
+                  ),
+                  onTap: () {
+                    _showNewCategoryDialog(categoriesBox);
+                  },
+                ),
                 GestureDetector(
-                    child: Icon(
-                      Icons.add,
-                      color: Color(0xFFf8f0bc),
-                      size: 44,
-                    ),
-                    onTap: () {
-                      setState(() {
-                        topBorderRadius = 50;
-                        yOffset = MediaQuery.of(context).size.height / 1.2;
-                        newTaskScreenToggle = true;
-                      });
-                      _animationController.forward();
-                      // if (categoriesBox.isEmpty) {
-                      //   _showNoCategoriesAvailableDialog();
-                      // } else {
-                      //   showModalBottomSheet(
-                      //     context: context,
-                      //     isScrollControlled: true,
-                      //     builder: (context) => SingleChildScrollView(
-                      //       child: Container(
-                      //         padding: EdgeInsets.only(
-                      //             bottom: MediaQuery.of(context)
-                      //                 .viewInsets
-                      //                 .bottom),
-                      //         child: AddTaskScreen2(),
-                      //       ),
-                      //     ),
-                      //     backgroundColor: Colors.transparent,
-                      //   );
-                      // }
-                    })
+                  child: Icon(
+                    Icons.add,
+                    color: Color(0xFFf8f0bc),
+                    size: 44,
+                  ),
+                  onTap: () {
+                    if (categoriesBox.isEmpty) {
+                      _showNoCategoriesAvailableDialog();
+                    }
+                    setState(() {
+                      topBorderRadius = 50;
+                      yOffset = MediaQuery.of(context).size.height / 1.2;
+
+                      newTaskScreenToggle = true;
+                    });
+
+                    if (_animateIconController.isStart()) {
+                      _animateIconController.animateToEnd();
+                    }
+                  },
+                ),
               ]),
           body: Container(
             // color: Color(0xFF8ddffd),
@@ -499,37 +502,33 @@ class _TaskListScreenState extends State<TaskListScreen>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
-                            child: AnimatedIcon(
-                              progress: _animationController,
-                              icon: AnimatedIcons.menu_close,
+                          CustomClipRRect.customClipRRect(
+                            child: AnimateIcons(
+                              controller: _animateIconController,
+                              startIcon: Icons.add,
+                              startTooltip: 'Icons.add',
+                              endTooltip: 'Icons.close',
+                              endIcon: Icons.close,
                               color: Color(0xFF071F86),
-                              size: 33,
-                            ),
-                            onTap: () {
-                              if (newTaskScreenToggle) {
+                              size: 41,
+                              onStartIconPress: () {
+                                setState(() {
+                                  topBorderRadius = 50;
+                                  yOffset =
+                                      MediaQuery.of(context).size.height / 1.2;
+                                  newTaskScreenToggle = true;
+                                });
+                                return true;
+                              },
+                              onEndIconPress: () {
                                 setState(() {
                                   topBorderRadius = 0;
                                   yOffset = 0;
                                   newTaskScreenToggle = false;
                                 });
-                                _animationController.reverse();
-                              } else {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (context) => SingleChildScrollView(
-                                      child: Container(
-                                    child: SettingsScreen(),
-                                    padding: EdgeInsets.only(
-                                        bottom: MediaQuery.of(context)
-                                            .viewInsets
-                                            .bottom),
-                                  )),
-                                  backgroundColor: Colors.transparent,
-                                );
-                              }
-                            },
+                                return true;
+                              },
+                            ),
                           ),
                           //
                           //Title

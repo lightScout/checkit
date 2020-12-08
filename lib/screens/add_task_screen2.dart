@@ -253,21 +253,16 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
   Widget carouselCategoryBuilder(Box box) {
     sliderUserCategoriesList.clear();
     List listOfKey = box.keys.toList();
+    if (listOfKey.isNotEmpty) {
+      Category a = box.get(box.keys.first) as Category;
+      selectedCategory = a.name;
+    }
 
     listOfKey.forEach((element) {
       Category category = box.get(element) as Category;
       category.key = element;
       // print(category.name);
       Widget a = GestureDetector(
-        //TODO: clean this part
-        onLongPress: () {
-          box.delete(category.key);
-          setState(() {
-            newTaskCategory = 'General';
-            selectedCategory = 'General';
-            sliderIndex = 0;
-          });
-        },
         child: sliderCategoryItem(category.name),
       );
       sliderUserCategoriesList.add(a);
@@ -353,9 +348,10 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
   @override
   void initState() {
     super.initState();
-    Category a =
-        Hive.box('categories').get(Hive.box('categories').keys.toList().first);
-    selectedCategory = a.name;
+    //TODO: work on this
+    // Category a =
+    //     Hive.box('categories').get(Hive.box('categories').keys.toList().first);
+    // selectedCategory = a.name;
   }
 
   @override
@@ -417,6 +413,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                   // TEXT FIELD - in charge of capting the new task name
                                   //
                                   TextField(
+                                    //TODO: add controller to clear filed after add task
                                     style: Klogo.copyWith(
                                       fontSize: 18,
                                       color: Colors.white,
@@ -442,7 +439,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                       filled: true,
                                       fillColor: Colors.white24,
                                     ),
-                                    autofocus: true,
+                                    autofocus: false,
                                     onChanged: (value) {
                                       newTaskTile = value;
                                       print(newTaskTile);
