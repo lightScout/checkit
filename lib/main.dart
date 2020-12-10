@@ -49,8 +49,8 @@ void main() async {
   //
   //Adding permanent category 'General' to categories box
   //
-  // categoriesBox.clear();
-  // tasksBox.clear();
+  categoriesBox.clear();
+  tasksBox.clear();
   runApp(ValueListenableBuilder(
     valueListenable: categoriesBox.listenable(),
     builder: (context, box, widget) => ValueListenableBuilder(

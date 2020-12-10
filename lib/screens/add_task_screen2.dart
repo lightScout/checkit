@@ -2,10 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
+import 'package:ciao_app/widgets/new_category_alert.dart';
+import 'package:ciao_app/widgets/no_task_name_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:ciao_app/widgets/custom_cliprrect.dart' as CustomClipRRect;
 
 class AddTaskScreen2 extends StatefulWidget {
@@ -26,6 +29,16 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 
   int sliderIndex = 0;
 
+  final snackBar = SnackBar(
+    content: Text('Yay! A SnackBar!'),
+    action: SnackBarAction(
+      label: 'Undo',
+      onPressed: () {
+        // Some code to undo the change.
+      },
+    ),
+  );
+
   List<Widget> sliderUserCategoriesList = <Widget>[];
 
   void addTask(Task task) {
@@ -33,227 +46,10 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
     tasksBox.add(task);
   }
 
-  void _showNewCategoryDialog(Box box) {
-//TODO: updated UI with new customClipRRect
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(32.0))),
-          backgroundColor: Colors.red[800].withOpacity(0.75),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //
-              // 'New Category' alert title
-              //
-              CustomClipRRect.customClipRRect(
-                child: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Text(
-                    "New Category",
-                    style: Klogo.copyWith(
-                      fontSize: 18,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 2.0,
-                          color: Colors.red,
-                          offset: Offset(5.0, 5.0),
-                        ),
-                      ],
-                      color: Colors.yellowAccent[700],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            Column(
-              children: [
-                Container(
-                  height: 80,
-                  width: 300,
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    style: Klogo.copyWith(
-                        fontSize: 22,
-                        color: Colors.white,
-                        shadows: [
-                          // Shadow(
-                          //   color: Colors.greenAccent,
-                          //   blurRadius: 6.0,
-                          //   offset: Offset(0.6, 0.6),
-                          // )
-                        ]),
-                    decoration: InputDecoration(
-                      border: KInputFieldRoundedCorners,
-                      filled: true,
-                      fillColor: Colors.black,
-                    ),
-                    autofocus: true,
-                    onChanged: (value) {
-                      newTaskCategory = value;
-                      print(newTaskCategory);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomClipRRect.customClipRRect(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FloatingActionButton(
-                        backgroundColor: Color(0xFFDD0426),
-                        heroTag: 'NewCategoryAlertFAB',
-                        onPressed: () {
-                          Category newCategory =
-                              Category(name: newTaskCategory);
-                          box.add(newCategory);
-                          Navigator.of(context).pop();
-                        },
-                        child: Icon(
-                          Icons.add,
-                          size: 50,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-                // Padding(
-                //   padding: const EdgeInsets.all(10.0),
-                //   child: ClipRRect(
-                //     borderRadius: BorderRadius.all(Radius.circular(25)),
-                //     child: Material(
-                //       color: Color(0xFFDD0426),
-                //       elevation: 1,
-                //       child: GestureDetector(
-                //         child: Icon(
-                //           Icons.add,
-                //           size: 50,
-                //           color: Colors.white,
-                //         ),
-                //         onTap: () {
-                //           Category newCategory =
-                //               Category(name: newTaskCategory);
-                //           box.add(newCategory);
-                //           Navigator.of(context).pop();
-                //         },
-                //       ),
-                //     ),
-                //   ),
-                // ),
-              ],
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  void _showNoTaskNameDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(32.0),
-            ),
-          ),
-          backgroundColor: Colors.redAccent.withOpacity(.75),
-          title: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(25)),
-            child: Container(
-              color: Colors.white12,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  "Attetion!",
-                  style: Klogo.copyWith(
-                    fontSize: 18,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 2.0,
-                        color: Colors.red,
-                        offset: Offset(5.0, 5.0),
-                      ),
-                    ],
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          content: CustomClipRRect.customClipRRect(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                "Task without a name can not be added.",
-                style: Klogo.copyWith(
-                  fontSize: 18,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 2.0,
-                      color: Colors.red,
-                      offset: Offset(5.0, 5.0),
-                    ),
-                  ],
-                  color: Colors.yellowAccent[700],
-                ),
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            // Button at the bottom of the dialog
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: FloatingActionButton(
-                    heroTag: 'NoTaskNameFAB',
-                    splashColor: Colors.blue,
-                    backgroundColor: Colors.white,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'OK',
-                      style: Klogo.copyWith(
-                        color: Colors.redAccent[200],
-                        fontSize: 22,
-                        shadows: [
-                          Shadow(
-                            offset: Offset(5, 5),
-                            color: Colors.yellowAccent[700],
-                            blurRadius: 1,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            )
-          ],
-        );
-      },
-    );
-  }
-
   Widget carouselCategoryBuilder(Box box) {
     sliderUserCategoriesList.clear();
     List listOfKey = box.keys.toList();
-    if (listOfKey.isNotEmpty) {
+    if (listOfKey.isNotEmpty && listOfKey.length == 1) {
       Category a = box.get(box.keys.first) as Category;
       selectedCategory = a.name;
     }
@@ -469,9 +265,9 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                             child: FloatingActionButton(
                                               heroTag: 'addTaskScreenFAB1',
                                               splashColor: Colors.red,
-                                              backgroundColor: Colors.teal,
+                                              backgroundColor: KMainRed,
                                               onPressed: () {
-                                                _showNewCategoryDialog(box);
+                                                newCategoryAlert(context);
                                               },
                                               child: Icon(
                                                 Icons.category_outlined,
@@ -482,38 +278,49 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                       ),
                                       ClipRRect(
                                         borderRadius: BorderRadius.all(
-                                            Radius.circular(30)),
-                                        child: Padding(
-                                            padding: const EdgeInsets.all(6.0),
-                                            child: FloatingActionButton(
-                                              heroTag: 'addTaskScreenFAB2',
-                                              splashColor: Colors.teal,
-                                              backgroundColor:
-                                                  Color(0xFFDD0426),
-                                              onPressed: () {
-                                                if (newTaskTile == null) {
-                                                  _showNoTaskNameDialog();
-                                                } else {
-                                                  //unfocusing the keyboard to avoid UI break
-                                                  FocusScope.of(context)
-                                                      .unfocus();
-                                                  //Add task to the list
+                                            Radius.circular(25)),
+                                        child: RaisedButton(
+                                          color: KMainOrange,
+                                          onPressed: () {
+                                            if (newTaskTile == null) {
+                                              noTaskNameAlert(context);
+                                            } else {
+                                              //unfocusing the keyboard to avoid UI break
+                                              FocusScope.of(context).unfocus();
+                                              //Add task to the list
 
-                                                  Task task = Task();
-                                                  task.name = newTaskTile;
-                                                  task.category =
-                                                      selectedCategory;
-                                                  task.dueDate = formattedDate;
-                                                  task.isDone = false;
-                                                  addTask(task);
-                                                }
-                                              },
-                                              child: Icon(
-                                                Icons.add_sharp,
-                                                size: 40,
-                                                color: Colors.white,
-                                              ),
-                                            )),
+                                              Task task = Task();
+                                              task.name = newTaskTile;
+                                              task.category = selectedCategory;
+                                              task.dueDate = formattedDate;
+                                              task.isDone = false;
+                                              addTask(task);
+                                              Flushbar(
+                                                      duration:
+                                                          Duration(seconds: 1),
+                                                      messageText: Text(
+                                                        'Task added successfuly.',
+                                                        style: Klogo.copyWith(
+                                                            color: Colors.white,
+                                                            shadows: [],
+                                                            fontSize: 14),
+                                                      ),
+                                                      flushbarStyle:
+                                                          FlushbarStyle
+                                                              .FLOATING)
+                                                  .show(context);
+                                            }
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: Text('Add',
+                                                style: Klogo.copyWith(
+                                                  shadows: [],
+                                                  fontSize: 19,
+                                                  color: Colors.white,
+                                                )),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -530,6 +337,24 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
         });
   }
 }
+
+//  if (newTaskTile == null) {
+//                                                   _showNoTaskNameDialog();
+//                                                 } else {
+//                                                   //unfocusing the keyboard to avoid UI break
+//                                                   FocusScope.of(context)
+//                                                       .unfocus();
+//                                                   //Add task to the list
+
+//                                                   Task task = Task();
+//                                                   task.name = newTaskTile;
+//                                                   task.category =
+//                                                       selectedCategory;
+//                                                   task.dueDate = formattedDate;
+//                                                   task.isDone = false;
+//                                                   addTask(task);
+//                                                 }
+//                                               },
 
 Widget sliderCategoryItem(String categoryTitle) {
   String title = categoryTitle;

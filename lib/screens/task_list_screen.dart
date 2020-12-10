@@ -4,6 +4,8 @@ import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/add_task_screen2.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
+import 'package:ciao_app/widgets/new_category_alert.dart';
+import 'package:ciao_app/widgets/no_category_alert.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -77,257 +79,6 @@ class _TaskListScreenState extends State<TaskListScreen>
 
 //TODO: create alert for delete category confirmation
 
-  void _showNoCategoriesAvailableDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(32.0),
-            ),
-          ),
-          backgroundColor: Colors.black.withOpacity(.75),
-          title: CustomClipRRect.customClipRRect(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                "Attetion!",
-                textAlign: TextAlign.center,
-                style: Klogo.copyWith(
-                  fontSize: 18,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 2.0,
-                      color: Colors.red,
-                      offset: Offset(5.0, 5.0),
-                    ),
-                  ],
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          content: CustomClipRRect.customClipRRect(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                "A category is necessery in order to create a new task. Would you like to have a 'General' category created for you?",
-                style: Klogo.copyWith(
-                  fontSize: 18,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 2.0,
-                      color: Colors.red,
-                      offset: Offset(5.0, 5.0),
-                    ),
-                  ],
-                  color: Colors.yellowAccent[700],
-                ),
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            CustomClipRRect.customClipRRect(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    FloatingActionButton(
-                      heroTag: 'NoCategoryFAB1',
-                      splashColor: Colors.blue,
-                      backgroundColor: Colors.white,
-                      onPressed: () {
-                        Category newCategory = Category(name: 'General');
-                        categoriesBox.add(newCategory);
-                        buildCarouselList();
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        'Yes',
-                        style: Klogo.copyWith(
-                          color: Colors.redAccent[200],
-                          fontSize: 16,
-                          shadows: [
-                            Shadow(
-                              offset: Offset(5, 5),
-                              color: Colors.yellowAccent[700],
-                              blurRadius: 1,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    FloatingActionButton(
-                      heroTag: 'NoCategoryFAB2',
-                      splashColor: Colors.blue,
-                      backgroundColor: Colors.white,
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        'No',
-                        style: Klogo.copyWith(
-                          color: Colors.redAccent[200],
-                          fontSize: 16,
-                          shadows: [
-                            Shadow(
-                              offset: Offset(5, 5),
-                              color: Colors.yellowAccent[700],
-                              blurRadius: 1,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-
-            // FlatButton(
-            //   child: Text("Yes"),
-            //   onPressed: () {
-            //     Category newCategory = Category(name: 'General');
-            //     categoriesBox.add(newCategory);
-            //     buildCarouselList();
-            //     Navigator.of(context).pop();
-            //     showModalBottomSheet(
-            //       context: context,
-            //       isScrollControlled: true,
-            //       builder: (context) => SingleChildScrollView(
-            //         child: Container(
-            //           padding: EdgeInsets.only(
-            //               bottom: MediaQuery.of(context).viewInsets.bottom),
-            //           child: AddTaskScreen2(),
-            //         ),
-            //       ),
-            //       backgroundColor: Colors.transparent,
-            //     );
-            //   },
-            // ),
-
-            // FlatButton(
-            //   child: Text('Cancel'),
-            //   onPressed: () {
-            //     Navigator.of(context).pop();
-            //   },
-            // ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showNewCategoryDialog(Box box) {
-    // flutter defined function
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(32.0))),
-          backgroundColor: Colors.red[800].withOpacity(0.75),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //
-              // 'New Category' alert title
-              //
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 14.0, bottom: 0, left: 14.0, right: 14.0),
-                  child: Text(
-                    "New Category",
-                    style: Klogo.copyWith(
-                      fontSize: 18,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 2.0,
-                          color: Colors.red,
-                          offset: Offset(5.0, 5.0),
-                        ),
-                      ],
-                      color: Colors.yellowAccent[700],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            Column(
-              children: [
-                Container(
-                  height: 80,
-                  width: 300,
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    style: Klogo.copyWith(
-                        fontSize: 22,
-                        color: Colors.white,
-                        shadows: [
-                          // Shadow(
-                          //   color: Colors.greenAccent,
-                          //   blurRadius: 6.0,
-                          //   offset: Offset(0.6, 0.6),
-                          // )
-                        ]),
-                    decoration: InputDecoration(
-                      border: KInputFieldRoundedCorners,
-                      filled: true,
-                      fillColor: Colors.black,
-                    ),
-                    autofocus: true,
-                    onChanged: (value) {
-                      newTaskCategory = value;
-                      print(newTaskCategory);
-                    },
-                  ),
-                ),
-                //TODO: work on pressing animation
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(25)),
-                    child: Material(
-                      color: Color(0xFFDD0426),
-                      elevation: 1,
-                      child: GestureDetector(
-                        child: Icon(
-                          Icons.add,
-                          size: 50,
-                          color: Colors.white,
-                        ),
-                        onTap: () {
-                          Category newCategory =
-                              Category(name: newTaskCategory);
-                          box.add(newCategory);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-        );
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -372,10 +123,6 @@ class _TaskListScreenState extends State<TaskListScreen>
         },
       ));
     });
-
-    // carouselList.add(addCategoryButton(() {
-    //   _showNewCategoryDialog(categoriesBox);
-    // }));
   }
 
   @override
@@ -446,7 +193,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                     size: 35,
                   ),
                   onTap: () {
-                    _showNewCategoryDialog(categoriesBox);
+                    newCategoryAlert(context);
                   },
                 ),
                 GestureDetector(
@@ -457,7 +204,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                   ),
                   onTap: () {
                     if (categoriesBox.isEmpty) {
-                      _showNoCategoriesAvailableDialog();
+                      noCategoriesAvailableDialog(context);
                     }
                     setState(() {
                       topBorderRadius = 50;
@@ -491,7 +238,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                 //
                 Container(
                   padding:
-                      EdgeInsets.only(left: 22, right: 22, top: 48, bottom: 0),
+                      EdgeInsets.only(left: 0, right: 0, top: 48, bottom: 0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -499,91 +246,99 @@ class _TaskListScreenState extends State<TaskListScreen>
                       //
                       // Menu Button and Title
                       //
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomClipRRect.customClipRRect(
-                            child: AnimateIcons(
-                              controller: _animateIconController,
-                              startIcon: Icons.add,
-                              startTooltip: 'Icons.add',
-                              endTooltip: 'Icons.close',
-                              endIcon: Icons.close,
-                              color: Color(0xFF071F86),
-                              size: 41,
-                              onStartIconPress: () {
-                                setState(() {
-                                  topBorderRadius = 50;
-                                  yOffset =
-                                      MediaQuery.of(context).size.height / 1.2;
-                                  newTaskScreenToggle = true;
-                                });
-                                return true;
-                              },
-                              onEndIconPress: () {
-                                setState(() {
-                                  topBorderRadius = 0;
-                                  yOffset = 0;
-                                  newTaskScreenToggle = false;
-                                });
-                                return true;
-                              },
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 22.0, right: 22, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomClipRRect.customClipRRect(
+                              child: AnimateIcons(
+                                controller: _animateIconController,
+                                startIcon: Icons.add,
+                                startTooltip: 'Icons.add',
+                                endTooltip: 'Icons.close',
+                                endIcon: Icons.close,
+                                color: Color(0xFF071F86),
+                                size: 41,
+                                onStartIconPress: () {
+                                  if (categoriesBox.isEmpty) {
+                                    noCategoriesAvailableDialog(context);
+                                  }
+                                  setState(() {
+                                    topBorderRadius = 50;
+                                    yOffset =
+                                        MediaQuery.of(context).size.height /
+                                            1.2;
+                                    newTaskScreenToggle = true;
+                                  });
+                                  return true;
+                                },
+                                onEndIconPress: () {
+                                  setState(() {
+                                    topBorderRadius = 0;
+                                    yOffset = 0;
+                                    newTaskScreenToggle = false;
+                                  });
+                                  return true;
+                                },
+                              ),
                             ),
-                          ),
-                          //
-                          //Title
-                          //
-                          Text(
-                            'checKit',
-                            style: Constant.Klogo.copyWith(
-                              fontSize: 20,
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 2.0,
-                                  color: Colors.blue,
-                                  offset: Offset(5.0, 5.0),
-                                ),
-                                Shadow(
-                                  color: Colors.white,
-                                  blurRadius: 6.0,
-                                  offset: Offset(2.0, 2.0),
-                                ),
-                              ],
+                            //
+                            //Title
+                            //
+                            Text(
+                              'checKit',
+                              style: Constant.Klogo.copyWith(
+                                fontSize: 20,
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 2.0,
+                                    color: Colors.blue,
+                                    offset: Offset(5.0, 5.0),
+                                  ),
+                                  Shadow(
+                                    color: Colors.white,
+                                    blurRadius: 6.0,
+                                    offset: Offset(2.0, 2.0),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          //
-                          // Task counter
-                          //
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 10.0),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.end,
-                          //     children: <Widget>[
-                          //       //
-                          //       // Number of Tasks - Text Widget show the number of taks in de database
-                          //       //
-                          //       Text(
-                          //         '${tasksBox.length}',
-                          //         style: Constant.Klogo.copyWith(
-                          //           fontSize: 44,
-                          //           shadows: [
-                          //             Shadow(
-                          //               blurRadius: 2.0,
-                          //               color: Colors.blue,
-                          //               offset: Offset(5.0, 5.0),
-                          //             ),
-                          //             Shadow(
-                          //               color: Colors.white,
-                          //               blurRadius: 6.0,
-                          //               offset: Offset(2.0, 2.0),
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                        ],
+                            //
+                            // Task counter
+                            //
+                            // Padding(
+                            //   padding: const EdgeInsets.only(left: 10.0),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.end,
+                            //     children: <Widget>[
+                            //       //
+                            //       // Number of Tasks - Text Widget show the number of taks in de database
+                            //       //
+                            //       Text(
+                            //         '${tasksBox.length}',
+                            //         style: Constant.Klogo.copyWith(
+                            //           fontSize: 44,
+                            //           shadows: [
+                            //             Shadow(
+                            //               blurRadius: 2.0,
+                            //               color: Colors.blue,
+                            //               offset: Offset(5.0, 5.0),
+                            //             ),
+                            //             Shadow(
+                            //               color: Colors.white,
+                            //               blurRadius: 6.0,
+                            //               offset: Offset(2.0, 2.0),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -607,8 +362,8 @@ class _TaskListScreenState extends State<TaskListScreen>
                                   builder: (context, box, widget) {
                                     return CarouselSlider(
                                       options: CarouselOptions(
-                                          aspectRatio: 1.0,
-                                          enlargeCenterPage: true,
+                                          aspectRatio: .72,
+                                          enlargeCenterPage: false,
                                           enableInfiniteScroll: false,
                                           onPageChanged: (index, reason) {
                                             setState(() {
@@ -619,24 +374,24 @@ class _TaskListScreenState extends State<TaskListScreen>
                                     );
                                   });
                             }),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: carouselList.map((item) {
-                            int index = carouselList.indexOf(item);
-                            return Container(
-                              width: 8.0,
-                              height: 8.0,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 2.0),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: _current == index
-                                    ? Color.fromRGBO(0, 0, 0, 0.9)
-                                    : Color.fromRGBO(0, 0, 0, 0.4),
-                              ),
-                            );
-                          }).toList(),
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: carouselList.map((item) {
+                        //     int index = carouselList.indexOf(item);
+                        //     return Container(
+                        //       width: 8.0,
+                        //       height: 8.0,
+                        //       margin: EdgeInsets.symmetric(
+                        //           vertical: 10.0, horizontal: 2.0),
+                        //       decoration: BoxDecoration(
+                        //         shape: BoxShape.circle,
+                        //         color: _current == index
+                        //             ? Color.fromRGBO(0, 0, 0, 0.9)
+                        //             : Color.fromRGBO(0, 0, 0, 0.4),
+                        //       ),
+                        //     );
+                        //   }).toList(),
+                        // ),
                       ],
                     ),
                   ),
@@ -657,120 +412,115 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
     Box categoriesBox, Function function) {
   return Column(
     children: [
-      //
-      //Task list
-      //
-      Expanded(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(5.0),
-          child: Container(
-            margin: const EdgeInsets.only(
-                bottom: 20.0, left: 10.0, top: 10.0, right: 10.0),
+      Row(
+        children: [
+          Container(
             decoration: BoxDecoration(
-              // border: Border.all(
-              //   color: Colors.blue.withOpacity(.1.8),
-              // ),
+              color: Colors.white24,
               gradient: LinearGradient(
                   begin: Alignment.center,
-                  end: Alignment.bottomLeft,
-                  colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
+                  end: Alignment.topRight,
+                  colors: [Colors.white12, Color(0xFFEBF8FF)]),
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(30),
-                topLeft: Radius.circular(30),
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.blueAccent[400],
-                  offset: Offset(0.0, 5.0), //(x,y)
-                  blurRadius: 10.0,
-                ),
-              ],
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //
-                //Category Title
-                //
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white12,
-                              // gradient: LinearGradient(
-                              //     begin: Alignment.center,
-                              //     end: Alignment.topRight,
-                              //     colors: [Colors.white12, Color(0xFFEBF8FF)]),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(30),
-                                bottomLeft: Radius.circular(30),
-                                bottomRight: Radius.circular(30),
-                                topLeft: Radius.circular(30),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              child: Text(
-                                category,
-                                style: Constant.Klogo.copyWith(
-                                  fontSize: 15,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 2.0,
-                                      color: Colors.blue,
-                                      offset: Offset(5.0, 5.0),
-                                    ),
-                                    Shadow(
-                                      color: Colors.white,
-                                      blurRadius: 6.0,
-                                      offset: Offset(2.0, 2.0),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+            child: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Text(
+                category,
+                style: Constant.Klogo.copyWith(
+                  fontSize: 15,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 2.0,
+                      color: Colors.blue,
+                      offset: Offset(5.0, 5.0),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: 45,
-                        height: 45,
-                        child: FloatingActionButton(
-                          backgroundColor: Color(0xFF9bdeff),
-                          splashColor: Colors.red,
-                          onPressed: function,
-                          child: Icon(
-                            Icons.delete,
-                            size: 28,
-                            color: Colors.blue[900],
-                          ),
-                          elevation: 6,
-                        ),
-                      ),
-                    )
+                    Shadow(
+                      color: Colors.white,
+                      blurRadius: 6.0,
+                      offset: Offset(2.0, 2.0),
+                    ),
                   ],
                 ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child:
-                        //TODO: work on delete tasks when category is deleted
-                        ListBuilder(listCategory: category, tasksBox: tasksBox),
-                  ),
-                )
-              ],
+              ),
             ),
+          ),
+        ],
+      ),
+      //
+      //Item
+      //
+      Expanded(
+        child: Container(
+          margin: const EdgeInsets.only(
+              bottom: 10.0, left: 0, top: 0.0, right: 00.0),
+          decoration: BoxDecoration(
+            // border: Border.all(
+            //   color: Colors.blue.withOpacity(.1.8),
+            // ),
+            gradient: LinearGradient(
+                begin: Alignment.center,
+                end: Alignment.bottomLeft,
+                colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(30),
+              topLeft: Radius.circular(30),
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blueAccent[400],
+                offset: Offset(0.0, 5.0), //(x,y)
+                blurRadius: 5.0,
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //
+              //Delete category buttom
+              //
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomClipRRect.customClipRRect(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Container(
+                          width: 45,
+                          height: 45,
+                          child: InkWell(
+                            onTap: function,
+                            child: Icon(
+                              Icons.delete,
+                              size: 28,
+                              color: KMainPurple,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child:
+                      //TODO: work on delete tasks when category is deleted
+                      ListBuilder(listCategory: category, tasksBox: tasksBox),
+                ),
+              )
+            ],
           ),
         ),
       ),
