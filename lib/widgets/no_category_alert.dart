@@ -71,7 +71,7 @@ void noCategoriesAvailableDialog(BuildContext context) {
                     'Yes',
                     style: Klogo.copyWith(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 14,
                       shadows: [
                         Shadow(
                           offset: Offset(5, 5),
