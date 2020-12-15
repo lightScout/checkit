@@ -173,166 +173,184 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                           children: <Widget>[
                             Padding(
                               padding:
-                                  const EdgeInsets.only(top: 35.0, left: 15),
+                                  const EdgeInsets.only(top: 30.0, left: 15),
                               child: Text('Add Task',
                                   style: KAddTaskScreenTitles.copyWith(
                                     fontSize: 33,
                                     color: Colors.white.withOpacity(.1),
                                   )),
                             ),
+
                             SizedBox(
-                              height: 5,
+                              height: 15,
                             ),
                             //
                             //OTHER COMPONESTS ON THE PAGE
                             //
-                            Padding(
-                              padding: const EdgeInsets.all(22.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  //
-                                  //'NAME' - TEXTFIELD TITLE
-                                  //
-                                  Text('Name', style: KAddTaskScreenTitles),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  //
-                                  // TEXT FIELD - in charge of capting the new task name
-                                  //
-                                  TextField(
-                                    controller: textFieldController,
-                                    style: Klogo.copyWith(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                      shadows: [],
+                            CustomClipRRect.customClipRRect(
+                              child: Padding(
+                                padding: const EdgeInsets.all(22.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    //
+                                    //'NAME' - TEXTFIELD TITLE
+                                    //
+
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text('Name',
+                                          style: KAddTaskScreenTitles),
                                     ),
-                                    maxLines: 1,
-                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(25),
-                                        ),
-                                        borderSide: BorderSide(
-                                            color: Colors.white, width: 1.0),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.white, width: 1.0),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(25),
-                                        ),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.white24,
+
+                                    SizedBox(
+                                      height: 10,
                                     ),
-                                    autofocus: false,
-                                    onChanged: (value) {
-                                      newTaskTile = value;
-                                      print(newTaskTile);
-                                    },
-                                  ),
-
-                                  //
-                                  //Task Categories carousel and new category button
-                                  //
-                                  Container(
-                                    child: carouselCategoryBuilder(box),
-                                  ),
-
-                                  //
-                                  //ADD BUTTON - used to triger the addition of the new task into the database
-                                  //
-
-                                  Row(
-                                    mainAxisAlignment:
-                                        Hive.box('categories').isEmpty
-                                            ? MainAxisAlignment.center
-                                            : MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(30)),
-                                        child: Padding(
-                                            padding: const EdgeInsets.all(6.0),
-                                            child: FloatingActionButton(
-                                              heroTag: 'addTaskScreenFAB1',
-                                              splashColor: Colors.red,
-                                              backgroundColor:
-                                                  Hive.box('categories').isEmpty
-                                                      ? KMainRed
-                                                      : KMainPurple,
-                                              onPressed: () {
-                                                newCategoryAlert(context);
-                                              },
-                                              child: Icon(
-                                                Hive.box('categories').isEmpty
-                                                    ? Icons.priority_high
-                                                    : Icons.category_outlined,
-                                                size: 33,
-                                                color: Colors.white,
-                                              ),
-                                            )),
+                                    //
+                                    // TEXT FIELD - in charge of capting the new task name
+                                    //
+                                    TextField(
+                                      controller: textFieldController,
+                                      style: Klogo.copyWith(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                        shadows: [],
                                       ),
-                                      Hive.box('categories').isEmpty
-                                          ? SizedBox()
-                                          : ClipRRect(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(25)),
-                                              child: RaisedButton(
-                                                color: KMainOrange,
+                                      maxLines: 1,
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(25),
+                                          ),
+                                          borderSide: BorderSide(
+                                              color: Colors.white, width: 1.0),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.white, width: 1.0),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(25),
+                                          ),
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.white24,
+                                      ),
+                                      autofocus: false,
+                                      onChanged: (value) {
+                                        newTaskTile = value;
+                                        print(newTaskTile);
+                                      },
+                                    ),
+
+                                    //
+                                    //Task Categories carousel and new category button
+                                    //
+                                    Container(
+                                      child: carouselCategoryBuilder(box),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    //
+                                    //ADD BUTTON - used to triger the addition of the new task into the database
+                                    //
+
+                                    Row(
+                                      mainAxisAlignment:
+                                          Hive.box('categories').isEmpty
+                                              ? MainAxisAlignment.center
+                                              : MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30)),
+                                          child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(6.0),
+                                              child: FloatingActionButton(
+                                                heroTag: 'addTaskScreenFAB1',
+                                                splashColor: Colors.red,
+                                                backgroundColor:
+                                                    Hive.box('categories')
+                                                            .isEmpty
+                                                        ? KMainRed
+                                                        : KMainPurple,
                                                 onPressed: () {
-                                                  if (newTaskTile == null) {
-                                                    noTaskNameAlert(context);
-                                                  } else {
-                                                    //unfocusing the keyboard to avoid UI break
-                                                    FocusScope.of(context)
-                                                        .unfocus();
-                                                    //Add task to the list
-
-                                                    Task task = Task();
-                                                    task.name = newTaskTile;
-                                                    task.category =
-                                                        selectedCategory;
-                                                    task.dueDate =
-                                                        formattedDate;
-                                                    task.isDone = false;
-                                                    addTask(task);
-                                                    Flushbar(
-                                                            duration: Duration(
-                                                                seconds: 1),
-                                                            messageText: Text(
-                                                              'Task added successfuly.',
-                                                              style: Klogo.copyWith(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  shadows: [],
-                                                                  fontSize: 14),
-                                                            ),
-                                                            flushbarStyle:
-                                                                FlushbarStyle
-                                                                    .FLOATING)
-                                                        .show(context);
-                                                    textFieldController.clear();
-                                                  }
+                                                  newCategoryAlert(context);
                                                 },
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      12.0),
-                                                  child: Text('Add',
-                                                      style: Klogo.copyWith(
-                                                        shadows: [],
-                                                        fontSize: 19,
-                                                        color: Colors.white,
-                                                      )),
+                                                child: Icon(
+                                                  Hive.box('categories').isEmpty
+                                                      ? Icons.priority_high
+                                                      : Icons.category,
+                                                  size: 33,
+                                                  color: Colors.white,
+                                                ),
+                                              )),
+                                        ),
+                                        Hive.box('categories').isEmpty
+                                            ? SizedBox()
+                                            : ClipRRect(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(25)),
+                                                child: RaisedButton(
+                                                  color: KMainOrange,
+                                                  onPressed: () {
+                                                    if (newTaskTile == null) {
+                                                      noTaskNameAlert(context);
+                                                    } else {
+                                                      //unfocusing the keyboard to avoid UI break
+                                                      FocusScope.of(context)
+                                                          .unfocus();
+                                                      //Add task to the list
+
+                                                      Task task = Task();
+                                                      task.name = newTaskTile;
+                                                      task.category =
+                                                          selectedCategory;
+                                                      task.dueDate =
+                                                          formattedDate;
+                                                      task.isDone = false;
+                                                      addTask(task);
+                                                      Flushbar(
+                                                              duration:
+                                                                  Duration(
+                                                                      seconds:
+                                                                          1),
+                                                              messageText: Text(
+                                                                'Task added successfuly.',
+                                                                style: Klogo.copyWith(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    shadows: [],
+                                                                    fontSize:
+                                                                        14),
+                                                              ),
+                                                              flushbarStyle:
+                                                                  FlushbarStyle
+                                                                      .FLOATING)
+                                                          .show(context);
+                                                      textFieldController
+                                                          .clear();
+                                                    }
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            12.0),
+                                                    child: Text('Add',
+                                                        style: Klogo.copyWith(
+                                                          shadows: [],
+                                                          fontSize: 19,
+                                                          color: Colors.white,
+                                                        )),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

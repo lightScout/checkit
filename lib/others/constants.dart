@@ -27,7 +27,7 @@ const TextStyle Klogo = TextStyle(
 );
 
 const TextStyle KAddTaskScreenTitles = TextStyle(
-  fontSize: 12,
+  fontSize: 14,
   color: Colors.white,
   fontWeight: FontWeight.bold,
   fontFamily: 'PressStart2P',

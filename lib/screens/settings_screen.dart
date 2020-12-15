@@ -1,4 +1,5 @@
 import 'package:ciao_app/screens/info_screen.dart';
+import 'package:ciao_app/widgets/app_reset_alert.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -43,6 +44,24 @@ class SettingsScreen extends StatelessWidget {
               ),
               title: Text(
                 'About checKit',
+                style: TextStyle(
+                    fontFamily: 'PressStart2P',
+                    color: Colors.white,
+                    fontSize: 12),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              appResetAlert(context);
+            },
+            child: ListTile(
+              leading: Icon(
+                Icons.refresh,
+                color: Colors.white,
+              ),
+              title: Text(
+                'Reset App',
                 style: TextStyle(
                     fontFamily: 'PressStart2P',
                     color: Colors.white,
