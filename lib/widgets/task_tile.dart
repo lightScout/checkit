@@ -1,3 +1,4 @@
+import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 
 class TaskTile extends StatefulWidget {
@@ -43,9 +44,9 @@ class _TaskTileState extends State<TaskTile> {
               : LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [widget._uncheckedColor1, widget._uncheckedColor2]),
+                  colors: [KTopBGColor, widget._uncheckedColor2]),
           borderRadius: BorderRadius.all(
-            Radius.circular(30),
+            Radius.circular(15),
           ),
         ),
         child: ListTile(
@@ -69,27 +70,22 @@ class _TaskTileState extends State<TaskTile> {
           //    * **/
           //   child: CircleAvatar(
           //     radius: 16,
-          //     child: widget.isChecked
-          //         ? Icon(
-          //             LineIcons.dot_circle_o,
-          //             color: Colors.white,
-          //           )
-          //         : null,
+          //     child: null,
           //     backgroundColor:
           //         widget.isChecked ? Color(0xFF00458E) : Colors.white,
           //   ),
           // ),
-          /**
-           * Possible Task Delete Icon
-           * **/
-          // trailing: InkWell(
-          //   child: Icon(
-          //     Icons.delete,
-          //     color: Colors.white,
-          //     size: 30,
-          //   ),
-          //   onTap: widget.deleteTask,
-          // ),
+          // /**
+          //  * Possible Task Delete Icon
+          //  * **/
+          trailing: InkWell(
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+              size: 30,
+            ),
+            onTap: widget.deleteTask,
+          ),
           /**
            * Task Title
            * **/
@@ -105,14 +101,14 @@ class _TaskTileState extends State<TaskTile> {
           /**
            * Pro: Task Due Date
            * **/
-          // subtitle: Text(
-          //   widget.dueDate,
-          //   style: TextStyle(
-          //       fontSize: 10,
-          //       color: Colors.white60,
-          //       fontWeight: FontWeight.w700,
-          //       fontFamily: widget.fontFamily),
-          // ),
+          subtitle: Text(
+            widget.dueDate,
+            style: TextStyle(
+                fontSize: 10,
+                color: Colors.white60,
+                fontWeight: FontWeight.w700,
+                fontFamily: widget._fontFamily),
+          ),
         ),
       ),
     );

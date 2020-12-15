@@ -4,6 +4,7 @@ import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/widgets/new_category_alert.dart';
 import 'package:ciao_app/widgets/no_task_name_alert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +24,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 
   String newTaskCategory;
 
-  String formattedDate = AddTaskScreen2.dateFormat.format(DateTime.now());
+  DateTime selectedDate = DateTime.now();
 
   var selectedCategory;
 
@@ -33,19 +34,96 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 
   final textFieldController = TextEditingController();
 
-  final snackBar = SnackBar(
-    content: Text('Yay! A SnackBar!'),
-    action: SnackBarAction(
-      label: 'Undo',
-      onPressed: () {
-        // Some code to undo the change.
-      },
-    ),
-  );
-
   void addTask(Task task) {
     final tasksBox = Hive.box('tasks');
     tasksBox.add(task);
+  }
+
+  _selectDate(BuildContext context) async {
+    setState(() {
+      selectedDate = DateTime.now();
+    });
+    final ThemeData theme = Theme.of(context);
+    assert(theme.platform != null);
+    switch (theme.platform) {
+      case TargetPlatform.android:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+        return buildMaterialDatePicker(context);
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return buildCupertinoDatePicker(context);
+    }
+  }
+
+  /// This builds material date picker in Android
+  buildMaterialDatePicker(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+      errorFormatText: 'Enter valid date',
+      errorInvalidText: 'Enter date in valid range',
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark(),
+          child: child,
+        );
+      },
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
+  /// This builds cupertion date picker in iOS
+  buildCupertinoDatePicker(BuildContext context) {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext builder) {
+          return SingleChildScrollView(
+            child: Container(
+              decoration: BoxDecoration(
+                color: KMainRed,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50.0),
+                  topRight: Radius.circular(50.0),
+                ),
+              ),
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              height: MediaQuery.of(context).copyWith().size.height / 2.5,
+              child: CupertinoTheme(
+                data: CupertinoThemeData(
+                  textTheme: CupertinoTextThemeData(
+                    dateTimePickerTextStyle: TextStyle(
+                      color: Colors.white,
+                      fontFamily: KMainFontFamily,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.date,
+                  onDateTimeChanged: (picked) {
+                    if (picked != null && picked != selectedDate)
+                      setState(() {
+                        selectedDate = picked;
+                      });
+                  },
+                  initialDateTime: selectedDate,
+                  minimumYear: 2020,
+                  maximumYear: 2030,
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Widget carouselCategoryBuilder(Box box) {
@@ -262,6 +340,9 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                               ? MainAxisAlignment.center
                                               : MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
+                                        //
+                                        //ADD CATEGORY BUTTON
+                                        //
                                         ClipRRect(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
@@ -288,6 +369,44 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                 ),
                                               )),
                                         ),
+                                        //
+                                        //ADD REMINDER BUTTON
+                                        //
+                                        Hive.box('categories').isEmpty
+                                            ? SizedBox()
+                                            : ClipRRect(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(30)),
+                                                child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            6.0),
+                                                    child: Container(
+                                                      height: 50,
+                                                      child:
+                                                          FloatingActionButton(
+                                                        heroTag:
+                                                            'addTaskScreenFAB2',
+                                                        splashColor: Colors.red,
+                                                        backgroundColor:
+                                                            Hive.box('categories')
+                                                                    .isEmpty
+                                                                ? KMainRed
+                                                                : KMainPurple,
+                                                        onPressed: () =>
+                                                            _selectDate(
+                                                                context),
+                                                        child: Icon(
+                                                          Icons.notifications,
+                                                          size: 23,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ),
+                                        //
+                                        //ADD TASK BUTTON
+                                        //
                                         Hive.box('categories').isEmpty
                                             ? SizedBox()
                                             : ClipRRect(
@@ -309,7 +428,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                       task.category =
                                                           selectedCategory;
                                                       task.dueDate =
-                                                          formattedDate;
+                                                          "${selectedDate.toLocal()}"
+                                                              .split(' ')[0];
                                                       task.isDone = false;
                                                       addTask(task);
                                                       Flushbar(

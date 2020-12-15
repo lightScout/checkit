@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 const Color KMainPurple = Color(0xFF071F86);
 const Color KMainOrange = Color(0xFFFA9700);
 const Color KMainRed = Color(0xFFFF1d1d);
+const Color KTopBGColor = Color(0xFF9bdeff);
+const Color KBottomBGColor = Color(0xFFEBF8FF);
+const String KMainFontFamily = 'PressStart2P';
 
 const TextStyle Klogo = TextStyle(
   fontSize: 33,

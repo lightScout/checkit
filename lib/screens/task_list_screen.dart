@@ -229,7 +229,7 @@ class _TaskListScreenState extends State<TaskListScreen>
               gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
+                  colors: [KTopBGColor, KBottomBGColor]),
             ),
             child: Column(
               children: <Widget>[
