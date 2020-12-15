@@ -26,6 +26,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 
   DateTime selectedDate = DateTime.now();
 
+  bool wasDateSelected = false;
+
   var selectedCategory;
 
   int sliderIndex = 0;
@@ -369,41 +371,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                 ),
                                               )),
                                         ),
-                                        //
-                                        //ADD REMINDER BUTTON
-                                        //
-                                        Hive.box('categories').isEmpty
-                                            ? SizedBox()
-                                            : ClipRRect(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(30)),
-                                                child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            6.0),
-                                                    child: Container(
-                                                      height: 50,
-                                                      child:
-                                                          FloatingActionButton(
-                                                        heroTag:
-                                                            'addTaskScreenFAB2',
-                                                        splashColor: Colors.red,
-                                                        backgroundColor:
-                                                            Hive.box('categories')
-                                                                    .isEmpty
-                                                                ? KMainRed
-                                                                : KMainPurple,
-                                                        onPressed: () =>
-                                                            _selectDate(
-                                                                context),
-                                                        child: Icon(
-                                                          Icons.notifications,
-                                                          size: 23,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    )),
-                                              ),
+
                                         //
                                         //ADD TASK BUTTON
                                         //
@@ -427,11 +395,15 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                       task.name = newTaskTile;
                                                       task.category =
                                                           selectedCategory;
-                                                      task.dueDate =
-                                                          "${selectedDate.toLocal()}"
-                                                              .split(' ')[0];
+                                                      task.dueDate = wasDateSelected
+                                                          ? "${selectedDate.toLocal()}"
+                                                              .split(' ')[0]
+                                                          : 'Alert not set';
                                                       task.isDone = false;
                                                       addTask(task);
+                                                      setState(() {
+                                                        newTaskTile = null;
+                                                      });
                                                       Flushbar(
                                                               duration:
                                                                   Duration(
@@ -467,6 +439,64 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                   ),
                                                 ),
                                               ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        //
+                                        //ADD REMINDER BUTTON
+                                        //
+                                        Hive.box('categories').isEmpty
+                                            ? SizedBox()
+                                            : ClipRRect(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(30)),
+                                                child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            6.0),
+                                                    child: Container(
+                                                      height: 50,
+                                                      child:
+                                                          FloatingActionButton(
+                                                        heroTag:
+                                                            'addTaskScreenFAB2',
+                                                        splashColor: Colors.red,
+                                                        backgroundColor:
+                                                            Hive.box('categories')
+                                                                    .isEmpty
+                                                                ? KMainRed
+                                                                : KMainPurple,
+                                                        onPressed: () =>
+                                                            _selectDate(
+                                                                context),
+                                                        child: Icon(
+                                                          Icons.notifications,
+                                                          size: 23,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Switch(
+                                          value: wasDateSelected,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              wasDateSelected = value;
+                                            });
+                                          },
+                                          activeTrackColor:
+                                              Colors.lightGreenAccent,
+                                          activeColor: Colors.green,
+                                        ),
                                       ],
                                     ),
                                   ],
