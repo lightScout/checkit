@@ -408,13 +408,15 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                             splashColor:
                                                                 Colors.red,
                                                             backgroundColor:
-                                                                Hive.box('categories')
-                                                                        .isEmpty
-                                                                    ? KMainRed
-                                                                    : KMainPurple,
-                                                            onPressed: () =>
-                                                                _selectDate(
-                                                                    context),
+                                                                wasDateSelected
+                                                                    ? KMainPurple
+                                                                    : Colors
+                                                                        .grey,
+                                                            onPressed: wasDateSelected
+                                                                ? () =>
+                                                                    _selectDate(
+                                                                        context)
+                                                                : () {},
                                                             child: Icon(
                                                               Icons
                                                                   .notifications,
