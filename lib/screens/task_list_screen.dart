@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/others/constants.dart';
-import 'package:ciao_app/screens/add_task_screen2.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
 import 'package:ciao_app/widgets/new_category_alert.dart';
 import 'package:ciao_app/widgets/no_category_alert.dart';
@@ -27,7 +26,7 @@ class TaskListScreen extends StatefulWidget {
 
 class _TaskListScreenState extends State<TaskListScreen>
     with SingleTickerProviderStateMixin {
-  int _current = 0;
+  // int _current = 0;
   final tasksBox = Hive.box('tasks');
   final categoriesBox = Hive.box('categories');
   String newTaskCategory;
@@ -36,7 +35,7 @@ class _TaskListScreenState extends State<TaskListScreen>
       ScrollController(keepScrollOffset: true);
   AnimationController _animationController;
   AnimateIconController _animateIconController;
-  Animation _animation;
+  // Animation _animation;
   List<Widget> carouselList = [];
   List listOfCategoriesKeys = [];
   double xOffset = 0;
@@ -45,37 +44,37 @@ class _TaskListScreenState extends State<TaskListScreen>
   double topBorderRadius = 0;
   bool newTaskScreenToggle = false;
 
-  void _showDeleteAllTasksDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: Text("Delete all tasks?"),
-          content: Text("This will delete all tasks from this device."),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            FlatButton(
-              child: Text("Accept"),
-              onPressed: () {
-                var keysList = Hive.box('tasks').keys;
-                Hive.box('tasks').deleteAll(keysList);
-                Navigator.of(context).pop();
-              },
-            ),
+  // void _showDeleteAllTasksDialog() {
+  //   // flutter defined function
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       // return object of type Dialog
+  //       return AlertDialog(
+  //         title: Text("Delete all tasks?"),
+  //         content: Text("This will delete all tasks from this device."),
+  //         actions: <Widget>[
+  //           // usually buttons at the bottom of the dialog
+  //           FlatButton(
+  //             child: Text("Accept"),
+  //             onPressed: () {
+  //               var keysList = Hive.box('tasks').keys;
+  //               Hive.box('tasks').deleteAll(keysList);
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
 
-            FlatButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  //           FlatButton(
+  //             child: Text('Cancel'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
 //TODO: create alert for delete category confirmation
 
@@ -88,8 +87,8 @@ class _TaskListScreenState extends State<TaskListScreen>
       vsync: this,
       duration: Duration(milliseconds: 190),
     );
-    _animation =
-        CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
+    // _animation =
+    //     CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
     // _animationController.forward();
   }
 
@@ -248,7 +247,9 @@ class _TaskListScreenState extends State<TaskListScreen>
                       //
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 22.0, right: 22, bottom: 10),
+                          left: 22,
+                          right: 22,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -362,12 +363,12 @@ class _TaskListScreenState extends State<TaskListScreen>
                                   builder: (context, box, widget) {
                                     return CarouselSlider(
                                       options: CarouselOptions(
-                                          aspectRatio: .72,
+                                          aspectRatio: .60,
                                           enlargeCenterPage: false,
                                           enableInfiniteScroll: false,
                                           onPageChanged: (index, reason) {
                                             setState(() {
-                                              _current = index;
+                                              // _current = index;
                                             });
                                           }),
                                       items: carouselList,

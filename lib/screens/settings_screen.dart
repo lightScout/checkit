@@ -30,9 +30,7 @@ class SettingsScreen extends StatelessWidget {
           SizedBox(
             height: 40,
           ),
-          //
-          // TODO: implement category management
-          //
+
           GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, InfoScreen.id);

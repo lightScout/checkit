@@ -230,7 +230,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
         builder: (context, box, widget) {
           print(box.keys);
           return Scaffold(
-            // backgroundColor: Color(0xFF2A9D8F),
+            resizeToAvoidBottomInset: false,
             body: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
