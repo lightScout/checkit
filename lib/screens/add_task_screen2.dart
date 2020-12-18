@@ -467,7 +467,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                       task.dueDate = wasDateSelected
                                                           ? "${selectedDate.toLocal()}"
                                                               .split(' ')[0]
-                                                          : 'Alert not set';
+                                                          : null;
                                                       task.isDone = false;
                                                       addTask(task);
                                                       setState(() {

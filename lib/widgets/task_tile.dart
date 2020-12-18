@@ -100,14 +100,16 @@ class _TaskTileState extends State<TaskTile> {
           /**
            * Pro: Task Due Date
            * **/
-          subtitle: Text(
-            widget.dueDate,
-            style: TextStyle(
-                fontSize: 10,
-                color: Colors.white60,
-                fontWeight: FontWeight.w700,
-                fontFamily: widget._fontFamily),
-          ),
+          subtitle: (widget.dueDate != null)
+              ? Text(
+                  widget.dueDate,
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: Colors.white60,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: widget._fontFamily),
+                )
+              : null,
         ),
       ),
     );

@@ -72,7 +72,6 @@ Future newCategoryAlert(BuildContext context) {
                   },
                 ),
               ),
-              //TODO: work on pressing animation
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ClipRRect(
