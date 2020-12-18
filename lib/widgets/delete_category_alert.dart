@@ -2,7 +2,7 @@ import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-void appResetAlert(BuildContext context) {
+void deleteCategoryAlert(BuildContext context, int categoryKey) {
   // flutter defined function
   showDialog(
     context: context,
@@ -36,7 +36,7 @@ void appResetAlert(BuildContext context) {
         content: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            "Reseting the app will wipe clean the app's database. Are you sure you want to do this?",
+            "Are you sure you want to delete this category?",
             style: Klogo.copyWith(
               fontSize: 18,
               shadows: [
@@ -57,12 +57,11 @@ void appResetAlert(BuildContext context) {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 FloatingActionButton(
-                  heroTag: 'NoCategoryFAB1',
+                  heroTag: 'deleteCategoryFAB1',
                   splashColor: Colors.blue,
                   backgroundColor: Colors.white38,
                   onPressed: () {
-                    Hive.box('categories').clear();
-                    Hive.box('tasks').clear();
+                    Hive.box('categories').delete(categoryKey);
                     Navigator.of(context).pop();
                   },
                   child: Text(
@@ -84,7 +83,7 @@ void appResetAlert(BuildContext context) {
                   width: 30,
                 ),
                 FloatingActionButton(
-                  heroTag: 'NoCategoryFAB2',
+                  heroTag: 'deleteCategoryFAB2',
                   splashColor: Colors.blue,
                   backgroundColor: Colors.white38,
                   onPressed: () {

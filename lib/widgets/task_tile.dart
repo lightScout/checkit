@@ -11,8 +11,7 @@ class TaskTile extends StatefulWidget {
   final String _fontFamily = 'PressStart2P';
   final Color _checkedColor1 = Color(0xFF00458E);
   final Color _checkedColor2 = Color(0xFF000328);
-  final Color _uncheckedColor1 = Color(0xFF8DE9D5);
-  final Color _uncheckedColor2 = Color(0xFF0F8099);
+  final Color _uncheckedColor1 = Color(0xFF0F8099);
 
   TaskTile(
       {this.title,
@@ -44,7 +43,7 @@ class _TaskTileState extends State<TaskTile> {
               : LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [KTopBGColor, widget._uncheckedColor2]),
+                  colors: [KTopBGColor, widget._uncheckedColor1]),
           borderRadius: BorderRadius.all(
             Radius.circular(15),
           ),

@@ -3,6 +3,7 @@ import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
+import 'package:ciao_app/widgets/delete_category_alert.dart';
 import 'package:ciao_app/widgets/new_category_alert.dart';
 import 'package:ciao_app/widgets/no_category_alert.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
@@ -76,8 +77,6 @@ class _TaskListScreenState extends State<TaskListScreen>
   //   );
   // }
 
-//TODO: create alert for delete category confirmation
-
   @override
   void initState() {
     super.initState();
@@ -100,7 +99,7 @@ class _TaskListScreenState extends State<TaskListScreen>
   }
 
   void deleteCategory(int categoryKey) {
-    categoriesBox.delete(categoryKey);
+    deleteCategoryAlert(context, categoryKey);
     buildCarouselList();
   }
 

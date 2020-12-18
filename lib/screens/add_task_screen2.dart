@@ -373,62 +373,65 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                         ),
 
                                         //
-                                        //ADD REMINDER BUTTON
+                                        //ADD REMINDER BUTTON AND SWITCH
                                         //
-                                        Row(
-                                          children: [
-                                            Switch(
-                                              value: wasDateSelected,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  wasDateSelected = value;
-                                                });
-                                              },
-                                              activeTrackColor:
-                                                  Colors.lightGreenAccent,
-                                              activeColor: Colors.green,
-                                            ),
-                                            Hive.box('categories').isEmpty
-                                                ? SizedBox()
-                                                : ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                30)),
-                                                    child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(6.0),
-                                                        child: Container(
-                                                          height: 50,
-                                                          child:
-                                                              FloatingActionButton(
-                                                            heroTag:
-                                                                'addTaskScreenFAB2',
-                                                            splashColor:
-                                                                Colors.red,
-                                                            backgroundColor:
-                                                                wasDateSelected
-                                                                    ? KMainPurple
-                                                                    : Colors
-                                                                        .grey,
-                                                            onPressed: wasDateSelected
-                                                                ? () =>
-                                                                    _selectDate(
-                                                                        context)
-                                                                : () {},
-                                                            child: Icon(
-                                                              Icons
-                                                                  .notifications,
-                                                              size: 23,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                        )),
+                                        Hive.box('categories').isEmpty
+                                            ? SizedBox()
+                                            : Row(
+                                                children: [
+                                                  Switch(
+                                                    value: wasDateSelected,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        wasDateSelected = value;
+                                                      });
+                                                    },
+                                                    activeTrackColor:
+                                                        Colors.lightGreenAccent,
+                                                    activeColor: Colors.green,
                                                   ),
-                                          ],
-                                        )
+                                                  Hive.box('categories').isEmpty
+                                                      ? SizedBox()
+                                                      : ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          30)),
+                                                          child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(6.0),
+                                                              child: Container(
+                                                                height: 50,
+                                                                child:
+                                                                    FloatingActionButton(
+                                                                  heroTag:
+                                                                      'addTaskScreenFAB2',
+                                                                  splashColor:
+                                                                      Colors
+                                                                          .red,
+                                                                  backgroundColor:
+                                                                      wasDateSelected
+                                                                          ? KMainPurple
+                                                                          : Colors
+                                                                              .grey,
+                                                                  onPressed: wasDateSelected
+                                                                      ? () => _selectDate(
+                                                                          context)
+                                                                      : () {},
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .notifications,
+                                                                    size: 23,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              )),
+                                                        ),
+                                                ],
+                                              )
                                       ],
                                     ),
                                     SizedBox(
