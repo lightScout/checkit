@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/model/category.dart';
+import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
@@ -516,7 +517,6 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child:
-                      //TODO: work on delete tasks when category is deleted
                       ListBuilder(listCategory: category, tasksBox: tasksBox),
                 ),
               )

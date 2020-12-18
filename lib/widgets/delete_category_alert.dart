@@ -1,6 +1,19 @@
+import 'package:ciao_app/model/category.dart';
+import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+
+void deleteTaskUnderCategory(int categoryKey) {
+  Category category = Hive.box('categories').get(categoryKey) as Category;
+  List listOfTaksKeys = Hive.box('tasks').keys.toList();
+  listOfTaksKeys.forEach((element) {
+    if (category.name == (Hive.box('tasks').get(element) as Task).category) {
+      //print((tasksBox.get(element) as Task).category);
+      Hive.box('tasks').delete(element);
+    }
+  });
+}
 
 void deleteCategoryAlert(BuildContext context, int categoryKey) {
   // flutter defined function
@@ -61,6 +74,7 @@ void deleteCategoryAlert(BuildContext context, int categoryKey) {
                   splashColor: Colors.blue,
                   backgroundColor: Colors.white38,
                   onPressed: () {
+                    deleteTaskUnderCategory(categoryKey);
                     Hive.box('categories').delete(categoryKey);
                     Navigator.of(context).pop();
                   },
