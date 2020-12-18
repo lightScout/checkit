@@ -363,8 +363,8 @@ class _TaskListScreenState extends State<TaskListScreen>
                                   builder: (context, box, widget) {
                                     return CarouselSlider(
                                       options: CarouselOptions(
-                                          aspectRatio: .60,
-                                          enlargeCenterPage: false,
+                                          aspectRatio: .55,
+                                          enlargeCenterPage: true,
                                           enableInfiniteScroll: false,
                                           onPageChanged: (index, reason) {
                                             setState(() {
@@ -492,7 +492,8 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(
+                        top: 8.0, left: 8.0, right: 8.0, bottom: 8.0),
                     child: CustomClipRRect.customClipRRect(
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
@@ -515,7 +516,16 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
               ),
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white12,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(50),
+                      topLeft: Radius.circular(50),
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   child:
                       ListBuilder(listCategory: category, tasksBox: tasksBox),
                 ),
