@@ -101,7 +101,6 @@ class _TaskListScreenState extends State<TaskListScreen>
 
   void deleteCategory(int categoryKey) {
     deleteCategoryAlert(context, categoryKey);
-    buildCarouselList();
   }
 
   void buildCarouselList() {
@@ -112,15 +111,17 @@ class _TaskListScreenState extends State<TaskListScreen>
       Category a = categoriesBox.get(element) as Category;
       a.key = element;
 
-      carouselList.add(carouselItem(
-        a.categoryName,
-        a.key,
-        tasksBox,
-        categoriesBox,
-        () {
-          deleteCategory(a.key);
-        },
-      ));
+      carouselList.insert(
+          0,
+          carouselItem(
+            a.categoryName,
+            a.key,
+            tasksBox,
+            categoriesBox,
+            () {
+              deleteCategory(a.key);
+            },
+          ));
     });
   }
 
@@ -151,8 +152,8 @@ class _TaskListScreenState extends State<TaskListScreen>
               ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
               animationDuration: Duration(milliseconds: 300),
               fabCloseColor: Color(0xFF071F86),
-              fabElevation: 2,
-              fabMargin: EdgeInsets.only(right: 40, bottom: 40),
+              fabElevation: 6,
+              fabMargin: EdgeInsets.only(right: 47, bottom: 40),
               fabOpenColor: Color(0xFFFF1d1d),
               ringColor: Color(0xFFFA9700),
               fabCloseIcon: Icon(
@@ -414,44 +415,7 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
   return Column(
     children: [
       Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white24,
-              gradient: LinearGradient(
-                  begin: Alignment.center,
-                  end: Alignment.topRight,
-                  colors: [Colors.white12, Color(0xFFEBF8FF)]),
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(30),
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-                topLeft: Radius.circular(30),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: Text(
-                category,
-                style: Constant.Klogo.copyWith(
-                  fontSize: 15,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 2.0,
-                      color: Colors.blue,
-                      offset: Offset(5.0, 5.0),
-                    ),
-                    Shadow(
-                      color: Colors.white,
-                      blurRadius: 6.0,
-                      offset: Offset(2.0, 2.0),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+        children: [],
       ),
       //
       //Item
@@ -489,8 +453,44 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
               //Delete category buttom
               //
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white24,
+                      gradient: LinearGradient(
+                          begin: Alignment.center,
+                          end: Alignment.topRight,
+                          colors: [Colors.white12, Color(0xFFEBF8FF)]),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                        topLeft: Radius.circular(30),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Text(
+                        category,
+                        style: Constant.Klogo.copyWith(
+                          fontSize: 15,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 2.0,
+                              color: Colors.blue,
+                              offset: Offset(5.0, 5.0),
+                            ),
+                            Shadow(
+                              color: Colors.white,
+                              blurRadius: 6.0,
+                              offset: Offset(2.0, 2.0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 8.0, left: 8.0, right: 8.0, bottom: 8.0),

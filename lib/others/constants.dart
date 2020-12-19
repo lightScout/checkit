@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const Color KMainPurple = Color(0xFF071F86);
+const Color KBabyBlue = Color(0xFF9bdeff);
+const Color KPersinanGreen = Color(0xFF2A9D8F);
 const Color KMainOrange = Color(0xFFFA9700);
 const Color KMainRed = Color(0xFFFF1d1d);
 const Color KTopBGColor = Color(0xFF9bdeff);

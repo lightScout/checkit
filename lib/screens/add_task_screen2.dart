@@ -30,11 +30,11 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 
   var selectedCategory;
 
-  int sliderIndex = 0;
-
   List<Widget> sliderUserCategoriesList = <Widget>[];
 
   final textFieldController = TextEditingController();
+
+  final categoriesBox = Hive.box('categories');
 
   void addTask(Task task) {
     final tasksBox = Hive.box('tasks');
@@ -128,24 +128,27 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
         });
   }
 
-  Widget carouselCategoryBuilder(Box box) {
+  void buildCarouselList() {
     sliderUserCategoriesList.clear();
-    List listOfKey = box.keys.toList();
+    List listOfKey = categoriesBox.keys.toList();
     if (listOfKey.isNotEmpty && listOfKey.length == 1) {
-      Category a = box.get(box.keys.first) as Category;
+      Category a = categoriesBox.get(categoriesBox.keys.first) as Category;
       selectedCategory = a.name;
     }
 
     listOfKey.forEach((element) {
-      Category category = box.get(element) as Category;
+      Category category = categoriesBox.get(element) as Category;
       category.key = element;
       // print(category.name);
       Widget a = GestureDetector(
         child: sliderCategoryItem(category.name),
       );
-      sliderUserCategoriesList.add(a);
+      sliderUserCategoriesList.insert(0, a);
     });
+  }
 
+  Widget categoriesCarousel() {
+    buildCarouselList();
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -197,16 +200,15 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                       width: 300,
                       child: CarouselSlider(
                         options: CarouselOptions(
-                            initialPage: sliderIndex,
                             viewportFraction: .44,
                             aspectRatio: 3.8,
                             enlargeCenterPage: true,
                             enableInfiniteScroll: false,
                             onPageChanged: (index, reason) {
-                              Category category = box.getAt(index) as Category;
+                              Category category =
+                                  categoriesBox.getAt(index) as Category;
                               setState(() {
                                 selectedCategory = category.name;
-                                sliderIndex = index;
                               });
                               print(selectedCategory);
                             }),
@@ -237,8 +239,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     colors: [
-                      Color(0xFF2A9D8F),
-                      Color(0xFF9bdeff),
+                      KPersinanGreen,
+                      KBabyBlue,
                     ]),
               ),
               child: Column(
@@ -265,7 +267,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                               height: 15,
                             ),
                             //
-                            //OTHER COMPONESTS ON THE PAGE
+                            //ADD TASK AND CATEGORY BLOCK
                             //
                             CustomClipRRect.customClipRRect(
                               child: Padding(
@@ -324,10 +326,10 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                     ),
 
                                     //
-                                    //Task Categories carousel and new category button
+                                    //TASK CATEGORIES CAROUSEL
                                     //
                                     Container(
-                                      child: carouselCategoryBuilder(box),
+                                      child: categoriesCarousel(),
                                     ),
                                     SizedBox(
                                       height: 20,
@@ -387,8 +389,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                       });
                                                     },
                                                     activeTrackColor:
-                                                        Colors.lightGreenAccent,
-                                                    activeColor: Colors.green,
+                                                        Colors.green.shade200,
+                                                    activeColor: KPersinanGreen,
                                                   ),
                                                   Hive.box('categories').isEmpty
                                                       ? SizedBox()
@@ -455,7 +457,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                     if (newTaskTile == null) {
                                                       noTaskNameAlert(context);
                                                     } else {
-                                                      //unfocusing the keyboard to avoid UI break
+                                                      //unfocusing the keyboard to avoid pixel overflow
                                                       FocusScope.of(context)
                                                           .unfocus();
                                                       //Add task to the list
