@@ -3,7 +3,7 @@ import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-Future newCategoryAlert(BuildContext context) {
+Future addCategoryAlert(BuildContext context) {
   String newTaskCategory;
   return showDialog(
     context: context,

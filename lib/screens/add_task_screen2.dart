@@ -2,8 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
-import 'package:ciao_app/widgets/new_category_alert.dart';
+import 'package:ciao_app/widgets/add_category_alert.dart';
 import 'package:ciao_app/widgets/no_task_name_alert.dart';
+import 'package:ciao_app/widgets/slider_category_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -30,7 +31,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 
   var selectedCategory;
 
-  List<Widget> sliderUserCategoriesList = <Widget>[];
+  List<Widget> carouselCategoriesList = <Widget>[];
 
   final textFieldController = TextEditingController();
 
@@ -129,21 +130,21 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
   }
 
   void buildCarouselList() {
-    sliderUserCategoriesList.clear();
+    carouselCategoriesList.clear();
     List listOfKey = categoriesBox.keys.toList();
-    if (listOfKey.isNotEmpty && listOfKey.length == 1) {
-      Category a = categoriesBox.get(categoriesBox.keys.first) as Category;
-      selectedCategory = a.name;
+    if (categoriesBox.isNotEmpty && categoriesBox.length == 1) {
+      selectedCategory =
+          (categoriesBox.get(categoriesBox.keys.last) as Category).name;
     }
 
     listOfKey.forEach((element) {
-      Category category = categoriesBox.get(element) as Category;
-      category.key = element;
+      //category.key = element;
       // print(category.name);
-      Widget a = GestureDetector(
-        child: sliderCategoryItem(category.name),
-      );
-      sliderUserCategoriesList.insert(0, a);
+
+      carouselCategoriesList.insert(
+          0,
+          SliderCategoryItem(
+              categoryTitle: (categoriesBox.get(element) as Category).name));
     });
   }
 
@@ -205,14 +206,14 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                             enlargeCenterPage: true,
                             enableInfiniteScroll: false,
                             onPageChanged: (index, reason) {
-                              Category category =
-                                  categoriesBox.getAt(index) as Category;
                               setState(() {
-                                selectedCategory = category.name;
+                                selectedCategory = (carouselCategoriesList
+                                        .elementAt(index) as SliderCategoryItem)
+                                    .categoryTitle;
                               });
                               print(selectedCategory);
                             }),
-                        items: sliderUserCategoriesList,
+                        items: carouselCategoriesList,
                       ),
                     ),
                   ),
@@ -362,7 +363,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                         ? KMainRed
                                                         : KMainPurple,
                                                 onPressed: () {
-                                                  newCategoryAlert(context);
+                                                  addCategoryAlert(context);
                                                 },
                                                 child: Icon(
                                                   Hive.box('categories').isEmpty
@@ -544,34 +545,3 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 //                                                   addTask(task);
 //                                                 }
 //                                               },
-
-Widget sliderCategoryItem(String categoryTitle) {
-  String title = categoryTitle;
-  return Padding(
-    padding: const EdgeInsets.all(4.0),
-    child: Container(
-      height: 25,
-      width: 150,
-      decoration: BoxDecoration(
-        border: Border.all(
-          width: 1,
-          color: Colors.white,
-        ),
-        gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomRight,
-            colors: [Colors.red[600], Color(0xFFDD0426)]),
-        borderRadius: BorderRadius.all(
-          Radius.circular(25.0),
-        ),
-      ),
-      child: Center(
-          child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontFamily: 'PressStart2P', fontSize: 11, color: Colors.white),
-      )),
-    ),
-  );
-}

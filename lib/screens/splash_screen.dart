@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'home_screen.dart';
 
+//TODO: Work on new splash screen
 class SplashScreen extends StatefulWidget {
   static const id = 'SplashScreen';
   @override

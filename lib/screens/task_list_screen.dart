@@ -5,7 +5,7 @@ import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
 import 'package:ciao_app/widgets/delete_category_alert.dart';
-import 'package:ciao_app/widgets/new_category_alert.dart';
+import 'package:ciao_app/widgets/add_category_alert.dart';
 import 'package:ciao_app/widgets/no_category_alert.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
@@ -193,7 +193,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                     size: 35,
                   ),
                   onTap: () {
-                    newCategoryAlert(context);
+                    addCategoryAlert(context);
                   },
                 ),
                 GestureDetector(
@@ -364,7 +364,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                                   builder: (context, box, widget) {
                                     return CarouselSlider(
                                       options: CarouselOptions(
-                                          aspectRatio: .55,
+                                          aspectRatio: .74,
                                           enlargeCenterPage: true,
                                           enableInfiniteScroll: false,
                                           onPageChanged: (index, reason) {
@@ -414,9 +414,6 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
     Box categoriesBox, Function function) {
   return Column(
     children: [
-      Row(
-        children: [],
-      ),
       //
       //Item
       //
@@ -433,10 +430,10 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
                 end: Alignment.bottomLeft,
                 colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30),
-              topLeft: Radius.circular(30),
-              bottomLeft: Radius.circular(30),
-              bottomRight: Radius.circular(30),
+              topRight: Radius.circular(15),
+              topLeft: Radius.circular(15),
+              bottomLeft: Radius.circular(15),
+              bottomRight: Radius.circular(15),
             ),
             boxShadow: [
               BoxShadow(
@@ -449,9 +446,6 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //
-              //Delete category buttom
-              //
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
