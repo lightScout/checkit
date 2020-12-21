@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:ciao_app/others/constants.dart';
+import 'package:ciao_app/screens/intro_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   static const id = 'SplashScreen';
@@ -28,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen>
       Duration(seconds: 2),
       () {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => IntroScreen()),
         );
       },
     );

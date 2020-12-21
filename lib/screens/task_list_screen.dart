@@ -226,10 +226,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                 topLeft: Radius.circular(topBorderRadius),
                 topRight: Radius.circular(topBorderRadius),
               ),
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [KTopBGColor, KBottomBGColor]),
+              gradient: Constant.KMainLinearGradient,
             ),
             child: Column(
               children: <Widget>[

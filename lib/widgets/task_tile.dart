@@ -43,7 +43,7 @@ class _TaskTileState extends State<TaskTile> {
               : LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [KTopBGColor, widget._uncheckedColor1]),
+                  colors: [KTopLinearGradientColor, widget._uncheckedColor1]),
           borderRadius: BorderRadius.all(
             Radius.circular(15),
           ),

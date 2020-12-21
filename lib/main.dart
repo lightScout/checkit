@@ -1,6 +1,7 @@
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/screens/home_screen.dart';
 import 'package:ciao_app/screens/info_screen.dart';
+import 'package:ciao_app/screens/intro_screen.dart';
 import 'package:ciao_app/screens/test_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -81,6 +82,7 @@ class _MyAppState extends State<MyApp> {
         InfoScreen.id: (context) => InfoScreen(),
         TestScreen.id: (context) => TestScreen(),
         HomeScreen.id: (context) => HomeScreen(),
+        IntroScreen.id: (context) => IntroScreen(),
       },
       home: HomeScreen(),
     );
