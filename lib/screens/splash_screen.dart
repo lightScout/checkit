@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'home_screen.dart';
 
-//TODO: Work on new splash screen
 class SplashScreen extends StatefulWidget {
   static const id = 'SplashScreen';
   @override
@@ -13,22 +13,25 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  Animation<Color> _animation;
-  AnimationController _controller;
+  // Animation<Color> _animation;
+  // AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller =
-        AnimationController(duration: const Duration(seconds: 2), vsync: this);
-    _animation = ColorTween(begin: Colors.white70, end: Colors.lime)
-        .animate(_controller);
+    // _controller =
+    //     AnimationController(duration: const Duration(seconds: 2), vsync: this);
+    // _animation = ColorTween(begin: Colors.white70, end: Colors.lime)
+    //     .animate(_controller);
 
-    Timer(Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
-    });
+    Timer(
+      Duration(seconds: 2),
+      () {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      },
+    );
   }
 
   @override
@@ -40,9 +43,9 @@ class _SplashScreenState extends State<SplashScreen>
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [Color(0xFF8DE9D5), Color(0xFF0F8099)]),
+                  begin: Alignment.center,
+                  end: Alignment.topCenter,
+                  colors: [Colors.white, Color(0xFF9bdeff)]),
             ),
             child: Container(
               child: Column(
@@ -50,40 +53,59 @@ class _SplashScreenState extends State<SplashScreen>
                 children: <Widget>[
                   Text(
                     'checKit',
-                    style: TextStyle(
-                        shadows: [
-                          Shadow(
-                            blurRadius: 2.0,
-                            color: Colors.blue,
-                            offset: Offset(5.0, 5.0),
-                          ),
-                          Shadow(
-                            color: Colors.white,
-                            blurRadius: 6.0,
-                            offset: Offset(2.0, 2.0),
-                          ),
-                        ],
-                        fontSize: 33,
-                        color: Color(0xFF071F86),
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'PressStart2P'),
+                    style: Klogo,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 22.0, left: 100),
-                    child: Text(
-                      'from JJ Lightscout',
-                      style: TextStyle(fontSize: 14, color: Colors.white70),
+
+                  SizedBox(
+                    height: 30,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(60)),
+                    child: Container(
+                      height: 120,
+                      width: 120,
+                      child: Image(
+                        image: AssetImage('assets/icon/app_icon_v2.png'),
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 122),
-                    child: CircularProgressIndicator(
-                      valueColor: _animation,
-                    ),
-                  ),
+
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 122),
+                  //   child: CircularProgressIndicator(
+                  //     valueColor: _animation,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Text(
+                  'from JJ Lightscout',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: KMainPurple,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5.0),
+                child: Text(
+                  '2.0',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: KMainPurple.withOpacity(0.6),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
