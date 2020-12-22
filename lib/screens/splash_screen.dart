@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ciao_app/others/constants.dart';
+import 'package:ciao_app/screens/home_screen.dart';
 import 'package:ciao_app/screens/intro_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -26,9 +27,9 @@ class _SplashScreenState extends State<SplashScreen>
     Timer(
       Duration(seconds: 2),
       () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => IntroScreen()),
-        );
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ));
       },
     );
   }

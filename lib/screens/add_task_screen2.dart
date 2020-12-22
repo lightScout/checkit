@@ -7,11 +7,17 @@ import 'package:ciao_app/widgets/no_task_name_alert.dart';
 import 'package:ciao_app/widgets/slider_category_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:ciao_app/main.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:ciao_app/widgets/custom_cliprrect.dart' as CustomClipRRect;
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 class AddTaskScreen2 extends StatefulWidget {
   static DateFormat dateFormat = DateFormat('DD-MM-yyyy');
@@ -22,6 +28,8 @@ class AddTaskScreen2 extends StatefulWidget {
 
 class _AddTaskScreen2State extends State<AddTaskScreen2> {
   String newTaskTile;
+
+  String _timezone = 'Unknown';
 
   String newTaskCategory;
 
@@ -40,6 +48,26 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
   void addTask(Task task) {
     final tasksBox = Hive.box('tasks');
     tasksBox.add(task);
+  }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformState() async {
+    String timezone;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      timezone = await FlutterNativeTimezone.getLocalTimezone();
+    } on PlatformException {
+      timezone = 'Failed to get the timezone.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _timezone = timezone;
+    });
   }
 
   _selectDate(BuildContext context) async {
@@ -146,6 +174,12 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
           SliderCategoryItem(
               categoryTitle: (categoriesBox.get(element) as Category).name));
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
   }
 
   Widget categoriesCarousel() {
@@ -420,8 +454,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                                           : Colors
                                                                               .grey,
                                                                   onPressed: wasDateSelected
-                                                                      ? () => _selectDate(
-                                                                          context)
+                                                                      ? () =>
+                                                                          _scheduleNotification()
                                                                       : () {},
                                                                   child: Icon(
                                                                     Icons
@@ -526,22 +560,31 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
           );
         });
   }
+
+  void _scheduleNotification() async {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation(_timezone));
+
+    var andriodPlatformChannelSpecifics = AndroidNotificationDetails(
+        'checKit_notif', 'checKit_notif', 'Channel for checKit notification',
+        icon: 'app_icon_v2');
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+    var platformChannelSpecifics = NotificationDetails(
+        android: andriodPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'schedule title',
+      'schedule body',
+      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 3)),
+      platformChannelSpecifics,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      androidAllowWhileIdle: true,
+    );
+  }
 }
-
-//  if (newTaskTile == null) {
-//                                                   _showNoTaskNameDialog();
-//                                                 } else {
-//                                                   //unfocusing the keyboard to avoid UI break
-//                                                   FocusScope.of(context)
-//                                                       .unfocus();
-//                                                   //Add task to the list
-
-//                                                   Task task = Task();
-//                                                   task.name = newTaskTile;
-//                                                   task.category =
-//                                                       selectedCategory;
-//                                                   task.dueDate = formattedDate;
-//                                                   task.isDone = false;
-//                                                   addTask(task);
-//                                                 }
-//                                               },

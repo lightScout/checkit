@@ -5,6 +5,7 @@ import 'package:ciao_app/screens/intro_screen.dart';
 import 'package:ciao_app/screens/test_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -13,11 +14,34 @@ import 'model/category.dart';
 import 'screens/task_list_screen.dart';
 import 'screens/splash_screen.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  const initializationSettingsAndriod =
+      AndroidInitializationSettings('app_icon_v2');
+  final IOSInitializationSettings initializationSettingsIOS =
+      IOSInitializationSettings(
+          requestSoundPermission: true,
+          requestBadgePermission: true,
+          requestAlertPermission: true,
+          onDidReceiveLocalNotification:
+              (int id, String title, String body, String payload) async {});
+
+  var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndriod, iOS: initializationSettingsIOS);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: (String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload' + payload);
+    }
+  });
+
   //
   // Hive initialisation
   //
-  WidgetsFlutterBinding.ensureInitialized();
   final appDocumentDirectory =
       await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
