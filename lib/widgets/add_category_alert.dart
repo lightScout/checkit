@@ -26,14 +26,31 @@ Future addCategoryAlert(BuildContext context) {
                     top: 14.0, bottom: 0, left: 14.0, right: 14.0),
                 child: Text(
                   "New Category",
+                  textAlign: TextAlign.start,
+                  textScaleFactor: 1.11,
                   style: Klogo.copyWith(
                     fontSize: 18,
                     shadows: [
                       Shadow(
                         blurRadius: 2.0,
-                        color: Colors.red,
-                        offset: Offset(5.0, 5.0),
+                        color: Colors.blue,
+                        offset: Offset(-5.55, -4.44),
                       ),
+                      Shadow(
+                        blurRadius: 2.0,
+                        color: Colors.red,
+                        offset: Offset(5.55, 4.44),
+                      ),
+                      Shadow(
+                        blurRadius: 2.0,
+                        color: Colors.black,
+                        offset: Offset(-3.3, -3.3),
+                      ),
+                      Shadow(
+                        color: Colors.white,
+                        blurRadius: 2.2,
+                        offset: Offset(0.6, 0.6),
+                      )
                     ],
                     color: Colors.yellowAccent[700],
                   ),
@@ -53,13 +70,13 @@ Future addCategoryAlert(BuildContext context) {
                   maxLines: 1,
                   style: Klogo.copyWith(
                       fontSize: 22,
-                      color: Colors.white,
+                      color: Colors.yellow[50],
                       shadows: [
-                        // Shadow(
-                        //   color: Colors.greenAccent,
-                        //   blurRadius: 6.0,
-                        //   offset: Offset(0.6, 0.6),
-                        // )
+                        Shadow(
+                          color: Colors.white,
+                          blurRadius: 2.2,
+                          offset: Offset(0.6, 0.6),
+                        )
                       ]),
                   decoration: InputDecoration(
                     border: KInputFieldRoundedCorners,
@@ -83,7 +100,7 @@ Future addCategoryAlert(BuildContext context) {
                       child: Icon(
                         Icons.add,
                         size: 50,
-                        color: Colors.white,
+                        color: Colors.pink[50].withOpacity(.70),
                       ),
                       onTap: () {
                         Category newCategory = Category(name: newTaskCategory);

@@ -429,23 +429,28 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                           child: Padding(
                                               padding:
                                                   const EdgeInsets.all(6.0),
-                                              child: FloatingActionButton(
-                                                heroTag: 'addTaskScreenFAB1',
-                                                splashColor: Colors.red,
-                                                backgroundColor:
+                                              child: Container(
+                                                height: 70,
+                                                width: 70,
+                                                child: FloatingActionButton(
+                                                  heroTag: 'addTaskScreenFAB1',
+                                                  splashColor: Colors.red,
+                                                  backgroundColor:
+                                                      Hive.box('categories')
+                                                              .isEmpty
+                                                          ? KMainRed
+                                                          : Color(0xFFEC2E1A),
+                                                  onPressed: () {
+                                                    addCategoryAlert(context);
+                                                  },
+                                                  child: Icon(
                                                     Hive.box('categories')
                                                             .isEmpty
-                                                        ? KMainRed
-                                                        : KMainPurple,
-                                                onPressed: () {
-                                                  addCategoryAlert(context);
-                                                },
-                                                child: Icon(
-                                                  Hive.box('categories').isEmpty
-                                                      ? Icons.priority_high
-                                                      : Icons.category,
-                                                  size: 33,
-                                                  color: Colors.white,
+                                                        ? Icons.priority_high
+                                                        : Icons.category,
+                                                    size: 33,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
                                               )),
                                         ),
@@ -483,28 +488,30 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                               child: Container(
                                                                 height: 50,
                                                                 child:
-                                                                    FloatingActionButton(
-                                                                  heroTag:
-                                                                      'addTaskScreenFAB2',
-                                                                  splashColor:
-                                                                      Colors
-                                                                          .red,
-                                                                  backgroundColor:
-                                                                      wasDateSelected
-                                                                          ? KMainPurple
-                                                                          : Colors
-                                                                              .grey,
-                                                                  onPressed: wasDateSelected
-                                                                      ? () =>
-                                                                          // _scheduleNotification()
-                                                                          _selectDate(context)
-                                                                      : () {},
-                                                                  child: Icon(
-                                                                    Icons
-                                                                        .notifications,
-                                                                    size: 23,
-                                                                    color: Colors
-                                                                        .white,
+                                                                    Container(
+                                                                  child:
+                                                                      FloatingActionButton(
+                                                                    heroTag:
+                                                                        'addTaskScreenFAB2',
+                                                                    splashColor:
+                                                                        Colors
+                                                                            .red,
+                                                                    backgroundColor: wasDateSelected
+                                                                        ? KMainPurple
+                                                                        : Colors
+                                                                            .grey,
+                                                                    onPressed: wasDateSelected
+                                                                        ? () =>
+                                                                            // _scheduleNotification()
+                                                                            _selectDate(context)
+                                                                        : () {},
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .notifications,
+                                                                      size: 23,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               )),

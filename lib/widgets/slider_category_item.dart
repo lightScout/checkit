@@ -21,10 +21,11 @@ class SliderCategoryItem extends StatelessWidget {
             width: 1,
             color: Colors.white,
           ),
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomRight,
-              colors: [Colors.red[600], Color(0xFFDD0426)]),
+          color: Colors.lightBlue[800],
+          // gradient: LinearGradient(
+          //     begin: Alignment.topCenter,
+          //     end: Alignment.bottomRight,
+          //     colors: [Colors.red[600], Color(0xFFDD0426)]),
           borderRadius: BorderRadius.all(
             Radius.circular(25.0),
           ),
