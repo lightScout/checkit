@@ -225,78 +225,73 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 
   Widget categoriesCarousel() {
     buildCarouselList();
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(50.0),
-          topRight: Radius.circular(50.0),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(50.0),
+            topRight: Radius.circular(50.0),
+          ),
         ),
-      ),
-      height: 135,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: Icon(
-                  Icons.category,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          //
-          //CarouselSlider containg the list of categories available
-          //
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(25)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black12,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(50.0),
-                            topRight: Radius.circular(50.0),
-                            bottomLeft: Radius.circular(50.0),
-                            bottomRight: Radius.circular(50.0)),
-                      ),
-                      height: 70,
-                      width: 300,
-                      child: CarouselSlider(
-                        options: CarouselOptions(
-                            viewportFraction: .44,
-                            aspectRatio: 3.8,
-                            enlargeCenterPage: true,
-                            enableInfiniteScroll: false,
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                selectedCategory = (carouselCategoriesList
-                                        .elementAt(index) as SliderCategoryItem)
-                                    .categoryTitle;
-                              });
-                              print(selectedCategory);
-                            }),
-                        items: carouselCategoriesList,
-                      ),
-                    ),
+        height: 85,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 0.0),
+                //   child: Icon(
+                //     Icons.category,
+                //     color: Colors.white,
+                //     size: 25.5,
+                //   ),
+                // ),
+              ],
+            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            //
+            //CarouselSlider containg the list of categories available
+            //
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(50.0),
+                        topRight: Radius.circular(50.0),
+                        bottomLeft: Radius.circular(50.0),
+                        bottomRight: Radius.circular(50.0)),
+                  ),
+                  height: 70,
+                  width: 350,
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                        viewportFraction: .44,
+                        aspectRatio: 3.8,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: true,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            selectedCategory = (carouselCategoriesList
+                                    .elementAt(index) as SliderCategoryItem)
+                                .categoryTitle;
+                          });
+                          print(selectedCategory);
+                        }),
+                    items: carouselCategoriesList,
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -329,22 +324,24 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 30.0, left: 15),
-                              child: Text('Add Task',
-                                  style: KAddTaskScreenTitles.copyWith(
-                                    fontSize: 33,
-                                    color: Colors.white.withOpacity(.1),
-                                  )),
-                            ),
+                            // Padding(
+                            //   padding:
+                            //       const EdgeInsets.only(top: 30.0, left: 15),
+                            //   child: Text('Add Task',
+                            //       style: KAddTaskScreenTitles.copyWith(
+                            //         fontSize: 33,
+                            //         color: Colors.white.withOpacity(.1),
+                            //       )),
+                            // ),
 
                             SizedBox(
                               height: 15,
                             ),
-                            //
-                            //ADD TASK AND CATEGORY BLOCK
-                            //
+
+                            //!
+                            //! ADD TASK AND CATEGORY BLOCK
+                            //!
+
                             CustomClipRRect.customClipRRect(
                               child: Padding(
                                 padding: const EdgeInsets.all(22.0),
@@ -355,18 +352,66 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                     //'NAME' - TEXTFIELD TITLE
                                     //
 
-                                    Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Text('Name',
-                                          style: KAddTaskScreenTitles),
-                                    ),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.all(10.0),
+                                    //   child: Text('Name',
+                                    //       style: KAddTaskScreenTitles),
+                                    // ),
 
-                                    SizedBox(
-                                      height: 10,
-                                    ),
+                                    // SizedBox(
+                                    //   height: 10,
+                                    // ),
                                     //
                                     // TEXT FIELD - in charge of capting the new task name
                                     //
+                                    /**
+                             * !FIRST: ADD CATEGORY BUTTON
+                             */
+                                    Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30)),
+                                          child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(6.0),
+                                              child: Container(
+                                                height: 70,
+                                                width: 70,
+                                                child: FloatingActionButton(
+                                                  heroTag: 'addTaskScreenFAB1',
+                                                  splashColor: Colors.red,
+                                                  backgroundColor:
+                                                      Hive.box('categories')
+                                                              .isEmpty
+                                                          ? KMainRed
+                                                          : Color(0xFFEC2E1A),
+                                                  onPressed: () {
+                                                    addCategoryAlert(context);
+                                                  },
+                                                  child: Icon(
+                                                    Hive.box('categories')
+                                                            .isEmpty
+                                                        ? Icons.priority_high
+                                                        : Icons.add,
+                                                    size: 33,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                    //
+                                    //TASK CATEGORIES CAROUSEL
+                                    //
+
+                                    Container(
+                                      child: categoriesCarousel(),
+                                    ),
+                                    // SizedBox(
+                                    //   height: 20,
+                                    // ),
                                     TextField(
                                       controller: textFieldController,
                                       style: Klogo.copyWith(
@@ -377,6 +422,10 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                       maxLines: 1,
                                       textAlign: TextAlign.center,
                                       decoration: InputDecoration(
+                                        hintText: 'Add task here',
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey[350],
+                                        ),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(25),
@@ -402,15 +451,6 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                     ),
 
                                     //
-                                    //TASK CATEGORIES CAROUSEL
-                                    //
-                                    Container(
-                                      child: categoriesCarousel(),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    //
                                     //ADD BUTTON - used to triger the addition of the new task into the database
                                     //
 
@@ -420,41 +460,6 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                               ? MainAxisAlignment.center
                                               : MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        //
-                                        //ADD CATEGORY BUTTON
-                                        //
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(30)),
-                                          child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(6.0),
-                                              child: Container(
-                                                height: 70,
-                                                width: 70,
-                                                child: FloatingActionButton(
-                                                  heroTag: 'addTaskScreenFAB1',
-                                                  splashColor: Colors.red,
-                                                  backgroundColor:
-                                                      Hive.box('categories')
-                                                              .isEmpty
-                                                          ? KMainRed
-                                                          : Color(0xFFEC2E1A),
-                                                  onPressed: () {
-                                                    addCategoryAlert(context);
-                                                  },
-                                                  child: Icon(
-                                                    Hive.box('categories')
-                                                            .isEmpty
-                                                        ? Icons.priority_high
-                                                        : Icons.category,
-                                                    size: 33,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              )),
-                                        ),
-
                                         //
                                         //ADD REMINDER BUTTON AND SWITCH
                                         //
