@@ -119,7 +119,13 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
           return SingleChildScrollView(
             child: Container(
               decoration: BoxDecoration(
-                color: KMainRed,
+                gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.transparent.withOpacity(.80),
+                      Colors.blueAccent
+                    ]),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50.0),
                   topRight: Radius.circular(50.0),
@@ -127,30 +133,65 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
               ),
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
-              height: MediaQuery.of(context).copyWith().size.height / 2.5,
-              child: CupertinoTheme(
-                data: CupertinoThemeData(
-                  textTheme: CupertinoTextThemeData(
-                    dateTimePickerTextStyle: TextStyle(
-                      color: Colors.white,
-                      fontFamily: KMainFontFamily,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+              height: MediaQuery.of(context).copyWith().size.height / 2.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      CircleAvatar(
+                        radius: 40,
+                        child: GestureDetector(
+                          child: Icon(Icons.remove),
+                          onTap: () => Navigator.of(context).pop(),
+                        ),
+                      ),
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundColor: KMainOrange,
+                        child: GestureDetector(
+                          child: Icon(
+                            Icons.add,
+                            size: 60,
+                          ),
+                          onTap: () => Navigator.of(context).pop(),
+                        ),
+                      )
+                    ],
+                  ),
+                  Expanded(
+                    child: CupertinoTheme(
+                      data: CupertinoThemeData(
+                        textTheme: CupertinoTextThemeData(
+                          dateTimePickerTextStyle: TextStyle(
+                            color: Colors.white,
+                            fontFamily: KMainFontFamily,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      child: CupertinoDatePicker(
+                        mode: CupertinoDatePickerMode.date,
+                        onDateTimeChanged: (picked) {
+                          if (picked.isBefore(DateTime.now())) {
+                            print('invalid date');
+                          } else if (picked != null && picked != selectedDate)
+                            setState(() {
+                              selectedDate = picked;
+                            });
+                        },
+                        initialDateTime: selectedDate,
+                        minimumYear: 2020,
+                        maximumYear: 2030,
+                      ),
                     ),
                   ),
-                ),
-                child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.date,
-                  onDateTimeChanged: (picked) {
-                    if (picked != null && picked != selectedDate)
-                      setState(() {
-                        selectedDate = picked;
-                      });
-                  },
-                  initialDateTime: selectedDate,
-                  minimumYear: 2020,
-                  maximumYear: 2030,
-                ),
+                ],
               ),
             ),
           );
@@ -455,7 +496,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                                               .grey,
                                                                   onPressed: wasDateSelected
                                                                       ? () =>
-                                                                          _scheduleNotification()
+                                                                          // _scheduleNotification()
+                                                                          _selectDate(context)
                                                                       : () {},
                                                                   child: Icon(
                                                                     Icons
