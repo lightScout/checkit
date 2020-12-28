@@ -1,3 +1,4 @@
+import 'package:animate_icons/animate_icons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/task.dart';
@@ -42,6 +43,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   List<Widget> carouselCategoriesList = <Widget>[];
 
   final textFieldController = TextEditingController();
+
+  AnimateIconController _animateIconController;
 
   final categoriesBox = Hive.box('categories');
 
@@ -221,6 +224,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   void initState() {
     super.initState();
     initPlatformState();
+    _animateIconController = AnimateIconController();
   }
 
   //*
@@ -307,11 +311,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             body: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                     colors: [
-                      KMainRed,
-                      KMainOrange,
+                      Color(0xFF2B9348),
+                      Color(0xFF367238),
                     ]),
               ),
               child: Column(
@@ -366,7 +370,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                 child: FloatingActionButton(
                                                   heroTag: 'addTaskScreenFAB1',
                                                   splashColor: Colors.red,
-                                                  backgroundColor: KMainRed,
+                                                  backgroundColor:
+                                                      Color(0xFF007F5F),
                                                   onPressed: () {
                                                     addCategoryAlert(context);
                                                   },
@@ -449,6 +454,39 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                         Row(
                                           children: [
                                             //*
+                                            //* TUGLE CALENDAR BUTTON
+                                            //*
+                                            CustomClipRRect.customClipRRect(
+                                              colors: [
+                                                Colors.green[100],
+                                                Colors.green[100],
+                                              ],
+                                              child: AnimateIcons(
+                                                controller:
+                                                    _animateIconController,
+                                                startIcon: Icons.notifications,
+                                                startTooltip: 'Icons.add',
+                                                endTooltip: 'Icons.close',
+                                                endIcon: Icons
+                                                    .keyboard_arrow_up_rounded,
+                                                color: Colors.blueAccent[700],
+                                                size: 41,
+                                                onStartIconPress: () {
+                                                  return true;
+                                                },
+                                                onEndIconPress: () {
+                                                  return true;
+                                                },
+                                              ),
+                                            ),
+
+                                            // wasDateSelected
+                                            //               ? () =>
+                                            //                   // _scheduleNotification()
+                                            //                   _selectDate(
+                                            //                       context)
+                                            //               : () {},
+                                            //*
                                             //*SWITCH
                                             //*
                                             Switch(
@@ -461,43 +499,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                               activeTrackColor:
                                                   Colors.green.shade200,
                                               activeColor: KPersinanGreen,
-                                            ),
-                                            //*
-                                            //* TUGLE CALENDAR BUTTON
-                                            //*
-                                            ClipRRect(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(30)),
-                                              child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(6.0),
-                                                  child: Container(
-                                                    height: 50,
-                                                    child: Container(
-                                                      child:
-                                                          FloatingActionButton(
-                                                        heroTag:
-                                                            'addTaskScreenFAB2',
-                                                        splashColor: Colors.red,
-                                                        backgroundColor:
-                                                            wasDateSelected
-                                                                ? KMainPurple
-                                                                : Colors.grey,
-                                                        onPressed:
-                                                            wasDateSelected
-                                                                ? () =>
-                                                                    // _scheduleNotification()
-                                                                    _selectDate(
-                                                                        context)
-                                                                : () {},
-                                                        child: Icon(
-                                                          Icons.calendar_today,
-                                                          size: 23,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )),
                                             ),
                                           ],
                                         )
@@ -522,10 +523,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                             decoration: BoxDecoration(
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color: Colors.white60,
+                                                  color: Colors.yellow[200],
                                                   offset: Offset(
                                                       -10.0, -15.0), //(x,y)
-                                                  blurRadius: 25.0,
+                                                  blurRadius: 22.0,
                                                 ),
                                               ],
                                             ),
@@ -534,7 +535,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                   const EdgeInsets.all(8.0),
                                               child: FloatingActionButton(
                                                   splashColor: KMainOrange,
-                                                  backgroundColor: KMainOrange,
+                                                  backgroundColor:
+                                                      Color(0xFFfcd33a),
                                                   onPressed: () {
                                                     if (newTaskTitle == null ||
                                                         newTaskTitle.trim() ==

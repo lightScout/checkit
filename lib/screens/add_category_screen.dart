@@ -110,7 +110,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                       startTooltip: 'Icons.add',
                                       endTooltip: 'Icons.close',
                                       endIcon: Icons.keyboard_arrow_up_rounded,
-                                      color: Color(0xFF071F86),
+                                      color: Colors.blueAccent[700],
                                       size: 41,
                                       onStartIconPress: () {
                                         setState(() {
@@ -193,7 +193,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                               //*FIRST: INFO TEXT
                                               //*
                                               Text(
-                                                'Create a catgory to organize your tasks:',
+                                                'Create catgory to organize tasks:',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontFamily: KMainFontFamily,
