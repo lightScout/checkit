@@ -1,3 +1,4 @@
+import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 
 class SliderCategoryItem extends StatelessWidget {
@@ -18,14 +19,14 @@ class SliderCategoryItem extends StatelessWidget {
         width: 150,
         decoration: BoxDecoration(
           border: Border.all(
-            width: 1,
-            color: Colors.white,
+            width: 3,
+            color: Colors.orange,
           ),
-          color: Color(0xff420010),
-          // gradient: LinearGradient(
-          //     begin: Alignment.topCenter,
-          //     end: Alignment.bottomRight,
-          //     colors: [Colors.red[600], Color(0xFFDD0426)]),
+          // color: Color(0xff420010),
+          gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [Color(0xff420010), KMainRed.withAlpha(200)]),
           borderRadius: BorderRadius.all(
             Radius.circular(25.0),
           ),

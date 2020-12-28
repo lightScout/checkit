@@ -1,7 +1,7 @@
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 
-void noTaskNameAlert(BuildContext context) {
+void noNameAlert(BuildContext context, String type) {
   // flutter defined function
   showDialog(
     context: context,
@@ -36,7 +36,7 @@ void noTaskNameAlert(BuildContext context) {
         content: Padding(
           padding: const EdgeInsets.all(6.0),
           child: Text(
-            "Task without a name can not be added.",
+            "$type name is missing or contains only blank space.",
             style: Klogo.copyWith(
               fontSize: 18,
               shadows: [

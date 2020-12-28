@@ -203,9 +203,6 @@ class _TaskListScreenState extends State<TaskListScreen>
                     size: 44,
                   ),
                   onTap: () {
-                    if (categoriesBox.isEmpty) {
-                      noCategoriesAvailableDialog(context);
-                    }
                     setState(() {
                       topBorderRadius = 50;
                       yOffset = MediaQuery.of(context).size.height / 1.2;
@@ -261,9 +258,6 @@ class _TaskListScreenState extends State<TaskListScreen>
                                 color: Color(0xFF071F86),
                                 size: 41,
                                 onStartIconPress: () {
-                                  if (categoriesBox.isEmpty) {
-                                    noCategoriesAvailableDialog(context);
-                                  }
                                   setState(() {
                                     topBorderRadius = 50;
                                     yOffset =
