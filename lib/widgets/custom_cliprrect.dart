@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 
-Widget customClipRRect({Widget child}) {
+Widget customClipRRect({Widget child, List<Color> colors}) {
   return ClipRRect(
-    borderRadius: BorderRadius.all(Radius.circular(25)),
+    borderRadius: BorderRadius.all(Radius.circular(60)),
     child: Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color(0xFF2A9D8F),
-              Color(0xFF9bdeff),
-            ]),
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: colors),
       ),
       child: child,
     ),

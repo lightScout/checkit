@@ -143,7 +143,7 @@ class _TaskListScreenState extends State<TaskListScreen>
           yOffset,
           0,
         )..scale(scaleFactor),
-        duration: Duration(milliseconds: 800),
+        duration: Duration(milliseconds: 600),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
@@ -151,9 +151,9 @@ class _TaskListScreenState extends State<TaskListScreen>
               ringDiameter: MediaQuery.of(context).size.width * 0.75,
               ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
               animationDuration: Duration(milliseconds: 300),
-              fabCloseColor: Color(0xFF071F86),
-              fabElevation: 6,
-              fabMargin: EdgeInsets.only(right: 47, bottom: 40),
+              fabCloseColor: Colors.blue,
+              fabElevation: 1,
+              fabMargin: EdgeInsets.only(right: 30, bottom: 30),
               fabOpenColor: Color(0xFFFF1d1d),
               ringColor: Color(0xFFFA9700),
               fabCloseIcon: Icon(
@@ -163,7 +163,7 @@ class _TaskListScreenState extends State<TaskListScreen>
               ),
               fabOpenIcon: Icon(
                 Icons.fingerprint,
-                size: 41,
+                size: 49,
                 color: Colors.white,
               ),
               children: <Widget>[
@@ -227,9 +227,9 @@ class _TaskListScreenState extends State<TaskListScreen>
             ),
             child: Column(
               children: <Widget>[
-                //
-                //Top bar section - Menu bar, title and more
-                //
+                //*
+                //* NAVEGATION BUTTON and APP TITLE
+                //*
                 Container(
                   padding:
                       EdgeInsets.only(left: 0, right: 0, top: 48, bottom: 0),
@@ -237,9 +237,6 @@ class _TaskListScreenState extends State<TaskListScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      //
-                      // Menu Button and Title
-                      //
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 22,
@@ -249,13 +246,14 @@ class _TaskListScreenState extends State<TaskListScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomClipRRect.customClipRRect(
+                              colors: [Colors.blue, Constant.KBabyBlue],
                               child: AnimateIcons(
                                 controller: _animateIconController,
-                                startIcon: Icons.add,
+                                startIcon: Icons.keyboard_arrow_down_rounded,
                                 startTooltip: 'Icons.add',
                                 endTooltip: 'Icons.close',
-                                endIcon: Icons.close,
-                                color: Color(0xFF071F86),
+                                endIcon: Icons.keyboard_arrow_up_rounded,
+                                color: Colors.white,
                                 size: 41,
                                 onStartIconPress: () {
                                   setState(() {
@@ -480,6 +478,7 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
                     padding: const EdgeInsets.only(
                         top: 8.0, left: 8.0, right: 8.0, bottom: 8.0),
                     child: CustomClipRRect.customClipRRect(
+                      colors: [Colors.blue, Constant.KBabyBlue],
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Container(
@@ -487,11 +486,8 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
                           height: 45,
                           child: InkWell(
                             onTap: function,
-                            child: Icon(
-                              Icons.delete,
-                              size: 28,
-                              color: KMainPurple,
-                            ),
+                            child: Icon(Icons.delete,
+                                size: 28, color: Colors.white),
                           ),
                         ),
                       ),
@@ -521,27 +517,4 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
       ),
     ],
   );
-}
-
-Widget addCategoryButton(Function function) {
-  return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-    FloatingActionButton(
-        heroTag: 'addCategory',
-        elevation: 5,
-        splashColor: Color(0xFF9bdeff),
-        backgroundColor: Color(0xFF071F86),
-        child: Icon(
-          Icons.category,
-          size: 33,
-          color: Colors.white,
-        ),
-        onPressed: function),
-    Padding(
-      padding: const EdgeInsets.only(top: 18.0),
-      child: Text(
-        'Add Category',
-        style: Klogo.copyWith(fontSize: 14),
-      ),
-    ),
-  ]);
 }
