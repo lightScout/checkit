@@ -255,7 +255,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                               ),
 
                                               //*
-                                              //*SECOND: ADD CATEGORY BUTTON
+                                              //*THIRD: ADD CATEGORY BUTTON
                                               //*
                                               Row(
                                                 mainAxisAlignment:
@@ -287,6 +287,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                                 .all(8.0),
                                                         child:
                                                             FloatingActionButton(
+                                                                heroTag:
+                                                                    'ADDCATEGORYSCREEN-FAB',
                                                                 splashColor:
                                                                     KMainOrange,
                                                                 backgroundColor:

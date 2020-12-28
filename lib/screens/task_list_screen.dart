@@ -151,9 +151,9 @@ class _TaskListScreenState extends State<TaskListScreen>
               ringDiameter: MediaQuery.of(context).size.width * 0.75,
               ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
               animationDuration: Duration(milliseconds: 300),
-              fabCloseColor: Colors.blue,
-              fabElevation: 1,
-              fabMargin: EdgeInsets.only(right: 30, bottom: 30),
+              fabCloseColor: Color(0xFF071F86),
+              fabElevation: 6,
+              fabMargin: EdgeInsets.only(right: 47, bottom: 40),
               fabOpenColor: Color(0xFFFF1d1d),
               ringColor: Color(0xFFFA9700),
               fabCloseIcon: Icon(
@@ -246,14 +246,17 @@ class _TaskListScreenState extends State<TaskListScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomClipRRect.customClipRRect(
-                              colors: [Colors.blue, Constant.KBabyBlue],
+                              colors: [
+                                Color(0xFF2A9D8F),
+                                Color(0xFF9bdeff),
+                              ],
                               child: AnimateIcons(
                                 controller: _animateIconController,
-                                startIcon: Icons.keyboard_arrow_down_rounded,
+                                startIcon: Icons.add,
                                 startTooltip: 'Icons.add',
                                 endTooltip: 'Icons.close',
-                                endIcon: Icons.keyboard_arrow_up_rounded,
-                                color: Colors.white,
+                                endIcon: Icons.close,
+                                color: Color(0xFF071F86),
                                 size: 41,
                                 onStartIconPress: () {
                                   setState(() {
@@ -478,7 +481,10 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
                     padding: const EdgeInsets.only(
                         top: 8.0, left: 8.0, right: 8.0, bottom: 8.0),
                     child: CustomClipRRect.customClipRRect(
-                      colors: [Colors.blue, Constant.KBabyBlue],
+                      colors: [
+                        Color(0xFF2A9D8F),
+                        Color(0xFF9bdeff),
+                      ],
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Container(
@@ -487,7 +493,7 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
                           child: InkWell(
                             onTap: function,
                             child: Icon(Icons.delete,
-                                size: 28, color: Colors.white),
+                                size: 28, color: Constant.KMainPurple),
                           ),
                         ),
                       ),
