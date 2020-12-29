@@ -224,6 +224,22 @@ class _TaskListScreenState extends State<TaskListScreen>
                 topRight: Radius.circular(topBorderRadius),
               ),
               gradient: Constant.KMainLinearGradient,
+              border: Border.all(
+                color: Colors.white54,
+                width: 10,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.pink[300],
+                  offset: Offset(0.0, -4.0), //(x,y)
+                  blurRadius: 100.0,
+                ),
+                BoxShadow(
+                  color: Colors.pink[700],
+                  offset: Offset(0.0, -2.0), //(x,y)
+                  blurRadius: 11.1,
+                ),
+              ],
             ),
             child: Column(
               children: <Widget>[
@@ -430,7 +446,7 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
             boxShadow: [
               BoxShadow(
                 color: Colors.blueAccent[400],
-                offset: Offset(0.0, 5.0), //(x,y)
+                offset: Offset(5.0, 5.0), //(x,y)
                 blurRadius: 5.0,
               ),
             ],

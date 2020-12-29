@@ -136,6 +136,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         );
       },
     );
+    //TODO: work on Andriod picker logic and functionality
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
@@ -351,6 +352,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             //*
             body: Container(
               decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white54,
+                  width: 10,
+                ),
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -459,17 +464,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                             Radius.circular(25),
                                           ),
                                           borderSide: BorderSide(
-                                              color: Colors.white, width: 1.0),
+                                              color: Colors.black, width: 5.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: Colors.white, width: 1.0),
+                                              color: Colors.white, width: 2.0),
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(25),
                                           ),
                                         ),
                                         filled: true,
-                                        fillColor: Colors.white24,
+                                        fillColor: Colors.teal[900],
                                       ),
                                       autofocus: false,
                                       onChanged: (value) {
@@ -541,33 +546,33 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                   Colors.green.shade200,
                                               activeColor: KPersinanGreen,
                                             ),
-
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 7.0),
-                                              child: Text(
-                                                (notificationOn)
-                                                    ? (notificationDateSelected &&
-                                                            !selectedDate
-                                                                .isBefore(
-                                                                    DateTime
-                                                                        .now()))
-                                                        ? '${DateFormat.yMd().add_jm().format(selectedDate)}'
-                                                        : 'Date and time no selected'
-                                                    : '',
-                                                style: Klogo.copyWith(
-                                                  fontSize: 9.5,
-                                                  shadows: [],
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            )
+// TODO: work on alignment - it is bleeding out on the right hand side
+                                            // Padding(
+                                            //   padding: const EdgeInsets.only(
+                                            //       left: 7.0),
+                                            //   child: Text(
+                                            //     (notificationOn)
+                                            //         ? (notificationDateSelected &&
+                                            //                 !selectedDate
+                                            //                     .isBefore(
+                                            //                         DateTime
+                                            //                             .now()))
+                                            //             ? '${DateFormat.yMd().add_jm().format(selectedDate)}'
+                                            //             : 'Date and time no selected'
+                                            //         : '',
+                                            //     style: Klogo.copyWith(
+                                            //       fontSize: 9.5,
+                                            //       shadows: [],
+                                            //       color: Colors.white,
+                                            //     ),
+                                            //   ),
+                                            // )
                                           ],
                                         )
                                       ],
                                     ),
                                     SizedBox(
-                                      height: 20,
+                                      height: 1,
                                     ),
                                     //*
                                     //*FOURTH: ADD TASK BUTTON
@@ -688,7 +693,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                   child: Icon(
                                                     Icons.fingerprint,
                                                     size: 60,
-                                                    color: Colors.white38,
+                                                    color: Colors.greenAccent,
                                                   )),
                                             ),
                                           ),

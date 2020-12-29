@@ -18,15 +18,15 @@ class SliderCategoryItem extends StatelessWidget {
         height: 25,
         width: 150,
         decoration: BoxDecoration(
-          // border: Border.all(
-          //   width: 3,
-          //   color: Colors.orange,
-          // ),
+          border: Border.all(
+            width: 3,
+            color: Colors.white54,
+          ),
           // color: Color(0xff420010),
           gradient: LinearGradient(
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
-              colors: [Colors.green[900], Colors.teal[50]]),
+              colors: [KMainRed, KMainOrange]),
           borderRadius: BorderRadius.all(
             Radius.circular(25.0),
           ),

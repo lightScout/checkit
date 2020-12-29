@@ -65,12 +65,29 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                     topRight: Radius.circular(topBorderRadius),
                   ),
                   gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                        KMainRed,
-                        KMainOrange,
-                      ]),
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      KMainRed,
+                      KMainOrange,
+                    ],
+                  ),
+                  border: Border.all(
+                    color: Colors.white54,
+                    width: 10,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.limeAccent[100],
+                      offset: Offset(0.0, -4.0), //(x,y)
+                      blurRadius: 10.1,
+                    ),
+                    BoxShadow(
+                      color: Colors.yellow[900],
+                      offset: Offset(0.0, -2.0), //(x,y)
+                      blurRadius: 5.1,
+                    ),
+                  ],
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
