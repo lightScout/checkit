@@ -34,9 +34,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   String newTaskCategory;
 
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate;
 
-  bool wasDateSelected = false;
+  bool notificationDateSelected = false;
+
+  bool notificationOn = false;
 
   var selectedCategory;
 
@@ -53,8 +55,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     tasksBox.add(task);
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
+  //* Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformLocation() async {
     String timezone;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
@@ -74,9 +76,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   _selectDate(BuildContext context) async {
-    setState(() {
+    if (selectedDate.isBefore(DateTime.now())) {
       selectedDate = DateTime.now();
-    });
+    }
     final ThemeData theme = Theme.of(context);
     assert(theme.platform != null);
     switch (theme.platform) {
@@ -91,7 +93,27 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     }
   }
 
-  /// This builds material date picker in Android
+//* This is used to check if the selected date is valid (in the fature)
+  bool _validateSelectedDate(BuildContext context) {
+    bool result;
+    if (selectedDate.isBefore(DateTime.now())) {
+      Flushbar(
+        duration: Duration(seconds: 2),
+        messageText: Text(
+          'Pick a future date or time',
+          style: Klogo.copyWith(color: Colors.white, shadows: [], fontSize: 14),
+        ),
+        flushbarStyle: FlushbarStyle.FLOATING,
+      ).show(context);
+      result = false;
+    } else if (selectedDate.isAfter(DateTime.now())) {
+      Navigator.of(context).pop();
+      result = true;
+    }
+    return result;
+  }
+
+  //* This builds material date picker in Android
   buildMaterialDatePicker(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -113,8 +135,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       });
   }
 
-  /// This builds cupertion date picker in iOS
+  //* This builds cupertion date picker in iOS
   buildCupertinoDatePicker(BuildContext context) {
+    print(selectedDate);
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -153,15 +176,32 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           onTap: () => Navigator.of(context).pop(),
                         ),
                       ),
-                      CircleAvatar(
-                        radius: 60,
-                        backgroundColor: KMainOrange,
-                        child: GestureDetector(
+                      GestureDetector(
+                        onTap: () {
+                          if (_validateSelectedDate(context)) {
+                            setState(() {
+                              notificationDateSelected = true;
+                            });
+                            Flushbar(
+                              duration: Duration(seconds: 2),
+                              messageText: Text(
+                                'Date and time selected successfully',
+                                style: Klogo.copyWith(
+                                    color: Colors.white,
+                                    shadows: [],
+                                    fontSize: 14),
+                              ),
+                              flushbarStyle: FlushbarStyle.FLOATING,
+                            ).show(context);
+                          }
+                        },
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundColor: KMainOrange,
                           child: Icon(
                             Icons.add,
                             size: 60,
                           ),
-                          onTap: () => Navigator.of(context).pop(),
                         ),
                       )
                     ],
@@ -179,14 +219,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         ),
                       ),
                       child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.date,
+                        mode: CupertinoDatePickerMode.dateAndTime,
                         onDateTimeChanged: (picked) {
-                          if (picked.isBefore(DateTime.now())) {
-                            print('invalid date');
-                          } else if (picked != null && picked != selectedDate)
-                            setState(() {
-                              selectedDate = picked;
-                            });
+                          setState(() {
+                            selectedDate = picked;
+                          });
+                          print(selectedDate);
+                          print(
+                              'day: ${selectedDate.day}, month: ${selectedDate.month}, year: ${selectedDate.year},');
                         },
                         initialDateTime: selectedDate,
                         minimumYear: 2020,
@@ -223,7 +263,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    initPlatformLocation();
+    selectedDate = DateTime.now();
     _animateIconController = AnimateIconController();
   }
 
@@ -467,39 +508,54 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                 startIcon: Icons.notifications,
                                                 startTooltip: 'Icons.add',
                                                 endTooltip: 'Icons.close',
-                                                endIcon: Icons
-                                                    .keyboard_arrow_up_rounded,
+                                                endIcon: Icons.notifications,
                                                 color: Colors.blueAccent[700],
                                                 size: 41,
                                                 onStartIconPress: () {
+                                                  if (notificationOn) {
+                                                    _selectDate(context);
+                                                  }
                                                   return true;
                                                 },
                                                 onEndIconPress: () {
+                                                  if (notificationOn) {
+                                                    _selectDate(context);
+                                                  }
                                                   return true;
                                                 },
                                               ),
                                             ),
 
-                                            // wasDateSelected
-                                            //               ? () =>
-                                            //                   // _scheduleNotification()
-                                            //                   _selectDate(
-                                            //                       context)
-                                            //               : () {},
                                             //*
                                             //*SWITCH
                                             //*
                                             Switch(
-                                              value: wasDateSelected,
+                                              value: notificationOn,
                                               onChanged: (value) {
                                                 setState(() {
-                                                  wasDateSelected = value;
+                                                  notificationOn = value;
                                                 });
                                               },
                                               activeTrackColor:
                                                   Colors.green.shade200,
                                               activeColor: KPersinanGreen,
                                             ),
+
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 30.0),
+                                              child: Text(
+                                                (notificationDateSelected &&
+                                                        notificationOn)
+                                                    ? '${DateFormat.yMd().add_jm().format(selectedDate)}'
+                                                    : '',
+                                                style: Klogo.copyWith(
+                                                  fontSize: 10,
+                                                  shadows: [],
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            )
                                           ],
                                         )
                                       ],
@@ -538,50 +594,59 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                   backgroundColor:
                                                       Color(0xFFfcd33a),
                                                   onPressed: () {
-                                                    if (newTaskTitle == null ||
-                                                        newTaskTitle.trim() ==
-                                                            '') {
-                                                      noNameAlert(
-                                                          context, 'Task');
-                                                    } else {
-                                                      //unfocusing the keyboard to avoid pixel overflow
-                                                      FocusScope.of(context)
-                                                          .unfocus();
-                                                      //Add task to the list
+                                                    if (_validateSelectedDate(
+                                                        context)) {
+                                                      if (newTaskTitle ==
+                                                              null ||
+                                                          newTaskTitle.trim() ==
+                                                              '') {
+                                                        noNameAlert(
+                                                            context, 'Task');
+                                                      } else {
+                                                        //unfocusing the keyboard to avoid pixel overflow
+                                                        FocusScope.of(context)
+                                                            .unfocus();
+                                                        //Add task to the list
 
-                                                      Task task = Task();
-                                                      task.name = newTaskTitle;
-                                                      task.category =
-                                                          selectedCategory;
-                                                      task.dueDate = wasDateSelected
-                                                          ? "${selectedDate.toLocal()}"
-                                                              .split(' ')[0]
-                                                          : null;
-                                                      task.isDone = false;
-                                                      addTask(task);
-                                                      setState(() {
-                                                        newTaskTitle = null;
-                                                      });
-                                                      Flushbar(
-                                                              duration:
-                                                                  Duration(
-                                                                      seconds:
-                                                                          1),
-                                                              messageText: Text(
-                                                                'Task added successfuly.',
-                                                                style: Klogo.copyWith(
+                                                        Task task = Task();
+                                                        task.name =
+                                                            newTaskTitle;
+                                                        task.category =
+                                                            selectedCategory;
+                                                        task.dueDate =
+                                                            notificationOn
+                                                                ? "${selectedDate.toLocal()}"
+                                                                    .split(
+                                                                        ' ')[0]
+                                                                : null;
+                                                        task.isDone = false;
+                                                        addTask(task);
+                                                        setState(() {
+                                                          newTaskTitle = null;
+                                                        });
+                                                        Flushbar(
+                                                          duration: Duration(
+                                                              seconds: 1),
+                                                          messageText: Text(
+                                                            'Task added successfuly.',
+                                                            style:
+                                                                Klogo.copyWith(
                                                                     color: Colors
                                                                         .white,
                                                                     shadows: [],
                                                                     fontSize:
                                                                         14),
-                                                              ),
-                                                              flushbarStyle:
-                                                                  FlushbarStyle
-                                                                      .FLOATING)
-                                                          .show(context);
-                                                      textFieldController
-                                                          .clear();
+                                                          ),
+                                                          flushbarStyle:
+                                                              FlushbarStyle
+                                                                  .FLOATING,
+                                                        ).show(context);
+                                                        textFieldController
+                                                            .clear();
+                                                        if (notificationOn) {
+                                                          _scheduleNotification();
+                                                        }
+                                                      }
                                                     }
                                                   },
                                                   child: Icon(
@@ -608,6 +673,19 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         });
   }
 
+  tz.TZDateTime _nextNotificationInstance(DateTime selectedDate) {
+    // final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+        tz.local,
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        selectedDate.hour,
+        selectedDate.minute,
+        selectedDate.second);
+    return scheduledDate;
+  }
+
   void _scheduleNotification() async {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation(_timezone));
@@ -627,7 +705,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       0,
       'schedule title',
       'schedule body',
-      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 3)),
+      _nextNotificationInstance(selectedDate),
       platformChannelSpecifics,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
