@@ -107,7 +107,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       ).show(context);
       result = false;
     } else if (selectedDate.isAfter(DateTime.now())) {
-      Navigator.of(context).pop();
+      // Flushbar(
+      //   duration: Duration(seconds: 2),
+      //   messageText: Text(
+      //     'Date and time selected successfully',
+      //     style: Klogo.copyWith(color: Colors.white, shadows: [], fontSize: 14),
+      //   ),
+      //   flushbarStyle: FlushbarStyle.FLOATING,
+      // ).show(context);
       result = true;
     }
     return result;
@@ -182,17 +189,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                             setState(() {
                               notificationDateSelected = true;
                             });
-                            Flushbar(
-                              duration: Duration(seconds: 2),
-                              messageText: Text(
-                                'Date and time selected successfully',
-                                style: Klogo.copyWith(
-                                    color: Colors.white,
-                                    shadows: [],
-                                    fontSize: 14),
-                              ),
-                              flushbarStyle: FlushbarStyle.FLOATING,
-                            ).show(context);
+                            //! work on another way to dismiss the page
+                            //! this method is interfering with the flush bar
+                            Navigator.of(context)
+                                .popUntil((route) => route.isFirst);
                           }
                         },
                         child: CircleAvatar(
@@ -424,9 +424,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                 ),
                                               )),
                                         ),
-                                        //!
-                                        //!TASK CATEGORIES CAROUSEL
-                                        //!
+                                        //*
+                                        //* TASK CATEGORIES CAROUSEL
+                                        //*
 
                                         Container(
                                           child: categoriesCarousel(),
@@ -534,6 +534,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                               onChanged: (value) {
                                                 setState(() {
                                                   notificationOn = value;
+                                                  selectedDate = DateTime.now();
                                                 });
                                               },
                                               activeTrackColor:
@@ -543,14 +544,19 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 30.0),
+                                                  left: 7.0),
                                               child: Text(
-                                                (notificationDateSelected &&
-                                                        notificationOn)
-                                                    ? '${DateFormat.yMd().add_jm().format(selectedDate)}'
+                                                (notificationOn)
+                                                    ? (notificationDateSelected &&
+                                                            !selectedDate
+                                                                .isBefore(
+                                                                    DateTime
+                                                                        .now()))
+                                                        ? '${DateFormat.yMd().add_jm().format(selectedDate)}'
+                                                        : 'Date and time no selected'
                                                     : '',
                                                 style: Klogo.copyWith(
-                                                  fontSize: 10,
+                                                  fontSize: 9.5,
                                                   shadows: [],
                                                   color: Colors.white,
                                                 ),
@@ -594,20 +600,52 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                   backgroundColor:
                                                       Color(0xFFfcd33a),
                                                   onPressed: () {
-                                                    if (_validateSelectedDate(
-                                                        context)) {
-                                                      if (newTaskTitle ==
-                                                              null ||
-                                                          newTaskTitle.trim() ==
-                                                              '') {
-                                                        noNameAlert(
-                                                            context, 'Task');
-                                                      } else {
-                                                        //unfocusing the keyboard to avoid pixel overflow
-                                                        FocusScope.of(context)
-                                                            .unfocus();
-                                                        //Add task to the list
+                                                    if (newTaskTitle == null ||
+                                                        newTaskTitle.trim() ==
+                                                            '') {
+                                                      noNameAlert(
+                                                          context, 'Task');
+                                                    } else {
+                                                      if (notificationOn &&
+                                                          _validateSelectedDate(
+                                                              context)) {
+                                                        Task task = Task();
+                                                        task.name =
+                                                            newTaskTitle;
+                                                        task.category =
+                                                            selectedCategory;
+                                                        task.dueDate =
+                                                            notificationOn
+                                                                ? "${DateFormat.yMd().add_jm().format(selectedDate)}"
+                                                                : null;
+                                                        task.isDone = false;
+                                                        addTask(task);
+                                                        setState(() {
+                                                          newTaskTitle = null;
+                                                        });
 
+                                                        Flushbar(
+                                                          duration: Duration(
+                                                              seconds: 1),
+                                                          messageText: Text(
+                                                            'Task and reminder added successfuly.',
+                                                            style:
+                                                                Klogo.copyWith(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    shadows: [],
+                                                                    fontSize:
+                                                                        14),
+                                                          ),
+                                                          flushbarStyle:
+                                                              FlushbarStyle
+                                                                  .FLOATING,
+                                                        ).show(context);
+                                                        textFieldController
+                                                            .clear();
+                                                        _scheduleNotification();
+                                                      }
+                                                      if (!notificationOn) {
                                                         Task task = Task();
                                                         task.name =
                                                             newTaskTitle;
@@ -624,6 +662,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                         setState(() {
                                                           newTaskTitle = null;
                                                         });
+
                                                         Flushbar(
                                                           duration: Duration(
                                                               seconds: 1),
@@ -643,9 +682,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                         ).show(context);
                                                         textFieldController
                                                             .clear();
-                                                        if (notificationOn) {
-                                                          _scheduleNotification();
-                                                        }
                                                       }
                                                     }
                                                   },
