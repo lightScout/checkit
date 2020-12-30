@@ -39,6 +39,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icon/
+    - assets/textures/
 
   fonts:
     - family: BungeeInLine

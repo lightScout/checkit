@@ -29,13 +29,13 @@ Future addCategoryAlert(BuildContext context) {
                   textAlign: TextAlign.start,
                   textScaleFactor: 1.11,
                   style: Klogo.copyWith(
-                    fontSize: 18,
+                    fontSize: 16,
                     shadows: [
-                      Shadow(
-                        blurRadius: 2.0,
-                        color: Colors.blue,
-                        offset: Offset(-5.55, -4.44),
-                      ),
+                      // Shadow(
+                      //   blurRadius: 2.0,
+                      //   color: Colors.blue,
+                      //   offset: Offset(-5.55, -4.44),
+                      // ),
                       Shadow(
                         blurRadius: 2.0,
                         color: Colors.red,
