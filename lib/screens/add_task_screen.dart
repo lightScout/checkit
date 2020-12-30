@@ -121,12 +121,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   //* This builds material date picker in Android
+  //TODO: code is now showing the time picker but 'date' and 'time' need to be merged into a DateTime variable to be verified
+
   buildMaterialDatePicker(BuildContext context) async {
+    DateTime date;
+    TimeOfDay time;
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(2020),
-      lastDate: DateTime(2030),
+      lastDate: DateTime(2222),
       errorFormatText: 'Enter valid date',
       errorInvalidText: 'Enter date in valid range',
       builder: (context, child) {
@@ -136,11 +140,25 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         );
       },
     );
-    //TODO: work on Andriod picker logic and functionality
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDate) {
       setState(() {
-        selectedDate = picked;
+        date = picked;
       });
+    }
+
+    TimeOfDay t = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (t != null)
+      setState(() {
+        time = t;
+      });
+
+    // if (picked != null && picked != selectedDate)
+    //   setState(() {
+    //     selectedDate = picked;
+    //   });
   }
 
   //* This builds cupertion date picker in iOS
@@ -192,6 +210,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                             });
                             //! work on another way to dismiss the page
                             //! this method is interfering with the flush bar
+                            //* successful selection of date and time flush bar disable
+                            //* the line of code below can be used to pop all but the first route in the stack
                             Navigator.of(context)
                                 .popUntil((route) => route.isFirst);
                           }
@@ -231,7 +251,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         },
                         initialDateTime: selectedDate,
                         minimumYear: 2020,
-                        maximumYear: 2030,
+                        maximumYear: 2222,
                       ),
                     ),
                   ),
@@ -312,7 +332,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           bottomRight: Radius.circular(90.0)),
                     ),
                     height: 70,
-                    width: 270,
+                    width: 250,
                     child: CarouselSlider(
                       options: CarouselOptions(
                           viewportFraction: .43,
@@ -393,6 +413,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     //*FIRST: ADD CATEGORY BUTTON AND CATGORY CAROUSEL
                                     //*
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         ClipRRect(
                                           borderRadius: BorderRadius.all(
@@ -464,7 +486,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                             Radius.circular(25),
                                           ),
                                           borderSide: BorderSide(
-                                              color: Colors.black, width: 5.0),
+                                              color: Colors.white, width: 5.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
@@ -513,7 +535,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                 startIcon: Icons.notifications,
                                                 startTooltip: 'Icons.add',
                                                 endTooltip: 'Icons.close',
-                                                endIcon: Icons.notifications,
+                                                endIcon: notificationOn
+                                                    ? Icons.notifications
+                                                    : Icons.close,
                                                 color: Colors.blueAccent[700],
                                                 size: 41,
                                                 onStartIconPress: () {

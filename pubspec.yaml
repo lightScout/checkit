@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_launcher_icons: "^0.8.0"
   cupertino_icons: ^0.1.2
   fab_circular_menu: ^1.0.0
   flutter_svg: ^0.17.4
@@ -24,6 +25,9 @@ dependencies:
   introduction_screen: ^1.0.7
   flutter_native_timezone: ^1.0.4
   flutter_local_notifications: ^3.0.2
+  date_time_picker: "^1.1.1"
+
+
 
 dev_dependencies:
   flutter_test:

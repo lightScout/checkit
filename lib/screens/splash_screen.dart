@@ -51,19 +51,19 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    'checKit',
-                    style: Klogo,
-                  ),
+                  // Text(
+                  //   'checKit',
+                  //   style: Klogo,
+                  // ),
 
-                  SizedBox(
-                    height: 30,
-                  ),
+                  // SizedBox(
+                  //   height: 30,
+                  // ),
                   ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(60)),
+                    borderRadius: BorderRadius.all(Radius.circular(90)),
                     child: Container(
-                      height: 120,
-                      width: 120,
+                      height: 140,
+                      width: 140,
                       child: Image(
                         image: AssetImage('assets/icon/app_icon_v2.png'),
                       ),
@@ -80,33 +80,33 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                  'from JJ Lightscout',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: KMainPurple,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 5.0),
-                child: Text(
-                  '2.0',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: KMainPurple.withOpacity(0.6),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.only(bottom: 10.0),
+          //       child: Text(
+          //         'from JJ Lightscout',
+          //         style: TextStyle(
+          //           fontSize: 14,
+          //           fontWeight: FontWeight.bold,
+          //           color: KMainPurple,
+          //         ),
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: const EdgeInsets.only(bottom: 5.0),
+          //       child: Text(
+          //         '2.0',
+          //         style: TextStyle(
+          //           fontSize: 14,
+          //           fontWeight: FontWeight.bold,
+          //           color: KMainPurple.withOpacity(0.6),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
