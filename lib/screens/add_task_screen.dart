@@ -298,11 +298,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       boxShadow: [
-                        BoxShadow(
-                          color: Colors.white24,
-                          offset: Offset(0.0, 0.0), //(x,y)
-                          blurRadius: 9.0,
-                        ),
+                        // BoxShadow(
+                        //   color: Colors.greenAccent,
+                        //   offset: Offset(5.0, 5.0), //(x,y)
+                        //   blurRadius: 30.0,
+                        // ),
                       ],
                       color: Colors.white.withOpacity(.2),
                       borderRadius: BorderRadius.only(
