@@ -24,13 +24,23 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
   double yOffset = 0;
   double scaleFactor = 1;
   double topBorderRadius = 0;
-  bool newTaskScreenToggle = false;
+  bool isPageClosed = false;
 
   //* TEXT FIELD CONTROLLER
   final textFieldController = TextEditingController();
-
   //* String to hold the new category title
   String newCategoryTitle;
+  Box categoriesBox = Hive.box('categories');
+  void wasNavigationButtonInvertedCheck() {
+    if (categoriesBox.isEmpty && isPageClosed) {
+      xOffset = 0;
+      yOffset = 0;
+      topBorderRadius = 0;
+
+      print('navegation button inverted');
+    }
+  }
+
   //* INIT
   @override
   void initState() {
@@ -43,8 +53,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
     return AnimatedContainer(
       curve: Curves.ease,
       transform: Matrix4.translationValues(
-        xOffset,
-        yOffset,
+        categoriesBox.isEmpty ? 0 : xOffset,
+        categoriesBox.isEmpty ? 0 : yOffset,
         0,
       )..scale(scaleFactor),
       duration: Duration(milliseconds: 600),
@@ -52,6 +62,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
           valueListenable: Hive.box('categories').listenable(),
           builder: (context, box, widget) {
             print(box.keys);
+            wasNavigationButtonInvertedCheck();
             return Scaffold(
               backgroundColor: Colors.transparent,
               resizeToAvoidBottomInset: false,
@@ -64,8 +75,12 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                       image: AssetImage(
                           'assets/textures/add_category_screen_texture3.png')),
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(topBorderRadius),
-                    topRight: Radius.circular(topBorderRadius),
+                    topLeft: categoriesBox.isEmpty
+                        ? Radius.circular(0)
+                        : Radius.circular(topBorderRadius),
+                    topRight: categoriesBox.isEmpty
+                        ? Radius.circular(0)
+                        : Radius.circular(topBorderRadius),
                   ),
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
@@ -124,40 +139,43 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                   //*
                                   //* NAVEGATION BUTTON
                                   //*
-                                  customClipRRect(
-                                    colors: (Hive.box('categories').isEmpty)
-                                        ? [Colors.grey[600], Colors.transparent]
-                                        : [KMainRed, Colors.orange],
-                                    child: AnimateIcons(
-                                      controller: _animateIconController,
-                                      startIcon:
-                                          Icons.keyboard_arrow_down_rounded,
-                                      startTooltip: 'Icons.add',
-                                      endTooltip: 'Icons.close',
-                                      endIcon: Icons.keyboard_arrow_up_rounded,
-                                      color: Colors.blueAccent[700],
-                                      size: 41,
-                                      onStartIconPress: () {
-                                        setState(() {
-                                          topBorderRadius = 50;
-                                          yOffset = MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              1.5;
-                                          newTaskScreenToggle = true;
-                                        });
-                                        return true;
-                                      },
-                                      onEndIconPress: () {
-                                        setState(() {
-                                          topBorderRadius = 0;
-                                          yOffset = 0;
-                                          newTaskScreenToggle = false;
-                                        });
-                                        return true;
-                                      },
-                                    ),
-                                  ),
+                                  categoriesBox.isEmpty
+                                      ? SizedBox()
+                                      : customClipRRect(
+                                          colors: [KMainRed, Colors.orange],
+                                          child: AnimateIcons(
+                                            controller: _animateIconController,
+                                            startIcon: Icons
+                                                .keyboard_arrow_down_rounded,
+                                            startTooltip: 'Icons.add',
+                                            endTooltip: 'Icons.close',
+                                            endIcon:
+                                                Icons.keyboard_arrow_up_rounded,
+                                            color: Colors.blueAccent[700],
+                                            size: 41,
+                                            onStartIconPress: () {
+                                              setState(() {
+                                                topBorderRadius = 50;
+                                                yOffset = MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    1.5;
+                                                isPageClosed = true;
+                                              });
+
+                                              return true;
+                                            },
+                                            onEndIconPress: () {
+                                              setState(() {
+                                                topBorderRadius = 0;
+                                                yOffset = 0;
+                                                isPageClosed = false;
+                                              });
+
+                                              return true;
+                                            },
+                                          ),
+                                        ),
                                   //*
                                   //* SCREEN TITLE
                                   //*
@@ -329,11 +347,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                                         context,
                                                                         'Category');
                                                                   } else {
-                                                                    //! Unfocusing the keyboard
-                                                                    FocusScope.of(
-                                                                            context)
-                                                                        .unfocus();
-
                                                                     //! Adding new category to categoriesBox
 
                                                                     Category
@@ -345,10 +358,11 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                                             'categories')
                                                                         .add(
                                                                             newCategory);
+
                                                                     //! bottom bar event anuncing successful addtiong of new category
                                                                     Flushbar(
                                                                             duration:
-                                                                                Duration(seconds: 1),
+                                                                                Duration(seconds: 2),
                                                                             messageText: Text(
                                                                               'Category added successfuly.',
                                                                               style: Klogo.copyWith(color: Colors.white, shadows: [], fontSize: 14),
