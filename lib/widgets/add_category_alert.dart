@@ -3,6 +3,8 @@ import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+import 'no_name_alert.dart';
+
 Future addCategoryAlert(BuildContext context) {
   String newTaskCategory;
   return showDialog(
@@ -66,6 +68,7 @@ Future addCategoryAlert(BuildContext context) {
                 height: 80,
                 width: 300,
                 child: TextField(
+                  textCapitalization: TextCapitalization.sentences,
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   style: Klogo.copyWith(
@@ -103,9 +106,15 @@ Future addCategoryAlert(BuildContext context) {
                         color: Colors.pink[50].withOpacity(.70),
                       ),
                       onTap: () {
-                        Category newCategory = Category(name: newTaskCategory);
-                        Hive.box('categories').add(newCategory);
-                        Navigator.of(context).pop();
+                        if (newTaskCategory == null ||
+                            newTaskCategory.trim() == '') {
+                          noNameAlert(context, 'Category');
+                        } else {
+                          Category newCategory =
+                              Category(name: newTaskCategory);
+                          Hive.box('categories').add(newCategory);
+                          Navigator.of(context).pop();
+                        }
                       },
                     ),
                   ),

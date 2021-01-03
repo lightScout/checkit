@@ -250,6 +250,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                               //*SECOND: TEXTFEILD 'ADD CATEGORY HERE'
                                               //*
                                               TextField(
+                                                textCapitalization:
+                                                    TextCapitalization
+                                                        .sentences,
                                                 controller: textFieldController,
                                                 style: Klogo.copyWith(
                                                   fontSize: 18,

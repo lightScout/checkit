@@ -428,47 +428,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     //*
-                                    //*FIRST: ADD CATEGORY BUTTON AND CATGORY CAROUSEL
+                                    //*FIRST: CATGORY CAROUSEL
                                     //*
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        // ClipRRect(
-                                        //   borderRadius: BorderRadius.all(
-                                        //       Radius.circular(90)),
-                                        //   child: Padding(
-                                        //       padding:
-                                        //           const EdgeInsets.all(8.0),
-                                        //       child: Container(
-                                        //         height: 60,
-                                        //         width: 60,
-                                        //         decoration: BoxDecoration(
-                                        //           boxShadow: [
-                                        //             BoxShadow(
-                                        //               color: Colors.white60,
-                                        //               offset: Offset(
-                                        //                   -10.0, -15.0), //(x,y)
-                                        //               blurRadius: 25.0,
-                                        //             ),
-                                        //           ],
-                                        //         ),
-                                        //         child: FloatingActionButton(
-                                        //           heroTag: 'addTaskScreenFAB1',
-                                        //           splashColor: Colors.red,
-                                        //           backgroundColor:
-                                        //               Color(0xFF007F5F),
-                                        //           onPressed: () {
-                                        //             addCategoryAlert(context);
-                                        //           },
-                                        //           child: Icon(
-                                        //             Icons.add,
-                                        //             size: 33,
-                                        //             color: Colors.white,
-                                        //           ),
-                                        //         ),
-                                        //       )),
-                                        // ),
                                         //*
                                         //* TASK CATEGORIES CAROUSEL
                                         //*
@@ -483,9 +448,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       height: 30,
                                     ),
                                     //*
-                                    //*SECOND: TEXTFEILD 'ADD TASK HERE'
+                                    //* SECOND: TEXTFEILD 'ADD TASK HERE'
                                     //*
                                     TextField(
+                                      textCapitalization:
+                                          TextCapitalization.sentences,
                                       controller: textFieldController,
                                       style: Klogo.copyWith(
                                         fontSize: 18,
