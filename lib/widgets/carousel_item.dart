@@ -1,10 +1,10 @@
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 
-class SliderCategoryItem extends StatelessWidget {
+class CarouselItem extends StatelessWidget {
   final String categoryTitle;
 
-  const SliderCategoryItem({this.categoryTitle});
+  const CarouselItem({this.categoryTitle});
 
   get getCategoryTitle {
     return categoryTitle;
@@ -27,8 +27,8 @@ class SliderCategoryItem extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.tealAccent[400],
                 KMainPurple,
+                Colors.teal[400],
               ]),
           borderRadius: BorderRadius.all(
             Radius.circular(25.0),
@@ -39,9 +39,7 @@ class SliderCategoryItem extends StatelessWidget {
           categoryTitle,
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontFamily: 'PressStart2P',
-              fontSize: 11,
-              color: Colors.yellow[50]),
+              fontFamily: 'PressStart2P', fontSize: 11, color: Colors.blue[50]),
         )),
       ),
     );

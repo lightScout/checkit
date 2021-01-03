@@ -72,8 +72,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
               body: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(
-                          'assets/textures/add_category_screen_texture3.png')),
+                    image: AssetImage(
+                        'assets/textures/add_category_screen_texture3.png'),
+                  ),
                   borderRadius: BorderRadius.only(
                     topLeft: categoriesBox.isEmpty
                         ? Radius.circular(0)
@@ -114,11 +115,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                     //* NAVEGATION BUTTON & SCREEN TITLE
                     //*
                     Container(
-                      decoration: BoxDecoration(
-                          // image: DecorationImage(
-                          //     image: AssetImage(
-                          //         'assets/textures/add_category_screen_texture2.png'))
-                          ),
                       child: Padding(
                         padding: const EdgeInsets.only(
                           top: 48,
