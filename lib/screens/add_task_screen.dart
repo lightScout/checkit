@@ -28,28 +28,34 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
+  //* String var used to host the new task tile
   String newTaskTitle;
-
-  String _timezone = 'Unknown';
+  //* Int Var used to host categoriesBox length
+  int categoriesBoxLength = 0;
 
   String newTaskCategory;
 
+//* Support var for the notification functionalities
   DateTime selectedDate;
-
   bool notificationDateSelected = false;
-
   bool notificationOn = false;
+  String _timezone = 'Unknown';
 
+//* Var used to register the category selected through the categories carousel
   var selectedCategory;
 
+//* List of widgets used by categories carousel
   List<Widget> carouselCategoriesList = <Widget>[];
 
+//* TextField Controller
   final textFieldController = TextEditingController();
 
+//* AnimatedIcon Controller
   AnimateIconController _animateIconController;
-
+//* Reference to Hive box Categories
   final categoriesBox = Hive.box('categories');
 
+//* Add task to Hive box support function
   void addTask(Task task) {
     final tasksBox = Hive.box('tasks');
     tasksBox.add(task);
@@ -265,9 +271,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   void buildCarouselList() {
     carouselCategoriesList.clear();
     List listOfKey = categoriesBox.keys.toList();
-    if (categoriesBox.isNotEmpty && categoriesBox.length == 1) {
+
+    if (categoriesBox.isNotEmpty &&
+        categoriesBoxLength < categoriesBox.length) {
       selectedCategory =
           (categoriesBox.get(categoriesBox.keys.last) as Category).name;
+      categoriesBoxLength = categoriesBox.length;
     }
 
     listOfKey.forEach((element) {
