@@ -28,7 +28,7 @@ class SliderCategoryItem extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 Colors.tealAccent[400],
-                Colors.teal[800],
+                KMainPurple,
               ]),
           borderRadius: BorderRadius.all(
             Radius.circular(25.0),

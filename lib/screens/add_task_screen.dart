@@ -338,7 +338,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         //   blurRadius: 30.0,
                         // ),
                       ],
-                      color: Colors.white.withOpacity(.2),
+                      color: Colors.teal.withOpacity(.7),
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(90.0),
                           topRight: Radius.circular(90.0),
@@ -513,7 +513,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                             //*
                                             CustomClipRRect.customClipRRect(
                                               colors: [
-                                                Colors.red[800],
+                                                KMainPurple,
                                                 Colors.teal,
                                               ],
                                               child: AnimateIcons(
@@ -542,21 +542,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                               ),
                                             ),
 
-                                            //*
-                                            //*SWITCH
-                                            //*
-                                            // Switch(
-                                            //   value: notificationOn,
-                                            //   onChanged: (value) {
-                                            //     setState(() {
-                                            //       notificationOn = value;
-                                            //       selectedDate = DateTime.now();
-                                            //     });
-                                            //   },
-                                            //   activeTrackColor:
-                                            //       Colors.green.shade200,
-                                            //   activeColor: KPersinanGreen,
-                                            // ),
 // TODO: work on alignment - it is bleeding out on the right hand side
                                             // Padding(
                                             //   padding: const EdgeInsets.only(
@@ -614,7 +599,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                               child: FloatingActionButton(
                                                   splashColor: KMainOrange,
                                                   backgroundColor:
-                                                      Color(0xFFfcd33a),
+                                                      Colors.orangeAccent,
                                                   onPressed: () {
                                                     if (newTaskTitle == null ||
                                                         newTaskTitle.trim() ==
