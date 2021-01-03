@@ -204,15 +204,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       CircleAvatar(
                         radius: 40,
                         child: GestureDetector(
-                          child: Icon(Icons.remove),
-                          onTap: () => Navigator.of(context).pop(),
-                        ),
+                            child: Icon(Icons.remove),
+                            onTap: () {
+                              setState(() {
+                                notificationOn = false;
+                              });
+
+                              Navigator.of(context).pop();
+                            }),
                       ),
                       GestureDetector(
                         onTap: () {
                           if (_validateSelectedDate(context)) {
                             setState(() {
-                              notificationDateSelected = true;
+                              notificationOn = true;
                             });
                             //! work on another way to dismiss the page
                             //! this method is interfering with the flush bar
@@ -341,7 +346,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           bottomRight: Radius.circular(90.0)),
                     ),
                     height: 70,
-                    width: 250,
+                    width: 275,
                     child: CarouselSlider(
                       options: CarouselOptions(
                           viewportFraction: .43,
@@ -392,8 +397,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color(0xFF2B9348),
-                      Color(0xFF367238),
+                      Colors.teal[400],
+                      Colors.green[900],
                     ]),
               ),
               child: Column(
@@ -429,41 +434,41 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(90)),
-                                          child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                height: 60,
-                                                width: 60,
-                                                decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.white60,
-                                                      offset: Offset(
-                                                          -10.0, -15.0), //(x,y)
-                                                      blurRadius: 25.0,
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: FloatingActionButton(
-                                                  heroTag: 'addTaskScreenFAB1',
-                                                  splashColor: Colors.red,
-                                                  backgroundColor:
-                                                      Color(0xFF007F5F),
-                                                  onPressed: () {
-                                                    addCategoryAlert(context);
-                                                  },
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    size: 33,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              )),
-                                        ),
+                                        // ClipRRect(
+                                        //   borderRadius: BorderRadius.all(
+                                        //       Radius.circular(90)),
+                                        //   child: Padding(
+                                        //       padding:
+                                        //           const EdgeInsets.all(8.0),
+                                        //       child: Container(
+                                        //         height: 60,
+                                        //         width: 60,
+                                        //         decoration: BoxDecoration(
+                                        //           boxShadow: [
+                                        //             BoxShadow(
+                                        //               color: Colors.white60,
+                                        //               offset: Offset(
+                                        //                   -10.0, -15.0), //(x,y)
+                                        //               blurRadius: 25.0,
+                                        //             ),
+                                        //           ],
+                                        //         ),
+                                        //         child: FloatingActionButton(
+                                        //           heroTag: 'addTaskScreenFAB1',
+                                        //           splashColor: Colors.red,
+                                        //           backgroundColor:
+                                        //               Color(0xFF007F5F),
+                                        //           onPressed: () {
+                                        //             addCategoryAlert(context);
+                                        //           },
+                                        //           child: Icon(
+                                        //             Icons.add,
+                                        //             size: 33,
+                                        //             color: Colors.white,
+                                        //           ),
+                                        //         ),
+                                        //       )),
+                                        // ),
                                         //*
                                         //* TASK CATEGORIES CAROUSEL
                                         //*
@@ -475,7 +480,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     ),
 
                                     SizedBox(
-                                      height: 40,
+                                      height: 30,
                                     ),
                                     //*
                                     //*SECOND: TEXTFEILD 'ADD TASK HERE'
@@ -499,11 +504,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                             Radius.circular(25),
                                           ),
                                           borderSide: BorderSide(
-                                              color: Colors.white, width: 5.0),
+                                              color: Colors.white70,
+                                              width: 5.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: Colors.white, width: 2.0),
+                                              color: Colors.white70,
+                                              width: 5.0),
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(25),
                                           ),
@@ -518,7 +525,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       },
                                     ),
                                     SizedBox(
-                                      height: 40,
+                                      height: 20,
                                     ),
                                     //*
                                     //*THIRD: REMINDER SWITCH AND CALENDAR BUTTON
@@ -526,7 +533,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.center,
                                       children: <Widget>[
                                         //*
                                         //*ADD REMINDER BUTTON & SWITCH ROW
@@ -539,30 +546,30 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                             //*
                                             CustomClipRRect.customClipRRect(
                                               colors: [
-                                                Colors.green[100],
-                                                Colors.green[100],
+                                                Colors.red[800],
+                                                Colors.teal,
                                               ],
                                               child: AnimateIcons(
                                                 controller:
                                                     _animateIconController,
-                                                startIcon: Icons.notifications,
+                                                startIcon: notificationOn
+                                                    ? Icons.check
+                                                    : Icons.notifications,
                                                 startTooltip: 'Icons.add',
                                                 endTooltip: 'Icons.close',
                                                 endIcon: notificationOn
-                                                    ? Icons.notifications
-                                                    : Icons.close,
-                                                color: Colors.blueAccent[700],
+                                                    ? Icons.check
+                                                    : Icons.notifications,
+                                                color: KMainOrange,
                                                 size: 41,
                                                 onStartIconPress: () {
-                                                  if (notificationOn) {
-                                                    _selectDate(context);
-                                                  }
+                                                  selectedDate = DateTime.now();
+                                                  _selectDate(context);
                                                   return true;
                                                 },
                                                 onEndIconPress: () {
-                                                  if (notificationOn) {
-                                                    _selectDate(context);
-                                                  }
+                                                  selectedDate = DateTime.now();
+                                                  _selectDate(context);
                                                   return true;
                                                 },
                                               ),
@@ -571,18 +578,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                             //*
                                             //*SWITCH
                                             //*
-                                            Switch(
-                                              value: notificationOn,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  notificationOn = value;
-                                                  selectedDate = DateTime.now();
-                                                });
-                                              },
-                                              activeTrackColor:
-                                                  Colors.green.shade200,
-                                              activeColor: KPersinanGreen,
-                                            ),
+                                            // Switch(
+                                            //   value: notificationOn,
+                                            //   onChanged: (value) {
+                                            //     setState(() {
+                                            //       notificationOn = value;
+                                            //       selectedDate = DateTime.now();
+                                            //     });
+                                            //   },
+                                            //   activeTrackColor:
+                                            //       Colors.green.shade200,
+                                            //   activeColor: KPersinanGreen,
+                                            // ),
 // TODO: work on alignment - it is bleeding out on the right hand side
                                             // Padding(
                                             //   padding: const EdgeInsets.only(
@@ -609,7 +616,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       ],
                                     ),
                                     SizedBox(
-                                      height: 1,
+                                      height: 20,
                                     ),
                                     //*
                                     //*FOURTH: ADD TASK BUTTON
@@ -664,6 +671,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                         addTask(task);
                                                         setState(() {
                                                           newTaskTitle = null;
+                                                          notificationOn =
+                                                              false;
                                                         });
 
                                                         Flushbar(

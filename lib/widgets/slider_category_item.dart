@@ -13,20 +13,23 @@ class SliderCategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(.5),
       child: Container(
         height: 25,
         width: 150,
         decoration: BoxDecoration(
           border: Border.all(
-            width: 3,
+            width: 5,
             color: Colors.white54,
           ),
           // color: Color(0xff420010),
           gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [KMainRed, KMainOrange]),
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.tealAccent[400],
+                Colors.teal[800],
+              ]),
           borderRadius: BorderRadius.all(
             Radius.circular(25.0),
           ),
@@ -36,7 +39,9 @@ class SliderCategoryItem extends StatelessWidget {
           categoryTitle,
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontFamily: 'PressStart2P', fontSize: 11, color: Colors.white),
+              fontFamily: 'PressStart2P',
+              fontSize: 11,
+              color: Colors.yellow[50]),
         )),
       ),
     );
