@@ -219,6 +219,11 @@ class _TaskListScreenState extends State<TaskListScreen>
           body: Container(
             // color: Color(0xFF8ddffd),
             decoration: BoxDecoration(
+              image: DecorationImage(
+                image:
+                    AssetImage('assets/textures/task_list_screen_texture.png'),
+                fit: BoxFit.cover,
+              ),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(topBorderRadius),
                 topRight: Radius.circular(topBorderRadius),

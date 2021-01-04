@@ -278,7 +278,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     List listOfKey = categoriesBox.keys.toList();
 
     if (categoriesBox.isNotEmpty &&
-        categoriesBoxLength < categoriesBox.length) {
+        (categoriesBoxLength < categoriesBox.length ||
+            categoriesBox.length == 1)) {
       selectedCategory =
           (categoriesBox.get(categoriesBox.keys.last) as Category).name;
       categoriesBoxLength = categoriesBox.length;
@@ -386,9 +387,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             //*
             body: Container(
               decoration: BoxDecoration(
-                // image: DecorationImage(
-                //     image: AssetImage(
-                //         'assets/textures/add_task_screen_texture.png')),
+                image: DecorationImage(
+                  image: AssetImage(
+                      'assets/textures/add_task_screen_texture5.png'),
+                  fit: BoxFit.cover,
+                ),
                 border: Border.all(
                   color: Colors.white54,
                   width: 10,
