@@ -34,7 +34,7 @@ void deleteCategoryAlert(BuildContext context, int categoryKey) {
             "Attetion!",
             textAlign: TextAlign.center,
             style: Klogo.copyWith(
-              fontSize: 18,
+              fontSize: 16,
               shadows: [
                 Shadow(
                   blurRadius: 2.0,

@@ -347,7 +347,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           bottomRight: Radius.circular(90.0)),
                     ),
                     height: 70,
-                    width: 285,
+                    width: MediaQuery.of(context).size.width * .85,
                     child: CarouselSlider(
                       options: CarouselOptions(
                           viewportFraction: .43,
@@ -420,26 +420,60 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                 height: 15,
                               ),
 
-                              //!
-                              //! ADD CATEGORY, TASK AND NOTIFICATION CONTAINER
-                              //!
+                              //*
+                              //* Notification Button & Screen title
+                              //*
 
                               Padding(
                                 padding: const EdgeInsets.only(
                                   right: 20.0,
+                                  left: 22.0,
                                   bottom: 20,
                                 ),
                                 child: Container(
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
+                                      //*
+                                      //* BUTTON
+                                      //*
+                                      CustomClipRRect.customClipRRect(
+                                        colors: [
+                                          KMainPurple,
+                                          Colors.teal,
+                                        ],
+                                        child: AnimateIcons(
+                                          controller: _animateIconController,
+                                          startIcon: notificationOn
+                                              ? Icons.check
+                                              : Icons.notifications,
+                                          startTooltip: 'Icons.add',
+                                          endTooltip: 'Icons.close',
+                                          endIcon: notificationOn
+                                              ? Icons.check
+                                              : Icons.notifications,
+                                          color: Colors.blue[50],
+                                          size: 31,
+                                          onStartIconPress: () {
+                                            selectedDate = DateTime.now();
+                                            _selectDate(context);
+                                            return true;
+                                          },
+                                          onEndIconPress: () {
+                                            selectedDate = DateTime.now();
+                                            _selectDate(context);
+                                            return true;
+                                          },
+                                        ),
+                                      ),
                                       //*
                                       //* SCREEN TITLE
                                       //*
                                       Text(
                                         'Add task',
                                         style: Klogo.copyWith(
-                                          fontSize: 19,
+                                          fontSize: 16,
                                           shadows: [
                                             Shadow(
                                               color: KMainPurple,
@@ -471,7 +505,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               ),
 
                               SizedBox(
-                                height: 30,
+                                height: 20,
                               ),
                               //*
                               //* SECOND: TEXTFEILD 'ADD TASK HERE'
@@ -481,7 +515,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     TextCapitalization.sentences,
                                 controller: textFieldController,
                                 style: Klogo.copyWith(
-                                  fontSize: 18,
+                                  fontSize: 13,
                                   color: Colors.white,
                                   shadows: [],
                                 ),
@@ -516,77 +550,22 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                 },
                               ),
                               SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               //*
-                              //*THIRD:CALENDAR BUTTON
+                              //* THIRD: Notification buttom
                               //*
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Row(
-                                    children: [
-                                      //*
-                                      //* CALENDAR BUTTON
-                                      //*
-                                      CustomClipRRect.customClipRRect(
-                                        colors: [
-                                          KMainPurple,
-                                          Colors.teal,
-                                        ],
-                                        child: AnimateIcons(
-                                          controller: _animateIconController,
-                                          startIcon: notificationOn
-                                              ? Icons.check
-                                              : Icons.notifications,
-                                          startTooltip: 'Icons.add',
-                                          endTooltip: 'Icons.close',
-                                          endIcon: notificationOn
-                                              ? Icons.check
-                                              : Icons.notifications,
-                                          color: Colors.blue[50],
-                                          size: 41,
-                                          onStartIconPress: () {
-                                            selectedDate = DateTime.now();
-                                            _selectDate(context);
-                                            return true;
-                                          },
-                                          onEndIconPress: () {
-                                            selectedDate = DateTime.now();
-                                            _selectDate(context);
-                                            return true;
-                                          },
-                                        ),
-                                      ),
-
-// TODO: work on alignment - it is bleeding out on the right hand side
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(
-                                      //       left: 7.0),
-                                      //   child: Text(
-                                      //     (notificationOn)
-                                      //         ? (notificationDateSelected &&
-                                      //                 !selectedDate
-                                      //                     .isBefore(
-                                      //                         DateTime
-                                      //                             .now()))
-                                      //             ? '${DateFormat.yMd().add_jm().format(selectedDate)}'
-                                      //             : 'Date and time no selected'
-                                      //         : '',
-                                      //     style: Klogo.copyWith(
-                                      //       fontSize: 9.5,
-                                      //       shadows: [],
-                                      //       color: Colors.white,
-                                      //     ),
-                                      //   ),
-                                      // )
-                                    ],
+                                    children: [],
                                   )
                                 ],
                               ),
                               SizedBox(
-                                height: 20,
+                                height: 0,
                               ),
                               //*
                               //*FOURTH: ADD TASK BUTTON
@@ -598,8 +577,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(90)),
                                     child: Container(
-                                      height: 120,
-                                      width: 120,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              .17,
+                                      width:
+                                          MediaQuery.of(context).size.height *
+                                              .17,
                                       decoration: BoxDecoration(
                                         boxShadow: [
                                           BoxShadow(
@@ -639,7 +622,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
                                                   Flushbar(
                                                     duration:
-                                                        Duration(seconds: 1),
+                                                        Duration(seconds: 2),
                                                     messageText: Text(
                                                       'Task and reminder added successfuly.',
                                                       style: Klogo.copyWith(
@@ -652,8 +635,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                   ).show(context);
                                                   textFieldController.clear();
                                                   _scheduleNotification();
-                                                }
-                                                if (!notificationOn) {
+                                                } else if (!notificationOn) {
                                                   Task task = Task();
                                                   task.name = newTaskTitle;
                                                   task.category =
@@ -670,7 +652,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
                                                   Flushbar(
                                                     duration:
-                                                        Duration(seconds: 1),
+                                                        Duration(seconds: 2),
                                                     messageText: Text(
                                                       'Task added successfuly.',
                                                       style: Klogo.copyWith(
@@ -687,7 +669,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                             },
                                             child: Icon(
                                               Icons.fingerprint,
-                                              size: 55,
+                                              size: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  .09,
                                               color: Colors.greenAccent,
                                             )),
                                       ),

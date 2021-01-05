@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/model/category.dart';
+import 'package:ciao_app/model/flags.dart';
 
 import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/others/constants.dart';
@@ -44,7 +45,6 @@ class _TaskListScreenState extends State<TaskListScreen>
   double yOffset = 0;
   double scaleFactor = 1;
   double topBorderRadius = 0;
-  bool newTaskScreenToggle = false;
 
   // void _showDeleteAllTasksDialog() {
   //   // flutter defined function
@@ -194,6 +194,15 @@ class _TaskListScreenState extends State<TaskListScreen>
                   ),
                   onTap: () {
                     addCategoryAlert(context);
+                    setState(() {
+                      topBorderRadius = 50;
+                      yOffset = MediaQuery.of(context).size.height / 1.2;
+                    });
+                    if (_animateIconController.isStart()) {
+                      _animateIconController.animateToEnd();
+                    }
+                    Hive.box('flags').putAt(
+                        0, Flags(name: 'toggleAddCategoryScreen', value: true));
                   },
                 ),
                 GestureDetector(
@@ -203,16 +212,22 @@ class _TaskListScreenState extends State<TaskListScreen>
                     size: 44,
                   ),
                   onTap: () {
+                    //* triger for animated container
                     setState(() {
                       topBorderRadius = 50;
                       yOffset = MediaQuery.of(context).size.height / 1.2;
-
-                      newTaskScreenToggle = true;
                     });
-
+                    //* creates a 'General' category if there is no category available
+                    if (categoriesBox.isEmpty) {
+                      Category newCategory = Category(name: 'General');
+                      Hive.box('categories').add(newCategory);
+                    }
+                    //* tringer for animated icon
                     if (_animateIconController.isStart()) {
                       _animateIconController.animateToEnd();
                     }
+                    Hive.box('flags').putAt(
+                        0, Flags(name: 'toggleAddCategoryScreen', value: true));
                   },
                 ),
               ]),
@@ -249,11 +264,11 @@ class _TaskListScreenState extends State<TaskListScreen>
             child: Column(
               children: <Widget>[
                 //*
-                //* NAVEGATION BUTTON and APP TITLE
+                //* NAVEGATION BUTTON and Screen TITLE
                 //*
                 Container(
                   padding:
-                      EdgeInsets.only(left: 0, right: 0, top: 48, bottom: 0),
+                      EdgeInsets.only(left: 0, right: 0, top: 28, bottom: 0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,14 +293,13 @@ class _TaskListScreenState extends State<TaskListScreen>
                                 endTooltip: 'Icons.close',
                                 endIcon: Icons.close,
                                 color: Color(0xFF071F86),
-                                size: 41,
+                                size: 21,
                                 onStartIconPress: () {
                                   setState(() {
                                     topBorderRadius = 50;
                                     yOffset =
                                         MediaQuery.of(context).size.height /
                                             1.2;
-                                    newTaskScreenToggle = true;
                                   });
                                   return true;
                                 },
@@ -293,7 +307,6 @@ class _TaskListScreenState extends State<TaskListScreen>
                                   setState(() {
                                     topBorderRadius = 0;
                                     yOffset = 0;
-                                    newTaskScreenToggle = false;
                                   });
                                   return true;
                                 },

@@ -20,7 +20,7 @@ void noNameAlert(BuildContext context, String type) {
             child: Text(
               "Attetion!",
               style: Klogo.copyWith(
-                fontSize: 18,
+                fontSize: 16,
                 shadows: [
                   Shadow(
                     blurRadius: 2.0,

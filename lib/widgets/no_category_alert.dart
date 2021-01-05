@@ -64,7 +64,7 @@ void noCategoriesAvailableDialog(BuildContext context) {
                   onPressed: () {
                     Category newCategory = Category(name: 'General');
                     Hive.box('categories').add(newCategory);
-                    //buildCarouselList();
+
                     Navigator.of(context).pop();
                   },
                   child: Text(

@@ -11,6 +11,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 import 'model/category.dart';
+import 'model/flags.dart';
 import 'screens/task_list_screen.dart';
 import 'screens/splash_screen.dart';
 
@@ -39,26 +40,29 @@ void main() async {
     }
   });
 
-  //
-  // Hive initialisation
-  //
+  //*
+  //* Hive initialisation
+  //*
   final appDocumentDirectory =
       await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
 
-  //
-  //Hive adpters registration
-  //
+  //*
+  //*Hive adpters registration
+  //*
   Hive.registerAdapter(
     TaskAdapter(),
   );
   Hive.registerAdapter(
     CategoryAdapter(),
   );
+  Hive.registerAdapter(
+    FlagsAdapter(),
+  );
 
-  //
-  //Hive box creation
-  //
+  //*
+  //* Hive boxes creation
+  //*
   final tasksBox = await Hive.openBox(
     'tasks',
     compactionStrategy: (int total, int deleted) {
@@ -71,17 +75,26 @@ void main() async {
       return deleted > 0;
     },
   );
+  final flagsBox = await Hive.openBox(
+    'flags',
+    compactionStrategy: (int total, int deleted) {
+      return deleted > 0;
+    },
+  );
+
   //
   //Adding permanent category 'General' to categories box
   //
   // categoriesBox.clear();
   // tasksBox.clear();
   runApp(ValueListenableBuilder(
-    valueListenable: categoriesBox.listenable(),
-    builder: (context, box, widget) => ValueListenableBuilder(
-        valueListenable: tasksBox.listenable(),
-        builder: (context, box, widget) => MyApp()),
-  ));
+      valueListenable: flagsBox.listenable(),
+      builder: (context, box, widget) => ValueListenableBuilder(
+            valueListenable: categoriesBox.listenable(),
+            builder: (context, box, widget) => ValueListenableBuilder(
+                valueListenable: tasksBox.listenable(),
+                builder: (context, box, widget) => MyApp()),
+          )));
 }
 
 class MyApp extends StatefulWidget {
@@ -91,6 +104,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+    Hive.box('flags').add(Flags(name: 'toggleAddCategoryScreen', value: false));
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -116,7 +137,6 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     Hive.box('tasks').compact();
     Hive.box('categories').compact();
-    Hive.box('categories').clear();
     Hive.close();
     super.dispose();
   }

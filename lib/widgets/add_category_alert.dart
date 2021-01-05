@@ -1,5 +1,6 @@
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/others/constants.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -114,6 +115,18 @@ Future addCategoryAlert(BuildContext context) {
                               Category(name: newTaskCategory);
                           Hive.box('categories').add(newCategory);
                           Navigator.of(context).pop();
+                          //! bottom bar event anuncing successful addtiong of new category
+                          Flushbar(
+                                  duration: Duration(seconds: 2),
+                                  messageText: Text(
+                                    'Category added successfuly.',
+                                    style: Klogo.copyWith(
+                                        color: Colors.white,
+                                        shadows: [],
+                                        fontSize: 14),
+                                  ),
+                                  flushbarStyle: FlushbarStyle.FLOATING)
+                              .show(context);
                         }
                       },
                     ),
