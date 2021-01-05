@@ -615,6 +615,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                       : null;
                                                   task.isDone = false;
                                                   addTask(task);
+                                                  _scheduleNotification(
+                                                      selectedCategory,
+                                                      newTaskTitle);
                                                   setState(() {
                                                     newTaskTitle = null;
                                                     notificationOn = false;
@@ -634,7 +637,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                         FlushbarStyle.FLOATING,
                                                   ).show(context);
                                                   textFieldController.clear();
-                                                  _scheduleNotification();
                                                 } else if (!notificationOn) {
                                                   Task task = Task();
                                                   task.name = newTaskTitle;
@@ -704,7 +706,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     return scheduledDate;
   }
 
-  void _scheduleNotification() async {
+  void _scheduleNotification(String category, String task) async {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation(_timezone));
 
@@ -721,8 +723,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         iOS: iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.zonedSchedule(
       0,
-      'schedule title',
-      'schedule body',
+      category,
+      'Reminder: $task',
       _nextNotificationInstance(selectedDate),
       platformChannelSpecifics,
       uiLocalNotificationDateInterpretation:
