@@ -4,6 +4,7 @@ import 'package:ciao_app/model/flags.dart';
 
 import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/others/constants.dart';
+import 'package:ciao_app/screens/calendar_screen.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
 import 'package:ciao_app/widgets/delete_category_alert.dart';
 import 'package:ciao_app/widgets/add_category_alert.dart';
@@ -21,7 +22,7 @@ import '../widgets/list_builder.dart';
 final Color bgColor = Color(0xFF4A5A58);
 
 class TaskListScreen extends StatefulWidget {
-  static const id = 'dashboardScreen';
+  static const id = 'task_list_screen';
 
   @override
   _TaskListScreenState createState() => _TaskListScreenState();
@@ -38,45 +39,13 @@ class _TaskListScreenState extends State<TaskListScreen>
       ScrollController(keepScrollOffset: true);
   AnimationController _animationController;
   AnimateIconController _animateIconController;
-  // Animation _animation;
+
   List<Widget> carouselList = [];
   List listOfCategoriesKeys = [];
   double xOffset = 0;
   double yOffset = 0;
   double scaleFactor = 1;
   double topBorderRadius = 0;
-
-  // void _showDeleteAllTasksDialog() {
-  //   // flutter defined function
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       // return object of type Dialog
-  //       return AlertDialog(
-  //         title: Text("Delete all tasks?"),
-  //         content: Text("This will delete all tasks from this device."),
-  //         actions: <Widget>[
-  //           // usually buttons at the bottom of the dialog
-  //           FlatButton(
-  //             child: Text("Accept"),
-  //             onPressed: () {
-  //               var keysList = Hive.box('tasks').keys;
-  //               Hive.box('tasks').deleteAll(keysList);
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-
-  //           FlatButton(
-  //             child: Text('Cancel'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   @override
   void initState() {
@@ -156,17 +125,20 @@ class _TaskListScreenState extends State<TaskListScreen>
               fabMargin: EdgeInsets.only(right: 47, bottom: 40),
               fabOpenColor: Color(0xFFFF1d1d),
               ringColor: Color(0xFFFA9700),
+              //* close icon
               fabCloseIcon: Icon(
                 Icons.close,
                 size: 33,
                 color: Colors.white,
               ),
+              //* open icon
               fabOpenIcon: Icon(
                 Icons.fingerprint,
                 size: 49,
                 color: Colors.white,
               ),
               children: <Widget>[
+                //* settings button
                 InkWell(
                     child: Icon(
                       Icons.settings_sharp,
@@ -186,6 +158,8 @@ class _TaskListScreenState extends State<TaskListScreen>
                         backgroundColor: Colors.transparent,
                       );
                     }),
+
+                //* add category button
                 InkWell(
                   child: Icon(
                     Icons.category_sharp,
@@ -208,7 +182,21 @@ class _TaskListScreenState extends State<TaskListScreen>
                         0, Flags(name: 'toggleAddCategoryScreen', value: true));
                   },
                 ),
-                GestureDetector(
+
+                //* calendar button
+                InkWell(
+                  child: Icon(
+                    Icons.calendar_today,
+                    color: Color(0xFFf8f0bc),
+                    size: 33,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(CalendarScreen.id);
+                  },
+                ),
+
+                //* add task button
+                InkWell(
                   child: Icon(
                     Icons.add,
                     color: Color(0xFFf8f0bc),

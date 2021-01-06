@@ -1,4 +1,5 @@
 import 'package:ciao_app/model/task.dart';
+import 'package:ciao_app/screens/calendar_screen.dart';
 import 'package:ciao_app/screens/home_screen.dart';
 import 'package:ciao_app/screens/info_screen.dart';
 import 'package:ciao_app/screens/intro_screen.dart';
@@ -50,6 +51,7 @@ void main() async {
   //*
   //*Hive adpters registration
   //*
+
   Hive.registerAdapter(
     TaskAdapter(),
   );
@@ -106,8 +108,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
     Hive.box('flags').add(Flags(name: 'toggleAddCategoryScreen', value: false));
   }
@@ -128,6 +128,7 @@ class _MyAppState extends State<MyApp> {
         TestScreen.id: (context) => TestScreen(),
         HomeScreen.id: (context) => HomeScreen(),
         IntroScreen.id: (context) => IntroScreen(),
+        CalendarScreen.id: (context) => CalendarScreen(),
       },
       home: HomeScreen(),
     );

@@ -1,5 +1,6 @@
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TaskTile extends StatefulWidget {
   final String title;
@@ -7,7 +8,7 @@ class TaskTile extends StatefulWidget {
   final bool isChecked;
   final Function isCheckCallBack;
   final String category;
-  final String dueDate;
+  final DateTime dueDate;
   final String _fontFamily = 'PressStart2P';
   final Color _checkedColor1 = Color(0xFF00458E);
   final Color _checkedColor2 = Color(0xFF000328);
@@ -103,7 +104,7 @@ class _TaskTileState extends State<TaskTile> {
            * **/
           subtitle: (widget.dueDate != null)
               ? Text(
-                  widget.dueDate,
+                  "${DateFormat.yMd().add_jm().format(widget.dueDate)}",
                   style: TextStyle(
                       fontSize: 10,
                       color: Colors.white60,

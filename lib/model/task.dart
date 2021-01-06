@@ -10,12 +10,21 @@ class Task {
   String category;
   @HiveField(2)
   String dueDate;
+
   @HiveField(3)
   bool isDone;
   @HiveField(4)
   int key;
+  @HiveField(5)
+  DateTime dueDateTime;
 
-  Task({this.name, this.isDone = false, this.category, this.dueDate, this.key});
+  Task(
+      {this.name,
+      this.isDone = false,
+      this.category,
+      this.dueDate,
+      this.dueDateTime,
+      this.key});
 
   bool toggleDone() {
     isDone = !isDone;

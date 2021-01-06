@@ -569,9 +569,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                   task.name = newTaskTitle;
                                                   task.category =
                                                       selectedCategory;
-                                                  task.dueDate = notificationOn
-                                                      ? "${DateFormat.yMd().add_jm().format(selectedDate)}"
-                                                      : null;
+                                                  task.dueDateTime =
+                                                      notificationOn
+                                                          ? selectedDate
+                                                          : null;
                                                   task.isDone = false;
                                                   addTask(task);
                                                   _scheduleNotification(
@@ -603,10 +604,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                   task.name = newTaskTitle;
                                                   task.category =
                                                       selectedCategory;
-                                                  task.dueDate = notificationOn
-                                                      ? "${selectedDate.toLocal()}"
-                                                          .split(' ')[0]
-                                                      : null;
+                                                  task.dueDateTime = null;
                                                   task.isDone = false;
                                                   addTask(task);
                                                   setState(() {

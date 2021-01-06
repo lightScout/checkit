@@ -55,7 +55,7 @@ class ListBuilder extends StatelessWidget {
           child: TaskTile(
             title: task.name,
             category: task.category,
-            dueDate: task.dueDate,
+            dueDate: task.dueDateTime,
             isChecked: task.isDone,
             isCheckCallBack: () {
               task.toggleDone();
