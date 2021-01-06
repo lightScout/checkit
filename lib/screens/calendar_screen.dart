@@ -1,4 +1,5 @@
 import 'package:ciao_app/model/task.dart';
+import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -46,6 +47,10 @@ class _CalendarScreenState extends State<CalendarScreen>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
+        title: Text(
+          'Calendar',
+          style: TextStyle(fontFamily: KMainFontFamily),
+        ),
       ),
       backgroundColor: Colors.black,
       body: Padding(
@@ -64,10 +69,15 @@ class _CalendarScreenState extends State<CalendarScreen>
                   headerStyle: HeaderStyle(
                     centerHeaderTitle: true,
                     formatButtonVisible: true,
-                    titleTextStyle: TextStyle()
-                        .copyWith(color: Colors.blue[800], fontSize: 16),
-                    formatButtonTextStyle:
-                        TextStyle().copyWith(color: Colors.white, fontSize: 16),
+                    titleTextStyle: TextStyle().copyWith(
+                      color: Colors.blue[800],
+                      fontSize: 12,
+                      fontFamily: KMainFontFamily,
+                    ),
+                    formatButtonTextStyle: TextStyle().copyWith(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontFamily: KMainFontFamily),
                     formatButtonDecoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(25)),
                       color: Colors.blue[800],
@@ -85,12 +95,38 @@ class _CalendarScreenState extends State<CalendarScreen>
                   ),
                   formatAnimation: FormatAnimation.slide,
                   calendarStyle: CalendarStyle(
+                    outsideStyle: TextStyle().copyWith(
+                      color: Colors.grey.shade400,
+                      fontSize: 10,
+                      fontFamily: KMainFontFamily,
+                    ),
+                    outsideWeekendStyle: TextStyle().copyWith(
+                      color: Colors.grey.shade400,
+                      fontSize: 10,
+                      fontFamily: KMainFontFamily,
+                    ),
+                    todayStyle: TextStyle().copyWith(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontFamily: KMainFontFamily,
+                    ),
                     selectedColor: Colors.amber,
-                    eventDayStyle: TextStyle()
-                        .copyWith(color: Colors.blue[800], fontSize: 20),
-                    weekdayStyle: TextStyle()
-                        .copyWith(color: Colors.blue[800], fontSize: 20),
-                    weekendStyle: TextStyle().copyWith(color: Colors.red[800]),
+                    selectedStyle: TextStyle().copyWith(
+                      color: Colors.blue[800],
+                      fontSize: 20,
+                      fontFamily: KMainFontFamily,
+                    ),
+                    eventDayStyle: TextStyle().copyWith(
+                      color: Colors.blue[800],
+                      fontSize: 20,
+                      fontFamily: KMainFontFamily,
+                    ),
+                    weekdayStyle: TextStyle().copyWith(
+                        color: Colors.blue[800],
+                        fontSize: 18,
+                        fontFamily: KMainFontFamily),
+                    weekendStyle: TextStyle().copyWith(
+                        color: Colors.red[800], fontFamily: KMainFontFamily),
                     holidayStyle: TextStyle().copyWith(color: Colors.blue[800]),
                   ),
                   builders: CalendarBuilders(
@@ -195,14 +231,15 @@ class _CalendarScreenState extends State<CalendarScreen>
                 ? Colors.blue[400]
                 : Colors.red,
       ),
-      width: 16.0,
-      height: 16.0,
+      width: 18.0,
+      height: 18.0,
       child: Center(
         child: Text(
           '${events.length}',
           style: TextStyle().copyWith(
             color: Colors.white,
-            fontSize: 12.0,
+            fontSize: 11.0,
+            fontFamily: KMainFontFamily,
           ),
         ),
       ),
@@ -221,10 +258,12 @@ class _CalendarScreenState extends State<CalendarScreen>
                 margin:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                 child: ListTile(
-                  title: Text(
-                    event.toString(),
-                    style: TextStyle().copyWith(color: Colors.white),
-                  ),
+                  title: Text(event.toString(),
+                      style: TextStyle().copyWith(
+                        color: Colors.white,
+                        fontFamily: KMainFontFamily,
+                        fontSize: 12,
+                      )),
                   onTap: () => print('$event tapped!'),
                 ),
               ))
