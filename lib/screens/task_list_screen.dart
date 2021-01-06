@@ -193,14 +193,17 @@ class _TaskListScreenState extends State<TaskListScreen>
                     size: 35,
                   ),
                   onTap: () {
+                    //* triger for animated container
                     addCategoryAlert(context);
                     setState(() {
                       topBorderRadius = 50;
                       yOffset = MediaQuery.of(context).size.height / 1.2;
                     });
+                    //* tringer for animated icon
                     if (_animateIconController.isStart()) {
                       _animateIconController.animateToEnd();
                     }
+                    //* flag triger to minimize add category screen
                     Hive.box('flags').putAt(
                         0, Flags(name: 'toggleAddCategoryScreen', value: true));
                   },
@@ -226,6 +229,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                     if (_animateIconController.isStart()) {
                       _animateIconController.animateToEnd();
                     }
+                    //* flag triger to minimize add category screen
                     Hive.box('flags').putAt(
                         0, Flags(name: 'toggleAddCategoryScreen', value: true));
                   },
@@ -234,11 +238,11 @@ class _TaskListScreenState extends State<TaskListScreen>
           body: Container(
             // color: Color(0xFF8ddffd),
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image:
-                    AssetImage('assets/textures/task_list_screen_texture.png'),
-                fit: BoxFit.cover,
-              ),
+              // image: DecorationImage(
+              //   image:
+              //       AssetImage('assets/textures/task_list_screen_texture.png'),
+              //   fit: BoxFit.cover,
+              // ),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(topBorderRadius),
                 topRight: Radius.circular(topBorderRadius),

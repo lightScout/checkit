@@ -92,7 +92,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       case TargetPlatform.fuchsia:
       case TargetPlatform.linux:
       case TargetPlatform.windows:
-        return buildMaterialDatePicker(context);
+        return buildCupertinoDatePicker(context);
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:
         return buildCupertinoDatePicker(context);
@@ -126,48 +126,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     return result;
   }
 
-  //* This builds material date picker in Android
-  //TODO: code is now showing the time picker but 'date' and 'time' need to be merged into a DateTime variable to be verified
-
-  buildMaterialDatePicker(BuildContext context) async {
-    DateTime date;
-    TimeOfDay time;
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2222),
-      errorFormatText: 'Enter valid date',
-      errorInvalidText: 'Enter date in valid range',
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData.dark(),
-          child: child,
-        );
-      },
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        date = picked;
-      });
-    }
-
-    TimeOfDay t = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (t != null)
-      setState(() {
-        time = t;
-      });
-
-    // if (picked != null && picked != selectedDate)
-    //   setState(() {
-    //     selectedDate = picked;
-    //   });
-  }
-
-  //* This builds cupertion date picker in iOS
+  //* This builds cupertion date picker
   buildCupertinoDatePicker(BuildContext context) {
     print(selectedDate);
     showModalBottomSheet(
@@ -387,11 +346,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             //*
             body: Container(
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                      'assets/textures/add_task_screen_texture5.png'),
-                  fit: BoxFit.cover,
-                ),
+                // image: DecorationImage(
+                //   image: AssetImage(
+                //       'assets/textures/add_task_screen_texture5.png'),
+                //   fit: BoxFit.cover,
+                // ),
                 border: Border.all(
                   color: Colors.white54,
                   width: 10,
@@ -637,6 +596,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                         FlushbarStyle.FLOATING,
                                                   ).show(context);
                                                   textFieldController.clear();
+                                                  FocusScope.of(context)
+                                                      .unfocus();
                                                 } else if (!notificationOn) {
                                                   Task task = Task();
                                                   task.name = newTaskTitle;
@@ -666,6 +627,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                         FlushbarStyle.FLOATING,
                                                   ).show(context);
                                                   textFieldController.clear();
+                                                  FocusScope.of(context)
+                                                      .unfocus();
                                                 }
                                               }
                                             },
@@ -711,8 +674,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     tz.setLocalLocation(tz.getLocation(_timezone));
 
     var andriodPlatformChannelSpecifics = AndroidNotificationDetails(
-        'checKit_notif', 'checKit_notif', 'Channel for checKit notification',
-        icon: 'app_icon_v2');
+      'checKit_notif',
+      'checKit_notif',
+      'Channel for checKit notification',
+      icon: 'app_icon_v2',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
     var iOSPlatformChannelSpecifics = IOSNotificationDetails(
       presentAlert: true,
       presentBadge: true,
