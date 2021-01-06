@@ -128,7 +128,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   //* This builds cupertion date picker
   buildCupertinoDatePicker(BuildContext context) {
-    print(selectedDate);
+    // print(selectedDate);
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -215,9 +215,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           setState(() {
                             selectedDate = picked;
                           });
-                          print(selectedDate);
-                          print(
-                              'day: ${selectedDate.day}, month: ${selectedDate.month}, year: ${selectedDate.year},');
+                          // print(selectedDate);
+                          // print(
+                          //     'day: ${selectedDate.day}, month: ${selectedDate.month}, year: ${selectedDate.year},');
                         },
                         initialDateTime: selectedDate,
                         minimumYear: 2020,
@@ -319,7 +319,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       .elementAt(index) as CarouselItem)
                                   .categoryTitle;
                             });
-                            print(selectedCategory);
+                            // print(selectedCategory);
                           }),
                       items: carouselCategoriesList,
                     ),
@@ -338,7 +338,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     return ValueListenableBuilder(
         valueListenable: Hive.box('categories').listenable(),
         builder: (context, box, widget) {
-          print(box.keys);
+          // print(box.keys);
           return Scaffold(
             resizeToAvoidBottomInset: false,
             //*
@@ -505,7 +505,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                 autofocus: false,
                                 onChanged: (value) {
                                   newTaskTitle = value;
-                                  print(newTaskTitle);
+                                  // print(newTaskTitle);
                                 },
                               ),
                               SizedBox(

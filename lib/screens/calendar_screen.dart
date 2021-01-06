@@ -16,7 +16,7 @@ class _CalendarScreenState extends State<CalendarScreen>
     with TickerProviderStateMixin {
   CalendarController _calendarController;
   AnimationController _animationController;
-  Map<DateTime, List> _events;
+  Map<DateTime, List> _events = {};
   List _selectedEvents;
   double yOffset = 0;
   Box tasksBox = Hive.box('tasks');
@@ -24,20 +24,7 @@ class _CalendarScreenState extends State<CalendarScreen>
   @override
   void initState() {
     super.initState();
-    buildCalendarWithTask();
-    final _selectedDay = DateTime.now();
-    _events = {
-      _selectedDay.subtract(Duration(days: 1)): [
-        'Event A0',
-        'Event B0',
-        'Event C0',
-        'Event B0',
-        'Event B0',
-        'Event B0',
-        'Event B0'
-      ],
-    };
-    _selectedEvents = _events[_selectedDay] ?? [];
+    _fillCalendarWithScheduleTasks();
 
     _calendarController = CalendarController();
     _animationController = AnimationController(
@@ -78,9 +65,9 @@ class _CalendarScreenState extends State<CalendarScreen>
                     centerHeaderTitle: true,
                     formatButtonVisible: true,
                     titleTextStyle: TextStyle()
-                        .copyWith(color: Colors.blue[800], fontSize: 18),
+                        .copyWith(color: Colors.blue[800], fontSize: 16),
                     formatButtonTextStyle:
-                        TextStyle().copyWith(color: Colors.white, fontSize: 18),
+                        TextStyle().copyWith(color: Colors.white, fontSize: 16),
                     formatButtonDecoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(25)),
                       color: Colors.blue[800],
@@ -146,18 +133,47 @@ class _CalendarScreenState extends State<CalendarScreen>
     );
   }
 
-  void buildCalendarWithTask() {
-    List<Task> listOfTask = [];
+  void _fillCalendarWithScheduleTasks() {
     List listOfTaksKeys = tasksBox.keys.toList();
+    var initialDate = DateTime.now();
+    var updateInitialDate = false;
 
     listOfTaksKeys.forEach((element) {
       Task task = tasksBox.get(element) as Task;
       task.key = element;
+
       if (task.dueDateTime != null) {
-        //listOfTask.add(task);
-        print(task.dueDateTime);
+        if (!updateInitialDate) {
+          initialDate = _formatDateToMapIndex(task.dueDateTime);
+          updateInitialDate = true;
+        }
+        if (updateInitialDate) {
+          if (task.dueDateTime.isBefore(initialDate)) {
+            initialDate = _formatDateToMapIndex(task.dueDateTime);
+            // print('task date is before previous task date');
+            // print(initialDate);
+          }
+        }
+        var mapIndex = task.dueDateTime
+            .subtract(Duration(seconds: task.dueDateTime.second))
+            .subtract(Duration(minutes: task.dueDateTime.minute))
+            .subtract(Duration(hours: task.dueDateTime.hour));
+        // print(mapIndex);
+        if (_events.containsKey(mapIndex)) {
+          _events[mapIndex].add(
+            '${task.name}',
+          );
+        } else {
+          _events.addAll(
+            {
+              mapIndex: ['${task.name}']
+            },
+          );
+        }
       }
     });
+    _selectedEvents = _events[initialDate] ?? [];
+    print(_selectedEvents);
   }
 
   void _onDaySelected(DateTime day, List events, List holidays) {
@@ -214,5 +230,12 @@ class _CalendarScreenState extends State<CalendarScreen>
               ))
           .toList(),
     );
+  }
+
+  DateTime _formatDateToMapIndex(DateTime date) {
+    return date
+        .subtract(Duration(seconds: date.second))
+        .subtract(Duration(minutes: date.minute))
+        .subtract(Duration(hours: date.hour));
   }
 }
