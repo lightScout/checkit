@@ -61,7 +61,14 @@ class _CalendarScreenState extends State<CalendarScreen>
             children: [
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.white10,
+                    color: Colors.white10.withOpacity(.03),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: Offset(0.0, -4.0), //(x,y)
+                        blurRadius: 100.0,
+                      ),
+                    ],
                     borderRadius: BorderRadius.all(Radius.circular(25))),
                 child: TableCalendar(
                   calendarController: _calendarController,
@@ -171,7 +178,10 @@ class _CalendarScreenState extends State<CalendarScreen>
 
   void _fillCalendarWithScheduleTasks() {
     List listOfTaksKeys = tasksBox.keys.toList();
-    var initialDate = DateTime.now();
+    int index1;
+    int index2;
+    bool tringer1 = false;
+    var initialDate = _formatDateToMapIndex(DateTime.now());
     var updateInitialDate = false;
 
     listOfTaksKeys.forEach((element) {
@@ -179,27 +189,47 @@ class _CalendarScreenState extends State<CalendarScreen>
       task.key = element;
 
       if (task.dueDateTime != null) {
-        if (!updateInitialDate) {
-          initialDate = _formatDateToMapIndex(task.dueDateTime);
-          updateInitialDate = true;
-        }
-        if (updateInitialDate) {
-          if (task.dueDateTime.isBefore(initialDate)) {
-            initialDate = _formatDateToMapIndex(task.dueDateTime);
-            // print('task date is before previous task date');
-            // print(initialDate);
-          }
-        }
+        print('var: $initialDate');
+        var a = _formatDateToMapIndex(task.dueDateTime);
+        print('mapindex: $a');
+        // if (!tringer1) {
+        //   index1 = task.dueDateTime.day;
+        //   initialDate = _formatDateToMapIndex(task.dueDateTime);
+        // }
+        // if (tringer1) {
+        //    index2 = task.dueDateTime.day;
+        //   if (index1 < DateTime.now().day && index2 < DateTime.now().day) {
+        //     index1 = task.dueDateTime.day;
+        //     initialDate = _formatDateToMapIndex(task.dueDateTime);
+        //   }
+        // }
+        // if (updateInitialDate) {
+        //   // if (initialDate.isBefore(DateTime.now())) {
+        //   //   initialDate = task.dueDateTime;
+        //   // }
+        //   // else if (task.dueDateTime.isBefore(initialDate)) {
+        //   //   initialDate = _formatDateToMapIndex(task.dueDateTime);
+        //   //   // print('task date is before previous task date');
+        //   //   // print(initialDate);
+        //   // }
+        // }
+        //*
+        //* MAPPING THE MAP YARR!
+        //*
         var mapIndex = task.dueDateTime
             .subtract(Duration(seconds: task.dueDateTime.second))
             .subtract(Duration(minutes: task.dueDateTime.minute))
             .subtract(Duration(hours: task.dueDateTime.hour));
         // print(mapIndex);
+        //* check to see if there is already an existing key
+        //* if true, add to the chain of that key
         if (_events.containsKey(mapIndex)) {
           _events[mapIndex].add(
             '${task.name}',
           );
-        } else {
+        }
+        //* if false, mapping a new key
+        else {
           _events.addAll(
             {
               mapIndex: ['${task.name}']
@@ -275,6 +305,8 @@ class _CalendarScreenState extends State<CalendarScreen>
     return date
         .subtract(Duration(seconds: date.second))
         .subtract(Duration(minutes: date.minute))
-        .subtract(Duration(hours: date.hour));
+        .subtract(Duration(hours: date.hour))
+        .subtract(Duration(milliseconds: date.millisecond))
+        .subtract(Duration(microseconds: date.microsecond));
   }
 }

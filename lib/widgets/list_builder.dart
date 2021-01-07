@@ -6,12 +6,18 @@ import 'task_tile.dart';
 
 class ListBuilder extends StatelessWidget {
   final Box tasksBox;
+  //* if true, textile bg gradiente will be inverted to toggle task state
+  final bool isBgGradientInverted;
   final listCategory;
   final Color dismissibleBackGroundColor1 = Color(0xFFF9B16E);
   final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
   final ScrollController hideButtonController;
 
-  ListBuilder({this.tasksBox, this.listCategory, this.hideButtonController});
+  ListBuilder(
+      {this.tasksBox,
+      this.listCategory,
+      this.hideButtonController,
+      this.isBgGradientInverted = false});
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +70,7 @@ class ListBuilder extends StatelessWidget {
             deleteTask: () {
               tasksBox.delete(key);
             },
+            isBgGradientInverted: isBgGradientInverted,
           ),
         );
       },

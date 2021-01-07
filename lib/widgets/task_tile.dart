@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TaskTile extends StatefulWidget {
+  final bool isBgGradientInverted;
   final String title;
   final Function deleteTask;
   final bool isChecked;
@@ -20,7 +21,8 @@ class TaskTile extends StatefulWidget {
       this.isChecked,
       this.isCheckCallBack,
       this.category = 'Main',
-      this.dueDate});
+      this.dueDate,
+      this.isBgGradientInverted = false});
 
   @override
   _TaskTileState createState() => _TaskTileState();
@@ -36,15 +38,28 @@ class _TaskTileState extends State<TaskTile> {
          * Decoration
          * **/
         decoration: BoxDecoration(
-          gradient: widget.isChecked
-              ? LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [widget._checkedColor1, widget._checkedColor2])
-              : LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [KTopLinearGradientColor, widget._uncheckedColor1]),
+          gradient: widget.isBgGradientInverted
+              ? widget.isChecked
+                  ? LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [Colors.red, widget._checkedColor2])
+                  : LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [widget._checkedColor1, widget._checkedColor2])
+              : widget.isChecked
+                  ? LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [widget._checkedColor1, widget._checkedColor2])
+                  : LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                          KTopLinearGradientColor,
+                          widget._uncheckedColor1
+                        ]),
           borderRadius: BorderRadius.all(
             Radius.circular(15),
           ),

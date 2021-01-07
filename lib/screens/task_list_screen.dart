@@ -5,6 +5,7 @@ import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/calendar_screen.dart';
+import 'package:ciao_app/screens/full_screen_page.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
 import 'package:ciao_app/widgets/delete_category_alert.dart';
 import 'package:ciao_app/widgets/add_category_alert.dart';
@@ -30,7 +31,6 @@ class TaskListScreen extends StatefulWidget {
 
 class _TaskListScreenState extends State<TaskListScreen>
     with SingleTickerProviderStateMixin {
-  // int _current = 0;
   final tasksBox = Hive.box('tasks');
   final categoriesBox = Hive.box('categories');
   String newTaskCategory;
@@ -90,6 +90,7 @@ class _TaskListScreenState extends State<TaskListScreen>
             () {
               deleteCategory(a.key);
             },
+            context,
           ));
     });
   }
@@ -159,6 +160,18 @@ class _TaskListScreenState extends State<TaskListScreen>
                       );
                     }),
 
+                //* calendar button
+                InkWell(
+                  child: Icon(
+                    Icons.calendar_today,
+                    color: Color(0xFFf8f0bc),
+                    size: 33,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(CalendarScreen.id);
+                  },
+                ),
+
                 //* add category button
                 InkWell(
                   child: Icon(
@@ -180,18 +193,6 @@ class _TaskListScreenState extends State<TaskListScreen>
                     //* flag triger to minimize add category screen
                     Hive.box('flags').putAt(
                         0, Flags(name: 'toggleAddCategoryScreen', value: true));
-                  },
-                ),
-
-                //* calendar button
-                InkWell(
-                  child: Icon(
-                    Icons.calendar_today,
-                    color: Color(0xFFf8f0bc),
-                    size: 33,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pushNamed(CalendarScreen.id);
                   },
                 ),
 
@@ -363,9 +364,9 @@ class _TaskListScreenState extends State<TaskListScreen>
                     ],
                   ),
                 ),
-                //
-                //Bottom bar section - Task List builder
-                //
+                //*
+                //* Category Carousel
+                //*
                 Expanded(
                   child: Container(
                     child: Column(
@@ -382,7 +383,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                                   builder: (context, box, widget) {
                                     return CarouselSlider(
                                       options: CarouselOptions(
-                                          aspectRatio: .74,
+                                          aspectRatio: .68,
                                           enlargeCenterPage: true,
                                           enableInfiniteScroll: false,
                                           onPageChanged: (index, reason) {
@@ -429,7 +430,7 @@ class _TaskListScreenState extends State<TaskListScreen>
 ///Windget utilize for creation of task lists by category
 ///
 Widget carouselItem(String category, int categoryKey, Box tasksBox,
-    Box categoriesBox, Function function) {
+    Box categoriesBox, Function function, BuildContext context) {
   return Column(
     children: [
       //
@@ -464,9 +465,13 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              //*
+              //* Title, full-screen mode and delete categoru button
+              //*
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  //* Title
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white24,
@@ -503,6 +508,39 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
                       ),
                     ),
                   ),
+                  //* Full-screen mode
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 8.0, left: 8.0, right: 8.0, bottom: 8.0),
+                    child: CustomClipRRect.customClipRRect(
+                      colors: [
+                        Colors.amber,
+                        Color(0xFF9bdeff),
+                      ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Container(
+                          width: 45,
+                          height: 45,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FullScreenPage(
+                                          category: category,
+                                        )),
+                              );
+                            },
+                            child: Icon(Icons.open_in_full,
+                                size: 28, color: Constant.KMainPurple),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  //* Delete cagegory utton
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 8.0, left: 8.0, right: 8.0, bottom: 8.0),
