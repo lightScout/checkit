@@ -191,8 +191,8 @@ class _TaskListScreenState extends State<TaskListScreen>
                       _animateIconController.animateToEnd();
                     }
                     //* flag triger to minimize add category screen
-                    Hive.box('flags').putAt(
-                        0, Flags(name: 'toggleAddCategoryScreen', value: true));
+                    Hive.box('flags').putAt(0,
+                        Flags(name: 'toggleAddCategoryScreen', value: false));
                   },
                 ),
 
@@ -514,7 +514,7 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
                         top: 8.0, left: 8.0, right: 8.0, bottom: 8.0),
                     child: CustomClipRRect.customClipRRect(
                       colors: [
-                        Colors.amber,
+                        Color(0xFF2A9D8F),
                         Color(0xFF9bdeff),
                       ],
                       child: Padding(

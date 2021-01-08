@@ -1,4 +1,5 @@
 import 'package:ciao_app/model/category.dart';
+import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -127,6 +128,11 @@ Future addCategoryAlert(BuildContext context) {
                                   ),
                                   flushbarStyle: FlushbarStyle.FLOATING)
                               .show(context);
+                          Hive.box('flags').putAt(
+                              0,
+                              Flags(
+                                  name: 'toggleAddCategoryScreen',
+                                  value: true));
                         }
                       },
                     ),

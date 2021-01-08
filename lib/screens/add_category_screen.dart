@@ -34,18 +34,22 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
   String newCategoryTitle;
   Box categoriesBox = Hive.box('categories');
   void stateCheck() {
-    if (categoriesBox.isEmpty && isPageClosed) {
+    if ((categoriesBox.isEmpty && isPageClosed) ||
+        (categoriesBox.isEmpty && isPageClosed)) {
       yOffset = 0;
       topBorderRadius = 0;
+      isPageClosed = false;
       if (_animateIconController.isEnd()) {
         _animateIconController.animateToStart();
       }
     }
+    //* add task case
     if (!isPageClosed &&
         categoriesBox.isNotEmpty &&
         ((Hive.box('flags').getAt(0)) as Flags).value) {
       yOffset = MediaQuery.of(context).size.height / 1.5;
       topBorderRadius = 50;
+      isPageClosed = true;
       Hive.box('flags')
           .putAt(0, Flags(name: 'toggleAddCategoryScreen', value: false));
 
