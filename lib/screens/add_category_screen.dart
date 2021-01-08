@@ -76,7 +76,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
               builder: (context, box, widget) {
                 stateCheck();
                 return AnimatedContainer(
-                  curve: Curves.ease,
+                  curve: Curves.fastOutSlowIn,
                   transform: Matrix4.translationValues(
                     0,
                     yOffset,
@@ -334,7 +334,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                       onChanged: (value) {
                                                         newCategoryTitle =
                                                             value;
-                                                        print(newCategoryTitle);
                                                       },
                                                     ),
                                                     SizedBox(

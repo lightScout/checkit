@@ -9,7 +9,9 @@ import 'package:ciao_app/screens/full_screen_page.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
 import 'package:ciao_app/widgets/delete_category_alert.dart';
 import 'package:ciao_app/widgets/add_category_alert.dart';
-import 'package:ciao_app/widgets/no_category_alert.dart';
+
+import 'package:ciao_app/widgets/no_name_alert.dart';
+import 'package:ciao_app/widgets/slider_side_menu.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -49,6 +51,8 @@ class _TaskListScreenState extends State<TaskListScreen>
   double yOffsetFrontContainer = 0;
   double scaleFactor = 1;
   double topBorderRadius = 0;
+  double topBorderRadiusContainer = 0;
+  String newSearchName;
 
   @override
   void initState() {
@@ -59,6 +63,7 @@ class _TaskListScreenState extends State<TaskListScreen>
       vsync: this,
       duration: Duration(milliseconds: 190),
     );
+    Hive.box('flags').putAt(2, Flags(name: 'CATEGORYMENUOPEN', value: false));
     // _animation =
     //     CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
     // _animationController.forward();
@@ -93,6 +98,30 @@ class _TaskListScreenState extends State<TaskListScreen>
             () {
               deleteCategory(a.key);
             },
+            () {
+              //* flag trigger to minimize close search container
+              if ((Hive.box('flags').getAt(1) as Flags).value) {
+                setState(() {
+                  yOffsetFrontContainer = 0;
+                  topBorderRadiusContainer = 0;
+                  topBorderRadius = 0;
+                  //* flag triger to minimize add category screen
+                  Hive.box('flags').putAt(
+                      1, Flags(name: 'toggleAddCategoryScreen', value: false));
+                  //* tringer for animated icon
+                  if (_animateIconController.isEnd()) {
+                    _animateIconController.animateToStart();
+                  }
+                });
+              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FullScreenPage(
+                          category: a.categoryName,
+                        )),
+              );
+            },
             context,
           ));
     });
@@ -110,13 +139,13 @@ class _TaskListScreenState extends State<TaskListScreen>
         return true;
       },
       child: AnimatedContainer(
-        curve: Curves.ease,
+        curve: Curves.fastOutSlowIn,
         transform: Matrix4.translationValues(
           0,
           yOffsetPage,
           0,
         )..scale(scaleFactor),
-        duration: Duration(milliseconds: 600),
+        duration: Duration(milliseconds: 1000),
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.transparent,
@@ -172,6 +201,25 @@ class _TaskListScreenState extends State<TaskListScreen>
                       size: 33,
                     ),
                     onTap: () {
+                      //* flag trigger to minimize close search container
+                      if ((Hive.box('flags').getAt(1) as Flags).value) {
+                        setState(() {
+                          yOffsetFrontContainer = 0;
+                          topBorderRadiusContainer = 0;
+                          topBorderRadius = 0;
+                          //* flag triger to minimize add category screen
+                          Hive.box('flags').putAt(
+                              1,
+                              Flags(
+                                  name: 'toggleAddCategoryScreen',
+                                  value: false));
+                          //* tringer for animated icon
+                          if (_animateIconController.isEnd()) {
+                            _animateIconController.animateToStart();
+                          }
+                        });
+                      }
+
                       Navigator.of(context).pushNamed(CalendarScreen.id);
                     },
                   ),
@@ -186,8 +234,22 @@ class _TaskListScreenState extends State<TaskListScreen>
                     onTap: () {
                       //* triger for animated container
                       addCategoryAlert(context);
+                      if ((Hive.box('flags').getAt(1) as Flags).value) {
+                        setState(() {
+                          yOffsetFrontContainer = 0;
+                          topBorderRadiusContainer = 50;
+                          //* flag triger to minimize add category screen
+                          Hive.box('flags').putAt(
+                              1,
+                              Flags(
+                                  name: 'toggleAddCategoryScreen',
+                                  value: false));
+                        });
+                      }
+                      //* triger for animated container
                       setState(() {
                         topBorderRadius = 50;
+                        topBorderRadiusContainer = 50;
                         yOffsetPage = MediaQuery.of(context).size.height / 1.2;
                       });
                       //* tringer for animated icon
@@ -208,9 +270,22 @@ class _TaskListScreenState extends State<TaskListScreen>
                       size: 44,
                     ),
                     onTap: () {
+                      if ((Hive.box('flags').getAt(1) as Flags).value) {
+                        setState(() {
+                          yOffsetFrontContainer = 0;
+                          topBorderRadiusContainer = 50;
+                          //* flag triger to minimize add category screen
+                          Hive.box('flags').putAt(
+                              1,
+                              Flags(
+                                  name: 'toggleAddCategoryScreen',
+                                  value: false));
+                        });
+                      }
                       //* triger for animated container
                       setState(() {
                         topBorderRadius = 50;
+                        topBorderRadiusContainer = 50;
                         yOffsetPage = MediaQuery.of(context).size.height / 1.2;
                       });
                       //* creates a 'General' category if there is no category available
@@ -233,9 +308,11 @@ class _TaskListScreenState extends State<TaskListScreen>
 //* Back container
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 60),
-                  height: MediaQuery.of(context).size.height / 2,
+                  height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(topBorderRadiusContainer)),
                     gradient: Constant.KMainLinearGradient,
                   ),
                   child: Column(
@@ -275,7 +352,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                         ),
                         autofocus: false,
                         onChanged: (value) {
-                          // print(newTaskTitle);
+                          newSearchName = value;
                         },
                       ),
                       SizedBox(
@@ -302,9 +379,15 @@ class _TaskListScreenState extends State<TaskListScreen>
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: FloatingActionButton(
+                                    heroTag: 'SEARCHCONTAINERFAB',
                                     splashColor: KMainOrange,
                                     backgroundColor: KMainPurple,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if (newSearchName == null ||
+                                          newSearchName.trim() == '') {
+                                        noNameAlert(context, 'Search');
+                                      }
+                                    },
                                     child: Icon(
                                       Icons.fingerprint,
                                       size: MediaQuery.of(context).size.height *
@@ -321,7 +404,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                 ),
                 //* Front container
                 AnimatedContainer(
-                  curve: Curves.ease,
+                  curve: Curves.fastOutSlowIn,
                   transform: Matrix4.translationValues(
                     0,
                     yOffsetFrontContainer,
@@ -408,10 +491,18 @@ class _TaskListScreenState extends State<TaskListScreen>
                                                           .size
                                                           .height /
                                                       2.6;
+                                              //* flag to signal search page is open
+                                              Hive.box('flags').putAt(
+                                                  1,
+                                                  Flags(
+                                                      name: 'searchPageIsOpen',
+                                                      value: true));
                                             });
                                           } else {
                                             setState(() {
                                               topBorderRadius = 50;
+                                              topBorderRadiusContainer = 50;
+
                                               yOffsetPage =
                                                   MediaQuery.of(context)
                                                           .size
@@ -424,8 +515,16 @@ class _TaskListScreenState extends State<TaskListScreen>
                                         onEndIconPress: () {
                                           setState(() {
                                             topBorderRadius = 0;
+                                            topBorderRadiusContainer = 0;
                                             yOffsetPage = 0;
                                             yOffsetFrontContainer = 0;
+                                            textFieldController.clear();
+                                            //* flag to signal search page is closed
+                                            Hive.box('flags').putAt(
+                                                1,
+                                                Flags(
+                                                    name: 'searchPageIsOpen',
+                                                    value: false));
                                           });
                                           return true;
                                         },
@@ -527,8 +626,30 @@ class _TaskListScreenState extends State<TaskListScreen>
 ///
 ///Windget utilize for creation of task lists by category
 ///
-Widget carouselItem(String category, int categoryKey, Box tasksBox,
-    Box categoriesBox, Function function, BuildContext context) {
+Widget carouselItem(
+  String category,
+  int categoryKey,
+  Box tasksBox,
+  Box categoriesBox,
+  Function function,
+  Function function2,
+  BuildContext context,
+) {
+  // final menuItems = [
+  //   RadialMenuItem(
+  //       Icon(Icons.delete, color: Colors.white), Colors.red, function),
+  //   RadialMenuItem(Icon(Icons.open_in_full, color: Colors.white), Colors.green,
+  //       () {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => FullScreenPage(
+  //                 category: category,
+  //               )),
+  //     );
+  //   }),
+  // ];
+
   return Column(
     children: [
       //
@@ -547,7 +668,7 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
                 end: Alignment.bottomLeft,
                 colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(15),
+              topRight: Radius.circular(0),
               topLeft: Radius.circular(15),
               bottomLeft: Radius.circular(15),
               bottomRight: Radius.circular(15),
@@ -566,102 +687,96 @@ Widget carouselItem(String category, int categoryKey, Box tasksBox,
               //*
               //* Title, full-screen mode and delete categoru button
               //*
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  //* Title
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white24,
-                      gradient: LinearGradient(
-                          begin: Alignment.center,
-                          end: Alignment.topRight,
-                          colors: [Colors.white12, Color(0xFFEBF8FF)]),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(30),
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
-                        topLeft: Radius.circular(30),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(14.0),
-                      child: Text(
-                        category,
-                        style: Constant.Klogo.copyWith(
-                          fontSize: 15,
-                          shadows: [
-                            Shadow(
-                              blurRadius: 2.0,
-                              color: Colors.blue,
-                              offset: Offset(5.0, 5.0),
+              (ValueListenableBuilder(
+                  valueListenable: Hive.box('flags').listenable(),
+                  builder: (context, box, widget) {
+                    return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                //* Title
+                                (Hive.box('Flags').getAt(2) as Flags).value
+                                    ? Container()
+                                    : Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white24,
+                                          gradient: LinearGradient(
+                                              begin: Alignment.center,
+                                              end: Alignment.topRight,
+                                              colors: [
+                                                Colors.white12,
+                                                Color(0xFFEBF8FF)
+                                              ]),
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(30),
+                                            bottomLeft: Radius.circular(30),
+                                            bottomRight: Radius.circular(30),
+                                            topLeft: Radius.circular(30),
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(14.0),
+                                          child: Text(
+                                            category,
+                                            style: Constant.Klogo.copyWith(
+                                              fontSize: 15,
+                                              shadows: [
+                                                Shadow(
+                                                  blurRadius: 2.0,
+                                                  color: Colors.blue,
+                                                  offset: Offset(5.0, 5.0),
+                                                ),
+                                                Shadow(
+                                                  color: Colors.white,
+                                                  blurRadius: 6.0,
+                                                  offset: Offset(2.0, 2.0),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                SliderSideMenu(
+                                    parentStartColor: Colors.white54,
+                                    parentEndColor: Colors.white54,
+                                    childrenData: [
+                                      MenuItem(
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Constant.KMainPurple,
+                                        ),
+                                        label: Text(""),
+                                        onPressed: function,
+                                      ),
+                                      MenuItem(
+                                        icon: Icon(
+                                          Icons.open_in_full,
+                                          color: Constant.KMainPurple,
+                                        ),
+                                        label: Text(""),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FullScreenPage(
+                                                category: category,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    ],
+                                    description: "Sample tooltip message")
+                              ],
                             ),
-                            Shadow(
-                              color: Colors.white,
-                              blurRadius: 6.0,
-                              offset: Offset(2.0, 2.0),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  //* Full-screen mode
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, left: 8.0, right: 8.0, bottom: 8.0),
-                    child: CustomClipRRect.customClipRRect(
-                      colors: [
-                        Color(0xFF2A9D8F),
-                        Color(0xFF9bdeff),
-                      ],
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Container(
-                          width: 45,
-                          height: 45,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FullScreenPage(
-                                          category: category,
-                                        )),
-                              );
-                            },
-                            child: Icon(Icons.open_in_full,
-                                size: 28, color: Constant.KMainPurple),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  //* Delete cagegory utton
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, left: 8.0, right: 8.0, bottom: 8.0),
-                    child: CustomClipRRect.customClipRRect(
-                      colors: [
-                        Color(0xFF2A9D8F),
-                        Color(0xFF9bdeff),
-                      ],
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Container(
-                          width: 45,
-                          height: 45,
-                          child: InkWell(
-                            onTap: function,
-                            child: Icon(Icons.delete,
-                                size: 28, color: Constant.KMainPurple),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
+                        ]);
+                  })),
+              SizedBox(
+                height: 5,
               ),
               Expanded(
                 child: Container(
