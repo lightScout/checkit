@@ -695,6 +695,7 @@ Widget carouselItem(
                         children: [
                           Expanded(
                             child: Stack(
+                              alignment: Alignment.center,
                               children: [
                                 //* Title
                                 (Hive.box('Flags').getAt(2) as Flags).value

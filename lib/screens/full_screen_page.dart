@@ -5,7 +5,7 @@ import 'package:ciao_app/widgets/list_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
+import 'package:animations/animations.dart';
 import 'add_task_screen2.dart';
 
 class FullScreenPage extends StatefulWidget {

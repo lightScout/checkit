@@ -131,10 +131,8 @@ class _SliderSideMenuState extends State<SliderSideMenu>
   Widget build(BuildContext context) {
     if (_translateButton == null) {
       _translateButton = Tween<double>(
-        begin: widget._direction == Direction.RTL
-            ? MediaQuery.of(context).size.width
-            : -MediaQuery.of(context).size.width,
-        end: 0,
+        begin: 0,
+        end: 1,
       ).animate(CurvedAnimation(
         parent: _animationController,
         curve: Interval(
@@ -147,12 +145,9 @@ class _SliderSideMenuState extends State<SliderSideMenu>
     return Stack(
       alignment: Alignment.bottomRight,
       children: <Widget>[
-        Transform(
-          transform: Matrix4.translationValues(
-            _translateButton.value,
-            0.0,
-            0.0,
-          ),
+        AnimatedOpacity(
+          opacity: _translateButton.value,
+          duration: Duration(milliseconds: 500),
           child: Container(
             height: viewHeight,
             decoration: BoxDecoration(
