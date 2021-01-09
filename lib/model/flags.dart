@@ -7,8 +7,10 @@ class Flags {
   String name;
   @HiveField(1)
   bool value;
+  @HiveField(2)
+  var data;
 
-  Flags({this.name, this.value});
+  Flags({this.name, this.value, this.data});
 
   get getFlagName {
     return name;
@@ -16,6 +18,10 @@ class Flags {
 
   get getFlagValue {
     return value;
+  }
+
+  get getFlagData {
+    return data;
   }
 
   set setFlagValue(bool newValue) {

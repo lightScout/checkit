@@ -16,17 +16,20 @@ class FlagsAdapter extends TypeAdapter<Flags> {
     return Flags(
       name: fields[0] as String,
       value: fields[1] as bool,
+      data: fields[2] as dynamic,
     );
   }
 
   @override
   void write(BinaryWriter writer, Flags obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.value);
+      ..write(obj.value)
+      ..writeByte(2)
+      ..write(obj.data);
   }
 
   @override

@@ -44,6 +44,7 @@ class _TaskListScreenState extends State<TaskListScreen>
   AnimateIconController _animateIconController;
   //* TextField Controller
   final textFieldController = TextEditingController();
+  final _carouselController = CarouselController();
 
   List<Widget> carouselList = [];
   List listOfCategoriesKeys = [];
@@ -54,6 +55,7 @@ class _TaskListScreenState extends State<TaskListScreen>
   double topBorderRadius = 0;
   double topBorderRadiusContainer = 0;
   String newSearchName;
+  int carouselIndex = 0;
 
   @override
   void initState() {
@@ -64,7 +66,7 @@ class _TaskListScreenState extends State<TaskListScreen>
       vsync: this,
       duration: Duration(milliseconds: 190),
     );
-    Hive.box('flags').putAt(2, Flags(name: 'CATEGORYMENUOPEN', value: false));
+
     // _animation =
     //     CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
     // _animationController.forward();
@@ -83,48 +85,74 @@ class _TaskListScreenState extends State<TaskListScreen>
 
   void buildCarouselList() {
     carouselList.clear();
-
     listOfCategoriesKeys = categoriesBox.keys.toList();
+    //*syncing the carousel with the last added category
+    if (carouselIndex == categoriesBox.length) {
+      // _carouselController.animateToPage(carouselIndex - 1);
+    }
+    // //* sycning the carousel when another carousel get its page turned
+    // if ((Hive.box('flags').getAt(2) as Flags).value) {
+    //   _carouselController
+    //       .animateToPage((Hive.box('flags').getAt(2) as Flags).data);
+    //   //* flag to signal synced carousel
+    //   Hive.box('flags').putAt(
+    //       2,
+    //       Flags(
+    //         name: 'CAROUSELPAGETURNED',
+    //         value: false,
+    //       ));
+    // }
+
+    if (carouselIndex == 0 && categoriesBox.length > 0) {
+      carouselIndex = categoriesBox.length;
+    }
+    if ((categoriesBox.isNotEmpty) &&
+        (carouselIndex < categoriesBox.length || categoriesBox.length == 1)) {
+      carouselIndex = categoriesBox.length;
+      // _carouselController.animateToPage(carouselIndex - 1);
+      // print((categoriesBox.isNotEmpty) &&
+      //     (categoriesBoxLength < categoriesBox.length ||
+      //         categoriesBox.length < 2));
+    }
+
     listOfCategoriesKeys.forEach((element) {
       Category a = categoriesBox.get(element) as Category;
       a.key = element;
 
-      carouselList.insert(
-          0,
-          CarouselItemForTaskScreen(
-            a.categoryName,
-            a.key,
-            tasksBox,
-            categoriesBox,
-            () {
-              deleteCategory(a.key);
-            },
-            () {
-              //* flag trigger to minimize close search container
-              if ((Hive.box('flags').getAt(1) as Flags).value) {
-                setState(() {
-                  yOffsetFrontContainer = 0;
-                  topBorderRadiusContainer = 0;
-                  topBorderRadius = 0;
-                  //* flag triger to minimize add category screen
-                  Hive.box('flags').putAt(
-                      1, Flags(name: 'toggleAddCategoryScreen', value: false));
-                  //* tringer for animated icon
-                  if (_animateIconController.isEnd()) {
-                    _animateIconController.animateToStart();
-                  }
-                });
+      carouselList.add(CarouselItemForTaskScreen(
+        a.categoryName,
+        a.key,
+        tasksBox,
+        categoriesBox,
+        () {
+          deleteCategory(a.key);
+        },
+        () {
+          //* flag trigger to minimize close search container
+          if ((Hive.box('flags').getAt(1) as Flags).value) {
+            setState(() {
+              yOffsetFrontContainer = 0;
+              topBorderRadiusContainer = 0;
+              topBorderRadius = 0;
+              //* flag triger to minimize add category screen
+              Hive.box('flags').putAt(
+                  1, Flags(name: 'toggleAddCategoryScreen', value: false));
+              //* tringer for animated icon
+              if (_animateIconController.isEnd()) {
+                _animateIconController.animateToStart();
               }
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => FullScreenPage(
-                          category: a.categoryName,
-                        )),
-              );
-            },
+            });
+          }
+          Navigator.push(
             context,
-          ));
+            MaterialPageRoute(
+                builder: (context) => FullScreenPage(
+                      category: a.categoryName,
+                    )),
+          );
+        },
+        context,
+      ));
     });
   }
 
@@ -569,28 +597,44 @@ class _TaskListScreenState extends State<TaskListScreen>
                               children: [
                                 ValueListenableBuilder(
                                     valueListenable:
-                                        Hive.box('categories').listenable(),
+                                        Hive.box('flags').listenable(),
                                     builder: (context, box, widget) {
-                                      buildCarouselList();
                                       return ValueListenableBuilder(
                                           valueListenable:
-                                              tasksBox.listenable(),
+                                              Hive.box('categories')
+                                                  .listenable(),
                                           builder: (context, box, widget) {
-                                            return CarouselSlider(
-                                              options: CarouselOptions(
-                                                  aspectRatio: .68,
-                                                  enlargeCenterPage: true,
-                                                  enableInfiniteScroll: false,
-                                                  onPageChanged:
-                                                      (index, reason) {
-                                                    setState(() {
-                                                      // _current = index;
-                                                    });
-                                                  }),
-                                              items: carouselList,
-                                            );
+                                            buildCarouselList();
+                                            return ValueListenableBuilder(
+                                                valueListenable:
+                                                    tasksBox.listenable(),
+                                                builder:
+                                                    (context, box, widget) {
+                                                  return CarouselSlider(
+                                                    carouselController:
+                                                        _carouselController,
+                                                    options: CarouselOptions(
+                                                      aspectRatio: .68,
+                                                      enlargeCenterPage: true,
+                                                      enableInfiniteScroll:
+                                                          false,
+                                                      onScrolled: (index) {
+                                                        //* flag to signal sync carousel acrros the app
+                                                        Hive.box('flags').putAt(
+                                                            3,
+                                                            Flags(
+                                                                name:
+                                                                    'CAROUSELPAGETURNED',
+                                                                value: true,
+                                                                data: index));
+                                                      },
+                                                    ),
+                                                    items: carouselList,
+                                                  );
+                                                });
                                           });
                                     }),
+
                                 // Row(
                                 //   mainAxisAlignment: MainAxisAlignment.center,
                                 //   children: carouselList.map((item) {
@@ -622,170 +666,4 @@ class _TaskListScreenState extends State<TaskListScreen>
       ),
     );
   }
-}
-
-///
-///Windget utilize for creation of task lists by category
-///
-Widget carouselItem(
-  String category,
-  int categoryKey,
-  Box tasksBox,
-  Box categoriesBox,
-  Function function,
-  Function function2,
-  BuildContext context,
-) {
-  bool isMenuOpen = false;
-  return Column(
-    children: [
-      //
-      //Item
-      //
-      Expanded(
-        child: Container(
-          margin: const EdgeInsets.only(
-              bottom: 10.0, left: 0, top: 0.0, right: 00.0),
-          decoration: BoxDecoration(
-            // border: Border.all(
-            //   color: Colors.blue.withOpacity(.1.8),
-            // ),
-            gradient: LinearGradient(
-                begin: Alignment.center,
-                end: Alignment.bottomLeft,
-                colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(0),
-              topLeft: Radius.circular(15),
-              bottomLeft: Radius.circular(15),
-              bottomRight: Radius.circular(15),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blueAccent[400],
-                offset: Offset(5.0, 5.0), //(x,y)
-                blurRadius: 5.0,
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //*
-              //* Title, full-screen mode and delete categoru button
-              //*
-
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                Expanded(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      //* Title
-                      isMenuOpen
-                          ? Container()
-                          : Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white24,
-                                gradient: LinearGradient(
-                                    begin: Alignment.center,
-                                    end: Alignment.topRight,
-                                    colors: [
-                                      Colors.white12,
-                                      Color(0xFFEBF8FF)
-                                    ]),
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(30),
-                                  bottomLeft: Radius.circular(30),
-                                  bottomRight: Radius.circular(30),
-                                  topLeft: Radius.circular(30),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(14.0),
-                                child: Text(
-                                  category,
-                                  style: Constant.Klogo.copyWith(
-                                    fontSize: 15,
-                                    shadows: [
-                                      Shadow(
-                                        blurRadius: 2.0,
-                                        color: Colors.blue,
-                                        offset: Offset(5.0, 5.0),
-                                      ),
-                                      Shadow(
-                                        color: Colors.white,
-                                        blurRadius: 6.0,
-                                        offset: Offset(2.0, 2.0),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                      GestureDetector(
-                        onTap: () {
-                          isMenuOpen = !isMenuOpen;
-                        },
-                        child: SliderSideMenu(
-                            parentStartColor: Colors.white54,
-                            parentEndColor: Colors.white54,
-                            childrenData: [
-                              MenuItem(
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Constant.KMainPurple,
-                                ),
-                                label: Text(""),
-                                onPressed: function,
-                              ),
-                              MenuItem(
-                                icon: Icon(
-                                  Icons.open_in_full,
-                                  color: Constant.KMainPurple,
-                                ),
-                                label: Text(""),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => FullScreenPage(
-                                        category: category,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              )
-                            ],
-                            description: "Sample tooltip message"),
-                      )
-                    ],
-                  ),
-                )
-              ]),
-
-              SizedBox(
-                height: 5,
-              ),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white12,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(50),
-                      topLeft: Radius.circular(50),
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                    ),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child:
-                      ListBuilder(listCategory: category, tasksBox: tasksBox),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    ],
-  );
 }

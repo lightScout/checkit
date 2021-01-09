@@ -1,6 +1,7 @@
 import 'package:animate_icons/animate_icons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/model/category.dart';
+import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/widgets/add_category_alert.dart';
@@ -49,6 +50,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
 //* TextField Controller
   final textFieldController = TextEditingController();
+
+  final _carouselController = CarouselController();
 
 //* AnimatedIcon Controller
   AnimateIconController _animateIconController;
@@ -235,23 +238,45 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   void buildCarouselList() {
     carouselCategoriesList.clear();
     List listOfKey = categoriesBox.keys.toList();
+    //*syncing the carousel with the last added category
+    if (categoriesBoxLength == categoriesBox.length) {
+      _carouselController.animateToPage(categoriesBoxLength - 1);
+    }
+    //* sycning the carousel when another carousel get its page turned
+    // if ((Hive.box('flags').getAt(3) as Flags).value) {
+    //   _carouselController
+    //       .animateToPage((Hive.box('flags').getAt(2) as Flags).data);
+    //   //* flag to signal synced carousel
+    //   Hive.box('flags').putAt(
+    //       2,
+    //       Flags(
+    //         name: 'CAROUSELPAGETURNED',
+    //         value: false,
+    //       ));
+    // }
 
-    if (categoriesBox.isNotEmpty &&
+    if (categoriesBoxLength == 0 && categoriesBox.length > 0) {
+      categoriesBoxLength = categoriesBox.length;
+    }
+
+    if ((categoriesBox.isNotEmpty) &&
         (categoriesBoxLength < categoriesBox.length ||
             categoriesBox.length == 1)) {
       selectedCategory =
           (categoriesBox.get(categoriesBox.keys.last) as Category).name;
       categoriesBoxLength = categoriesBox.length;
+      _carouselController.animateToPage(categoriesBoxLength - 1);
+      // print((categoriesBox.isNotEmpty) &&
+      //     (categoriesBoxLength < categoriesBox.length ||
+      //         categoriesBox.length < 2));
     }
 
     listOfKey.forEach((element) {
       //category.key = element;
       // print(category.name);
 
-      carouselCategoriesList.insert(
-          0,
-          CarouselItem(
-              categoryTitle: (categoriesBox.get(element) as Category).name));
+      carouselCategoriesList.add(CarouselItem(
+          categoryTitle: (categoriesBox.get(element) as Category).name));
     });
   }
 
@@ -308,16 +333,24 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     height: 70,
                     width: MediaQuery.of(context).size.width * .85,
                     child: CarouselSlider(
+                      carouselController: _carouselController,
                       options: CarouselOptions(
                           viewportFraction: .43,
                           aspectRatio: 3.8,
                           enlargeCenterPage: true,
-                          enableInfiniteScroll: true,
+                          enableInfiniteScroll: false,
                           onPageChanged: (index, reason) {
                             setState(() {
                               selectedCategory = (carouselCategoriesList
                                       .elementAt(index) as CarouselItem)
                                   .categoryTitle;
+                              //* flag to signal sync carousel acrros the app
+                              Hive.box('flags').putAt(
+                                  2,
+                                  Flags(
+                                      name: 'CAROUSELPAGETURNED',
+                                      value: true,
+                                      data: index));
                             });
                             // print(selectedCategory);
                           }),
@@ -454,12 +487,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   //*
-                                  //* TASK CATEGORIES CAROUSEL
+                                  //* FIRST: TASK CATEGORIES CAROUSEL
                                   //*
-
-                                  Container(
-                                    child: categoriesCarousel(),
-                                  ),
+                                  ValueListenableBuilder(
+                                      valueListenable:
+                                          Hive.box('flags').listenable(),
+                                      builder: (context, box, widget) {
+                                        return Container(
+                                          child: categoriesCarousel(),
+                                        );
+                                      }),
                                 ],
                               ),
 
