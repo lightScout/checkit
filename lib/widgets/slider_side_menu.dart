@@ -1,5 +1,6 @@
 import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/others/constants.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
@@ -12,18 +13,21 @@ class SliderSideMenu extends StatefulWidget {
   final List<MenuItem> _childrenData;
   final String _description;
   final Direction _direction;
+  final Function _makeTitleDisapear;
 
   SliderSideMenu(
       {Color parentStartColor = Colors.pinkAccent,
       Color parentEndColor = Colors.teal,
       @required List<MenuItem> childrenData,
       @required String description,
+      @required Function function,
       Direction direction = Direction.RTL})
       : _parentStartColor = parentStartColor,
         _parentEndColor = parentEndColor,
         _childrenData = childrenData,
         _description = description,
-        _direction = direction;
+        _direction = direction,
+        _makeTitleDisapear = function;
 
   @override
   State<StatefulWidget> createState() {
@@ -84,12 +88,11 @@ class _SliderSideMenuState extends State<SliderSideMenu>
   void animate() {
     if (!isOpened) {
       _animationController.forward();
-      Hive.box('flags').putAt(2, Flags(name: 'CATEGORYMENUOPEN', value: true));
     } else {
       _animationController.reverse();
-      Hive.box('flags').putAt(2, Flags(name: 'CATEGORYMENUOPEN', value: false));
     }
     isOpened = !isOpened;
+    widget._makeTitleDisapear();
   }
 
   Widget toggle() {
@@ -145,17 +148,24 @@ class _SliderSideMenuState extends State<SliderSideMenu>
     return Stack(
       alignment: Alignment.bottomRight,
       children: <Widget>[
-        AnimatedOpacity(
-          opacity: _translateButton.value,
-          duration: Duration(milliseconds: 500),
-          child: Container(
-            height: viewHeight,
-            decoration: BoxDecoration(
-                color: Colors.white54,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(15))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: _generateMenuItems(),
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            _animationController.reverse();
+          },
+          child: AnimatedOpacity(
+            opacity: _translateButton.value,
+            duration: Duration(milliseconds: 500),
+            child: Container(
+              height: viewHeight,
+              decoration: BoxDecoration(
+                  color: Colors.white54,
+                  borderRadius:
+                      BorderRadius.only(topLeft: Radius.circular(15))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: _generateMenuItems(),
+              ),
             ),
           ),
         ),

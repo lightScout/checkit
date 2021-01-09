@@ -7,6 +7,7 @@ import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/calendar_screen.dart';
 import 'package:ciao_app/screens/full_screen_page.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
+import 'package:ciao_app/widgets/carousel_item_for_task_screen.dart';
 import 'package:ciao_app/widgets/delete_category_alert.dart';
 import 'package:ciao_app/widgets/add_category_alert.dart';
 
@@ -90,7 +91,7 @@ class _TaskListScreenState extends State<TaskListScreen>
 
       carouselList.insert(
           0,
-          carouselItem(
+          CarouselItemForTaskScreen(
             a.categoryName,
             a.key,
             tasksBox,
@@ -635,21 +636,7 @@ Widget carouselItem(
   Function function2,
   BuildContext context,
 ) {
-  // final menuItems = [
-  //   RadialMenuItem(
-  //       Icon(Icons.delete, color: Colors.white), Colors.red, function),
-  //   RadialMenuItem(Icon(Icons.open_in_full, color: Colors.white), Colors.green,
-  //       () {
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //           builder: (context) => FullScreenPage(
-  //                 category: category,
-  //               )),
-  //     );
-  //   }),
-  // ];
-
+  bool isMenuOpen = false;
   return Column(
     children: [
       //
@@ -687,95 +674,95 @@ Widget carouselItem(
               //*
               //* Title, full-screen mode and delete categoru button
               //*
-              (ValueListenableBuilder(
-                  valueListenable: Hive.box('flags').listenable(),
-                  builder: (context, box, widget) {
-                    return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                //* Title
-                                (Hive.box('Flags').getAt(2) as Flags).value
-                                    ? Container()
-                                    : Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white24,
-                                          gradient: LinearGradient(
-                                              begin: Alignment.center,
-                                              end: Alignment.topRight,
-                                              colors: [
-                                                Colors.white12,
-                                                Color(0xFFEBF8FF)
-                                              ]),
-                                          borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(30),
-                                            bottomLeft: Radius.circular(30),
-                                            bottomRight: Radius.circular(30),
-                                            topLeft: Radius.circular(30),
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(14.0),
-                                          child: Text(
-                                            category,
-                                            style: Constant.Klogo.copyWith(
-                                              fontSize: 15,
-                                              shadows: [
-                                                Shadow(
-                                                  blurRadius: 2.0,
-                                                  color: Colors.blue,
-                                                  offset: Offset(5.0, 5.0),
-                                                ),
-                                                Shadow(
-                                                  color: Colors.white,
-                                                  blurRadius: 6.0,
-                                                  offset: Offset(2.0, 2.0),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
+
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                Expanded(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      //* Title
+                      isMenuOpen
+                          ? Container()
+                          : Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white24,
+                                gradient: LinearGradient(
+                                    begin: Alignment.center,
+                                    end: Alignment.topRight,
+                                    colors: [
+                                      Colors.white12,
+                                      Color(0xFFEBF8FF)
+                                    ]),
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(30),
+                                  bottomLeft: Radius.circular(30),
+                                  bottomRight: Radius.circular(30),
+                                  topLeft: Radius.circular(30),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(14.0),
+                                child: Text(
+                                  category,
+                                  style: Constant.Klogo.copyWith(
+                                    fontSize: 15,
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 2.0,
+                                        color: Colors.blue,
+                                        offset: Offset(5.0, 5.0),
                                       ),
-                                SliderSideMenu(
-                                    parentStartColor: Colors.white54,
-                                    parentEndColor: Colors.white54,
-                                    childrenData: [
-                                      MenuItem(
-                                        icon: Icon(
-                                          Icons.delete,
-                                          color: Constant.KMainPurple,
-                                        ),
-                                        label: Text(""),
-                                        onPressed: function,
+                                      Shadow(
+                                        color: Colors.white,
+                                        blurRadius: 6.0,
+                                        offset: Offset(2.0, 2.0),
                                       ),
-                                      MenuItem(
-                                        icon: Icon(
-                                          Icons.open_in_full,
-                                          color: Constant.KMainPurple,
-                                        ),
-                                        label: Text(""),
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  FullScreenPage(
-                                                category: category,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      )
                                     ],
-                                    description: "Sample tooltip message")
-                              ],
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ]);
-                  })),
+                      GestureDetector(
+                        onTap: () {
+                          isMenuOpen = !isMenuOpen;
+                        },
+                        child: SliderSideMenu(
+                            parentStartColor: Colors.white54,
+                            parentEndColor: Colors.white54,
+                            childrenData: [
+                              MenuItem(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Constant.KMainPurple,
+                                ),
+                                label: Text(""),
+                                onPressed: function,
+                              ),
+                              MenuItem(
+                                icon: Icon(
+                                  Icons.open_in_full,
+                                  color: Constant.KMainPurple,
+                                ),
+                                label: Text(""),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FullScreenPage(
+                                        category: category,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            ],
+                            description: "Sample tooltip message"),
+                      )
+                    ],
+                  ),
+                )
+              ]),
+
               SizedBox(
                 height: 5,
               ),
