@@ -56,6 +56,7 @@ class _TaskListScreenState extends State<TaskListScreen>
   double topBorderRadiusContainer = 0;
   String newSearchName;
   int carouselIndex = 0;
+  bool carouselIndexNeedsUpdate = false;
 
   @override
   void initState() {
@@ -106,9 +107,9 @@ class _TaskListScreenState extends State<TaskListScreen>
     if (carouselIndex == 0 && categoriesBox.length > 0) {
       carouselIndex = categoriesBox.length;
     }
-    if ((categoriesBox.isNotEmpty) &&
-        (carouselIndex < categoriesBox.length || categoriesBox.length == 1)) {
+    if ((categoriesBox.isNotEmpty && carouselIndex < categoriesBox.length)) {
       carouselIndex = categoriesBox.length;
+      // carouselIndexNeedsUpdate = true;
       // _carouselController.animateToPage(carouselIndex - 1);
       // print((categoriesBox.isNotEmpty) &&
       //     (categoriesBoxLength < categoriesBox.length ||
@@ -119,41 +120,88 @@ class _TaskListScreenState extends State<TaskListScreen>
       Category a = categoriesBox.get(element) as Category;
       a.key = element;
 
-      carouselList.add(CarouselItemForTaskScreen(
-        a.categoryName,
-        a.key,
-        tasksBox,
-        categoriesBox,
-        () {
-          deleteCategory(a.key);
-        },
-        () {
-          //* flag trigger to minimize close search container
-          if ((Hive.box('flags').getAt(1) as Flags).value) {
-            setState(() {
-              yOffsetFrontContainer = 0;
-              topBorderRadiusContainer = 0;
-              topBorderRadius = 0;
-              //* flag triger to minimize add category screen
-              Hive.box('flags').putAt(
-                  1, Flags(name: 'toggleAddCategoryScreen', value: false));
-              //* tringer for animated icon
-              if (_animateIconController.isEnd()) {
-                _animateIconController.animateToStart();
+      carouselList.insert(
+          0,
+          CarouselItemForTaskScreen(
+            a.categoryName,
+            a.key,
+            tasksBox,
+            categoriesBox,
+            () {
+              deleteCategory(a.key);
+            },
+            () {
+              //* flag trigger to minimize close search container
+              if ((Hive.box('flags').getAt(1) as Flags).value) {
+                setState(() {
+                  yOffsetFrontContainer = 0;
+                  topBorderRadiusContainer = 0;
+                  topBorderRadius = 0;
+                  //* flag triger to minimize add category screen
+                  Hive.box('flags').putAt(
+                      1, Flags(name: 'toggleAddCategoryScreen', value: false));
+                  //* tringer for animated icon
+                  if (_animateIconController.isEnd()) {
+                    _animateIconController.animateToStart();
+                  }
+                });
               }
-            });
-          }
-          Navigator.push(
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FullScreenPage(
+                          category: a.categoryName,
+                        )),
+              );
+            },
             context,
-            MaterialPageRoute(
-                builder: (context) => FullScreenPage(
-                      category: a.categoryName,
-                    )),
-          );
-        },
-        context,
-      ));
+          ));
     });
+
+    //* sycning the carousel when add task screen carousel get its page turned
+    if ((Hive.box('flags').getAt(2) as Flags).value != null) {
+      if ((Hive.box('flags').getAt(2) as Flags).value) {
+        var indexName = (Hive.box('flags').getAt(2) as Flags).data;
+        carouselList.forEach((element) {
+          if ((element as CarouselItemForTaskScreen).category == indexName) {
+            print(carouselList.indexOf(element));
+            _carouselController.animateToPage(carouselList.indexOf(element));
+            //* flag to signal synced carousel
+            Hive.box('flags').putAt(
+                2,
+                Flags(
+                  name: 'TASKLISTCAROUSELPAGETURNED',
+                  value: false,
+                  data: null,
+                ));
+          }
+        });
+      }
+    }
+  }
+
+  Widget categoryCarousel() {
+    buildCarouselList();
+    return CarouselSlider(
+      carouselController: _carouselController,
+      options: CarouselOptions(
+        aspectRatio: .68,
+        enlargeCenterPage: true,
+        enableInfiniteScroll: false,
+        onPageChanged: (index, reason) {
+          Hive.box('flags').putAt(
+              3,
+              Flags(
+                  name: 'TASKLISTCAROUSELPAGETURNED',
+                  value: true,
+                  data: (carouselList[index] as CarouselItemForTaskScreen)
+                      .category));
+          print((carouselList[index] as CarouselItemForTaskScreen).category);
+        },
+        onScrolled: (index) {},
+      ),
+      items: carouselList,
+    );
   }
 
   @override
@@ -604,33 +652,12 @@ class _TaskListScreenState extends State<TaskListScreen>
                                               Hive.box('categories')
                                                   .listenable(),
                                           builder: (context, box, widget) {
-                                            buildCarouselList();
                                             return ValueListenableBuilder(
                                                 valueListenable:
                                                     tasksBox.listenable(),
                                                 builder:
                                                     (context, box, widget) {
-                                                  return CarouselSlider(
-                                                    carouselController:
-                                                        _carouselController,
-                                                    options: CarouselOptions(
-                                                      aspectRatio: .68,
-                                                      enlargeCenterPage: true,
-                                                      enableInfiniteScroll:
-                                                          false,
-                                                      onScrolled: (index) {
-                                                        //* flag to signal sync carousel acrros the app
-                                                        Hive.box('flags').putAt(
-                                                            3,
-                                                            Flags(
-                                                                name:
-                                                                    'CAROUSELPAGETURNED',
-                                                                value: true,
-                                                                data: index));
-                                                      },
-                                                    ),
-                                                    items: carouselList,
-                                                  );
+                                                  return categoryCarousel();
                                                 });
                                           });
                                     }),

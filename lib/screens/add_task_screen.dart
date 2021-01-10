@@ -239,20 +239,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     carouselCategoriesList.clear();
     List listOfKey = categoriesBox.keys.toList();
     //*syncing the carousel with the last added category
-    if (categoriesBoxLength == categoriesBox.length) {
-      _carouselController.animateToPage(categoriesBoxLength - 1);
-    }
-    //* sycning the carousel when another carousel get its page turned
-    // if ((Hive.box('flags').getAt(3) as Flags).value) {
-    //   _carouselController
-    //       .animateToPage((Hive.box('flags').getAt(2) as Flags).data);
-    //   //* flag to signal synced carousel
-    //   Hive.box('flags').putAt(
-    //       2,
-    //       Flags(
-    //         name: 'CAROUSELPAGETURNED',
-    //         value: false,
-    //       ));
+    // if (categoriesBoxLength == categoriesBox.length) {
+    //   _carouselController.animateToPage(categoriesBoxLength - 1);
     // }
 
     if (categoriesBoxLength == 0 && categoriesBox.length > 0) {
@@ -265,7 +253,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       selectedCategory =
           (categoriesBox.get(categoriesBox.keys.last) as Category).name;
       categoriesBoxLength = categoriesBox.length;
-      _carouselController.animateToPage(categoriesBoxLength - 1);
+      _carouselController.animateToPage(0);
       // print((categoriesBox.isNotEmpty) &&
       //     (categoriesBoxLength < categoriesBox.length ||
       //         categoriesBox.length < 2));
@@ -275,9 +263,32 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       //category.key = element;
       // print(category.name);
 
-      carouselCategoriesList.add(CarouselItem(
-          categoryTitle: (categoriesBox.get(element) as Category).name));
+      carouselCategoriesList.insert(
+          0,
+          CarouselItem(
+              categoryTitle: (categoriesBox.get(element) as Category).name));
     });
+    //* sycning the carousel when task list screen carousel get its page turned
+    if ((Hive.box('flags').getAt(3) as Flags).value != null) {
+      if ((Hive.box('flags').getAt(3) as Flags).value) {
+        var indexName = (Hive.box('flags').getAt(3) as Flags).data;
+        carouselCategoriesList.forEach((element) {
+          if ((element as CarouselItem).categoryTitle == indexName) {
+            print(carouselCategoriesList.indexOf(element));
+            _carouselController
+                .animateToPage(carouselCategoriesList.indexOf(element));
+            //* flag to signal synced carousel
+            Hive.box('flags').putAt(
+                3,
+                Flags(
+                  name: 'TASKLISTCAROUSELPAGETURNED',
+                  value: false,
+                  data: null,
+                ));
+          }
+        });
+      }
+    }
   }
 
   @override
@@ -348,9 +359,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               Hive.box('flags').putAt(
                                   2,
                                   Flags(
-                                      name: 'CAROUSELPAGETURNED',
+                                      name: 'ADDTASKCAROUSELPAGETURNED',
                                       value: true,
-                                      data: index));
+                                      data: (carouselCategoriesList[index]
+                                              as CarouselItem)
+                                          .categoryTitle));
                             });
                             // print(selectedCategory);
                           }),

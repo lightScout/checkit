@@ -46,7 +46,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
     //* add task case
     if (!isPageClosed &&
         categoriesBox.isNotEmpty &&
-        ((Hive.box('flags').getAt(0)) as Flags).value) {
+        (((Hive.box('flags').getAt(0)) as Flags).value &&
+            Hive.box('flags').getAt(0) != null)) {
       yOffset = MediaQuery.of(context).size.height / 1.5;
       topBorderRadius = 50;
       isPageClosed = true;
