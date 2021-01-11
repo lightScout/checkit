@@ -236,45 +236,38 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   void buildCarouselList() {
+    //*clean carouselCateogryList and grabbing reference to categoriesBox keys
     carouselCategoriesList.clear();
     List listOfKey = categoriesBox.keys.toList();
-
+//* check if category box has items
     if (categoriesBoxLength == 0 && categoriesBox.length > 0) {
       categoriesBoxLength = categoriesBox.length;
+      selectedCategory =
+          (categoriesBox.get(categoriesBox.keys.last) as Category).name;
     }
-
+//* check if new category was added
     if ((categoriesBox.isNotEmpty) &&
-        (categoriesBoxLength < categoriesBox.length ||
-            categoriesBox.length == 1)) {
+        categoriesBoxLength < categoriesBox.length) {
       selectedCategory =
           (categoriesBox.get(categoriesBox.keys.last) as Category).name;
       categoriesBoxLength = categoriesBox.length;
+
       _carouselController.animateToPage(0);
-      // print((categoriesBox.isNotEmpty) &&
-      //     (categoriesBoxLength < categoriesBox.length ||
-      //         categoriesBox.length < 2));
     }
-
+//* adding elements to carouselCategory list
     listOfKey.forEach((element) {
-      //category.key = element;
-      // print(category.name);
-
       carouselCategoriesList.insert(
           0,
           CarouselItem(
               categoryTitle: (categoriesBox.get(element) as Category).name));
     });
-    if (selectedCategory == null) {
-      selectedCategory =
-          (carouselCategoriesList[0] as CarouselItem).categoryTitle;
-    }
+
     //* sycning the carousel when task list screen carousel get its page turned
     if ((Hive.box('flags').getAt(3) as Flags).value != null) {
       if ((Hive.box('flags').getAt(3) as Flags).value) {
         var indexName = (Hive.box('flags').getAt(3) as Flags).data;
         carouselCategoriesList.forEach((element) {
           if ((element as CarouselItem).categoryTitle == indexName) {
-            print(carouselCategoriesList.indexOf(element));
             _carouselController
                 .animateToPage(carouselCategoriesList.indexOf(element));
             //* flag to signal synced carousel

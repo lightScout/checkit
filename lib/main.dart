@@ -84,16 +84,33 @@ void main() async {
     },
   );
 //* Initializing flags
+  flagsBox.deleteAll(flagsBox.keys.toList());
+
+  Hive.box('flags')
+      .add(Flags(name: 'toggleAddCategoryScreen', value: false, data: null));
   Hive.box('flags').putAt(
       0, Flags(name: 'toggleAddCategoryScreen', value: false, data: null));
+
+  Hive.box('flags')
+      .add(Flags(name: 'searchPageIsOpen', value: false, data: null));
   Hive.box('flags')
       .putAt(1, Flags(name: 'searchPageIsOpen', value: false, data: null));
+
+  Hive.box('flags').add(
+      Flags(name: 'addTaskScreenCarouselPageTurned', value: false, data: null));
   Hive.box('flags').putAt(2,
       Flags(name: 'addTaskScreenCarouselPageTurned', value: false, data: null));
+
+  Hive.box('flags').add(Flags(
+      name: 'taskListScreenCarouselPageTurned', value: false, data: null));
   Hive.box('flags').putAt(
       3,
       Flags(
           name: 'taskListScreenCarouselPageTurned', value: false, data: null));
+
+  Hive.box('flags')
+      .add(Flags(name: 'searchInProgress', value: false, data: null));
+
   Hive.box('flags')
       .putAt(4, Flags(name: 'searchInProgress', value: false, data: null));
 

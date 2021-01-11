@@ -204,13 +204,15 @@ class _TaskListScreenState extends State<TaskListScreen>
   }
 
   void checkState() {
-    if ((Hive.box('flags').getAt(4) as Flags).value) {
-      setState(() {
-        yOffsetFrontContainer = MediaQuery.of(context).size.height / 1.2;
-      });
-      //* flag for search in progress
-      Hive.box('flags')
-          .putAt(4, Flags(name: 'searchInProgress', value: false, data: null));
+    if (Hive.box('flags').getAt(4) != null) {
+      if ((Hive.box('flags').getAt(4) as Flags).value) {
+        setState(() {
+          yOffsetFrontContainer = MediaQuery.of(context).size.height / 1.2;
+        });
+        //* flag for search in progress
+        Hive.box('flags').putAt(
+            4, Flags(name: 'searchInProgress', value: false, data: null));
+      }
     }
   }
 
