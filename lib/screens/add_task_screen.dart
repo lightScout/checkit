@@ -281,7 +281,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             Hive.box('flags').putAt(
                 3,
                 Flags(
-                  name: 'TASKLISTCAROUSELPAGETURNED',
+                  name: 'taskListScreenCarouselPageTurned',
                   value: false,
                   data: null,
                 ));

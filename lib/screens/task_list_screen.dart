@@ -170,7 +170,7 @@ class _TaskListScreenState extends State<TaskListScreen>
             Hive.box('flags').putAt(
                 2,
                 Flags(
-                  name: 'TASKLISTCAROUSELPAGETURNED',
+                  name: 'addTaskScreenCarouselPageTurned',
                   value: false,
                   data: null,
                 ));
@@ -192,7 +192,7 @@ class _TaskListScreenState extends State<TaskListScreen>
           Hive.box('flags').putAt(
               3,
               Flags(
-                  name: 'TASKLISTCAROUSELPAGETURNED',
+                  name: 'taskListScreenCarouselPageTurned',
                   value: true,
                   data: (carouselList[index] as CarouselItemForTaskScreen)
                       .category));
@@ -286,10 +286,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                           topBorderRadius = 0;
                           //* flag triger to minimize add category screen
                           Hive.box('flags').putAt(
-                              1,
-                              Flags(
-                                  name: 'toggleAddCategoryScreen',
-                                  value: false));
+                              1, Flags(name: 'searchPageIsOpen', value: false));
                           //* tringer for animated icon
                           if (_animateIconController.isEnd()) {
                             _animateIconController.animateToStart();
@@ -317,10 +314,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                           topBorderRadiusContainer = 50;
                           //* flag triger to minimize add category screen
                           Hive.box('flags').putAt(
-                              1,
-                              Flags(
-                                  name: 'toggleAddCategoryScreen',
-                                  value: false));
+                              1, Flags(name: 'searchPageIsOpen', value: false));
                         });
                       }
                       //* triger for animated container
@@ -353,10 +347,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                           topBorderRadiusContainer = 50;
                           //* flag triger to minimize add category screen
                           Hive.box('flags').putAt(
-                              1,
-                              Flags(
-                                  name: 'toggleAddCategoryScreen',
-                                  value: false));
+                              1, Flags(name: 'searchPageIsOpen', value: false));
                         });
                       }
                       //* triger for animated container

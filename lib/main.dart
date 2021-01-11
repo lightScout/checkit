@@ -83,6 +83,17 @@ void main() async {
       return deleted > 0;
     },
   );
+//* Initializing flags
+  Hive.box('flags').putAt(
+      0, Flags(name: 'toggleAddCategoryScreen', value: false, data: null));
+  Hive.box('flags')
+      .putAt(1, Flags(name: 'searchPageIsOpen', value: false, data: null));
+  Hive.box('flags').putAt(2,
+      Flags(name: 'addTaskScreenCarouselPageTurned', value: false, data: null));
+  Hive.box('flags').putAt(
+      3,
+      Flags(
+          name: 'taskListScreenCarouselPageTurned', value: false, data: null));
 
   //
   //Adding permanent category 'General' to categories box
@@ -106,12 +117,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    Hive.box('flags').add(Flags(name: 'toggleAddCategoryScreen', value: false));
-  }
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
