@@ -130,7 +130,6 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
 
   //* This builds cupertion date picker
   buildCupertinoDatePicker(BuildContext context) {
-    // print(selectedDate);
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -184,8 +183,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                             //! this method is interfering with the flush bar
                             //* successful selection of date and time flush bar disable
                             //* the line of code below can be used to pop all but the first route in the stack
-                            Navigator.of(context)
-                                .popUntil((route) => route.isFirst);
+                            Navigator.of(context).pop();
                           }
                         },
                         child: CircleAvatar(
