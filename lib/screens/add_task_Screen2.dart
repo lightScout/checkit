@@ -1,11 +1,10 @@
 import 'package:animate_icons/animate_icons.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:ciao_app/model/category.dart';
+
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
-import 'package:ciao_app/widgets/add_category_alert.dart';
+
 import 'package:ciao_app/widgets/no_name_alert.dart';
-import 'package:ciao_app/widgets/carousel_item.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

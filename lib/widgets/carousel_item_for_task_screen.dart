@@ -124,7 +124,7 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                                     setState(() {
                                       isMenuOpen = !isMenuOpen;
                                     });
-                                    print(isMenuOpen);
+                                    // print(isMenuOpen);
                                   },
                                   parentStartColor: Colors.white54,
                                   parentEndColor: Colors.white54,

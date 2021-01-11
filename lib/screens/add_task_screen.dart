@@ -239,11 +239,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     //*clean carouselCateogryList and grabbing reference to categoriesBox keys
     carouselCategoriesList.clear();
     List listOfKey = categoriesBox.keys.toList();
+    if (categoriesBox.isEmpty) {
+      categoriesBoxLength = 0;
+    }
 //* check if category box has items
     if (categoriesBoxLength == 0 && categoriesBox.length > 0) {
       categoriesBoxLength = categoriesBox.length;
       selectedCategory =
-          (categoriesBox.get(categoriesBox.keys.last) as Category).name;
+          (categoriesBox.get(categoriesBox.keys.first) as Category).name;
     }
 //* check if new category was added
     if ((categoriesBox.isNotEmpty) &&
