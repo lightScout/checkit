@@ -12,27 +12,34 @@ class ListBuilder extends StatelessWidget {
   final Color dismissibleBackGroundColor1 = Color(0xFFF9B16E);
   final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
   final ScrollController hideButtonController;
+  final List<Task> taskList;
 
   ListBuilder(
       {this.tasksBox,
       this.listCategory,
       this.hideButtonController,
-      this.isBgGradientInverted = false});
+      this.isBgGradientInverted = false,
+      this.taskList});
 
   @override
   Widget build(BuildContext context) {
-    List<Task> listOfTask = [];
-    List listOfTaksKeys = tasksBox.keys.toList();
+    List<Task> listOfTasks = [];
+
     // print(listOfKeys);
 
-    listOfTaksKeys.forEach((element) {
-      Task task = tasksBox.get(element) as Task;
-      task.key = element;
-      print(task.key);
-      if (task.category == listCategory) {
-        listOfTask.add(task);
-      }
-    });
+    if (taskList != null) {
+      listOfTasks = taskList;
+    } else {
+      List listOfTaksKeys = tasksBox.keys.toList();
+      listOfTaksKeys.forEach((element) {
+        Task task = tasksBox.get(element) as Task;
+        task.key = element;
+        //print(task.key);
+        if (task.category == listCategory) {
+          listOfTasks.add(task);
+        }
+      });
+    }
 
     return ListView.separated(
       scrollDirection: Axis.vertical,
@@ -41,8 +48,8 @@ class ListBuilder extends StatelessWidget {
       itemBuilder: (context, index) {
         // print(box.keys);
         // print(box.keys.toList()[index]);
-        final task = listOfTask[index];
-        print(task.category);
+        final task = listOfTasks[index];
+        // print(task.category);
         return Dismissible(
           background: DismissibleBackGround(
             color1: dismissibleBackGroundColor1,
@@ -79,7 +86,7 @@ class ListBuilder extends StatelessWidget {
           height: 16,
         );
       },
-      itemCount: listOfTask.length,
+      itemCount: listOfTasks.length,
     );
   }
 }

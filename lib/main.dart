@@ -94,6 +94,8 @@ void main() async {
       3,
       Flags(
           name: 'taskListScreenCarouselPageTurned', value: false, data: null));
+  Hive.box('flags')
+      .putAt(4, Flags(name: 'searchInProgress', value: false, data: null));
 
   //
   //Adding permanent category 'General' to categories box

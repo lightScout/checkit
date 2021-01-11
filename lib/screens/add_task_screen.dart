@@ -238,10 +238,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   void buildCarouselList() {
     carouselCategoriesList.clear();
     List listOfKey = categoriesBox.keys.toList();
-    //*syncing the carousel with the last added category
-    // if (categoriesBoxLength == categoriesBox.length) {
-    //   _carouselController.animateToPage(categoriesBoxLength - 1);
-    // }
 
     if (categoriesBoxLength == 0 && categoriesBox.length > 0) {
       categoriesBoxLength = categoriesBox.length;
@@ -268,6 +264,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           CarouselItem(
               categoryTitle: (categoriesBox.get(element) as Category).name));
     });
+    if (selectedCategory == null) {
+      selectedCategory =
+          (carouselCategoriesList[0] as CarouselItem).categoryTitle;
+    }
     //* sycning the carousel when task list screen carousel get its page turned
     if ((Hive.box('flags').getAt(3) as Flags).value != null) {
       if ((Hive.box('flags').getAt(3) as Flags).value) {
