@@ -33,7 +33,7 @@ class _SearchScreenState extends State<SearchScreen> {
       Task task = Hive.box('tasks').get(element) as Task;
 
       task.key = element;
-      if ((Hive.box('tasks').get(element) as Task).name == value) {
+      if ((Hive.box('tasks').get(element) as Task).name.contains(value)) {
         searchResultsList.add(task);
         print(task.key);
       }

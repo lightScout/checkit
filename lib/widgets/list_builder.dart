@@ -61,6 +61,9 @@ class ListBuilder extends StatelessWidget {
           dismissThresholds: {DismissDirection.endToStart: 1.0},
           onDismissed: (DismissDirection direction) {
             tasksBox.delete(task.key);
+            if (taskList != null) {
+              listOfTasks.remove(task);
+            }
             // listOfTask.remove(task);
           },
           key: Key('${task.name}${index.toString()}'),
