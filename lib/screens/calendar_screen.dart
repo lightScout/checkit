@@ -3,7 +3,6 @@ import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class CalendarScreen extends StatefulWidget {
   static const id = 'calendar_screen';
@@ -63,11 +62,11 @@ class _CalendarScreenState extends State<CalendarScreen>
                 decoration: BoxDecoration(
                     color: Colors.white10.withOpacity(.03),
                     boxShadow: [
-                      BoxShadow(
-                        color: Colors.white,
-                        offset: Offset(0.0, -4.0), //(x,y)
-                        blurRadius: 100.0,
-                      ),
+                      // BoxShadow(
+                      //   color: Colors.blue,
+                      //   offset: Offset(0.0, -4.0), //(x,y)
+                      //   blurRadius: 100.0,
+                      // ),
                     ],
                     borderRadius: BorderRadius.all(Radius.circular(25))),
                 child: TableCalendar(
@@ -78,13 +77,14 @@ class _CalendarScreenState extends State<CalendarScreen>
                     formatButtonVisible: true,
                     titleTextStyle: TextStyle().copyWith(
                       color: Colors.blue[800],
-                      fontSize: 12,
-                      fontFamily: KMainFontFamily,
+                      fontSize: 16,
+                      // fontFamily: KMainFontFamily,
                     ),
                     formatButtonTextStyle: TextStyle().copyWith(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontFamily: KMainFontFamily),
+                      color: Colors.white,
+                      fontSize: 16,
+                      // fontFamily: KMainFontFamily,
+                    ),
                     formatButtonDecoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(25)),
                       color: Colors.blue[800],
@@ -105,35 +105,38 @@ class _CalendarScreenState extends State<CalendarScreen>
                     outsideStyle: TextStyle().copyWith(
                       color: Colors.grey.shade400,
                       fontSize: 10,
-                      fontFamily: KMainFontFamily,
+                      // fontFamily: KMainFontFamily,
                     ),
                     outsideWeekendStyle: TextStyle().copyWith(
                       color: Colors.grey.shade400,
                       fontSize: 10,
-                      fontFamily: KMainFontFamily,
+                      // fontFamily: KMainFontFamily,
                     ),
                     todayStyle: TextStyle().copyWith(
                       color: Colors.white,
                       fontSize: 20,
-                      fontFamily: KMainFontFamily,
+                      // fontFamily: KMainFontFamily,
                     ),
                     selectedColor: Colors.amber,
                     selectedStyle: TextStyle().copyWith(
                       color: Colors.blue[800],
                       fontSize: 20,
-                      fontFamily: KMainFontFamily,
+                      // fontFamily: KMainFontFamily,
                     ),
                     eventDayStyle: TextStyle().copyWith(
                       color: Colors.blue[800],
                       fontSize: 20,
-                      fontFamily: KMainFontFamily,
+                      // fontFamily: KMainFontFamily,
                     ),
                     weekdayStyle: TextStyle().copyWith(
-                        color: Colors.blue[800],
-                        fontSize: 18,
-                        fontFamily: KMainFontFamily),
+                      color: Colors.blue[800],
+                      fontSize: 18,
+                      // fontFamily: KMainFontFamily,
+                    ),
                     weekendStyle: TextStyle().copyWith(
-                        color: Colors.red[800], fontFamily: KMainFontFamily),
+                      color: Colors.red[800],
+                      // fontFamily: KMainFontFamily,
+                    ),
                     holidayStyle: TextStyle().copyWith(color: Colors.blue[800]),
                   ),
                   builders: CalendarBuilders(
@@ -178,41 +181,13 @@ class _CalendarScreenState extends State<CalendarScreen>
 
   void _fillCalendarWithScheduleTasks() {
     List listOfTaksKeys = tasksBox.keys.toList();
-    int index1;
-    int index2;
-    bool tringer1 = false;
     var initialDate = _formatDateToMapIndex(DateTime.now());
-    var updateInitialDate = false;
 
     listOfTaksKeys.forEach((element) {
       Task task = tasksBox.get(element) as Task;
       task.key = element;
 
       if (task.dueDateTime != null) {
-        print('var: $initialDate');
-        var a = _formatDateToMapIndex(task.dueDateTime);
-        print('mapindex: $a');
-        // if (!tringer1) {
-        //   index1 = task.dueDateTime.day;
-        //   initialDate = _formatDateToMapIndex(task.dueDateTime);
-        // }
-        // if (tringer1) {
-        //    index2 = task.dueDateTime.day;
-        //   if (index1 < DateTime.now().day && index2 < DateTime.now().day) {
-        //     index1 = task.dueDateTime.day;
-        //     initialDate = _formatDateToMapIndex(task.dueDateTime);
-        //   }
-        // }
-        // if (updateInitialDate) {
-        //   // if (initialDate.isBefore(DateTime.now())) {
-        //   //   initialDate = task.dueDateTime;
-        //   // }
-        //   // else if (task.dueDateTime.isBefore(initialDate)) {
-        //   //   initialDate = _formatDateToMapIndex(task.dueDateTime);
-        //   //   // print('task date is before previous task date');
-        //   //   // print(initialDate);
-        //   // }
-        // }
         //*
         //* MAPPING THE MAP YARR!
         //*
@@ -232,7 +207,7 @@ class _CalendarScreenState extends State<CalendarScreen>
         else {
           _events.addAll(
             {
-              mapIndex: ['${task.name}']
+              mapIndex: ['${task.category}: ${task.name}']
             },
           );
         }
