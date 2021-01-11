@@ -6,6 +6,7 @@ import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/calendar_screen.dart';
 import 'package:ciao_app/screens/full_screen_page.dart';
+import 'package:ciao_app/screens/search_screen.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
 import 'package:ciao_app/widgets/carousel_item_for_task_screen.dart';
 import 'package:ciao_app/widgets/delete_category_alert.dart';
@@ -42,8 +43,8 @@ class _TaskListScreenState extends State<TaskListScreen>
       ScrollController(keepScrollOffset: true);
   AnimationController _animationController;
   AnimateIconController _animateIconController;
-  //* TextField Controller
-  final textFieldController = TextEditingController();
+
+  //* Carousel Controller
   final _carouselController = CarouselController();
 
   List<Widget> carouselList = [];
@@ -164,7 +165,6 @@ class _TaskListScreenState extends State<TaskListScreen>
         var indexName = (Hive.box('flags').getAt(2) as Flags).data;
         carouselList.forEach((element) {
           if ((element as CarouselItemForTaskScreen).category == indexName) {
-            print(carouselList.indexOf(element));
             _carouselController.animateToPage(carouselList.indexOf(element));
             //* flag to signal synced carousel
             Hive.box('flags').putAt(
@@ -196,7 +196,6 @@ class _TaskListScreenState extends State<TaskListScreen>
                   value: true,
                   data: (carouselList[index] as CarouselItemForTaskScreen)
                       .category));
-          print((carouselList[index] as CarouselItemForTaskScreen).category);
         },
         onScrolled: (index) {},
       ),
@@ -374,101 +373,8 @@ class _TaskListScreenState extends State<TaskListScreen>
             body: Stack(
               children: [
 //* Back container
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 60),
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(topBorderRadiusContainer)),
-                    gradient: Constant.KMainLinearGradient,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextField(
-                        textCapitalization: TextCapitalization.sentences,
-                        controller: textFieldController,
-                        style: Klogo.copyWith(
-                          fontSize: 13,
-                          color: Colors.white,
-                          shadows: [],
-                        ),
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          hintText: 'Search here',
-                          hintStyle: TextStyle(
-                            color: KMainPurple.withOpacity(.3),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(25),
-                            ),
-                            borderSide:
-                                BorderSide(color: Colors.white70, width: 5.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.white70, width: 5.0),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(25),
-                            ),
-                          ),
-                          filled: true,
-                          fillColor: Colors.pink[50],
-                        ),
-                        autofocus: false,
-                        onChanged: (value) {
-                          newSearchName = value;
-                        },
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      //* Search button
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(90)),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * .12,
-                              width: MediaQuery.of(context).size.height * .12,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: KTopLinearGradientColor,
-                                    offset: Offset(-10.0, -15.0), //(x,y)
-                                    blurRadius: 22.0,
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FloatingActionButton(
-                                    heroTag: 'SEARCHCONTAINERFAB',
-                                    splashColor: KMainOrange,
-                                    backgroundColor: KMainPurple,
-                                    onPressed: () {
-                                      if (newSearchName == null ||
-                                          newSearchName.trim() == '') {
-                                        noNameAlert(context, 'Search');
-                                      }
-                                    },
-                                    child: Icon(
-                                      Icons.fingerprint,
-                                      size: MediaQuery.of(context).size.height *
-                                          .08,
-                                      color: Colors.white,
-                                    )),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                SearchScreen(
+                  topBorderRadius: topBorderRadiusContainer,
                 ),
                 //* Front container
                 AnimatedContainer(
@@ -586,7 +492,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                                             topBorderRadiusContainer = 0;
                                             yOffsetPage = 0;
                                             yOffsetFrontContainer = 0;
-                                            textFieldController.clear();
+
                                             //* flag to signal search page is closed
                                             Hive.box('flags').putAt(
                                                 1,
