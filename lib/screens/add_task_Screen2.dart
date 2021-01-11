@@ -106,7 +106,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
     bool result;
     if (selectedDate.isBefore(DateTime.now())) {
       Flushbar(
-        duration: Duration(seconds: 2),
+        duration: Duration(milliseconds: 1500),
         messageText: Text(
           'Pick a future date or time',
           style: Klogo.copyWith(color: Colors.white, shadows: [], fontSize: 14),
@@ -469,8 +469,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                   });
 
                                                   Flushbar(
-                                                    duration:
-                                                        Duration(seconds: 2),
+                                                    duration: Duration(
+                                                        milliseconds: 1500),
                                                     messageText: Text(
                                                       'Task and reminder added successfuly.',
                                                       style: Klogo.copyWith(
@@ -496,8 +496,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                   });
 
                                                   Flushbar(
-                                                    duration:
-                                                        Duration(seconds: 2),
+                                                    duration: Duration(
+                                                        milliseconds: 1500),
                                                     messageText: Text(
                                                       'Task added successfuly.',
                                                       style: Klogo.copyWith(
