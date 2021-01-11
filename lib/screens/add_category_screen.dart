@@ -34,8 +34,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
   String newCategoryTitle;
   Box categoriesBox = Hive.box('categories');
   void stateCheck() {
-    if ((categoriesBox.isEmpty && isPageClosed) ||
-        (categoriesBox.isEmpty && isPageClosed)) {
+    //*add category case
+    if (categoriesBox.isEmpty && isPageClosed) {
       yOffset = 0;
       topBorderRadius = 0;
       isPageClosed = false;

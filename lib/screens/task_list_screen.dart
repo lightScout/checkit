@@ -325,7 +325,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                         setState(() {
                           yOffsetFrontContainer = 0;
                           topBorderRadiusContainer = 50;
-                          //* flag triger to minimize add category screen
+                          //* flag triger to minimize search screen
                           Hive.box('flags').putAt(
                               1, Flags(name: 'searchPageIsOpen', value: false));
                         });
@@ -342,7 +342,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                       }
                       //* flag triger to minimize add category screen
                       Hive.box('flags').putAt(0,
-                          Flags(name: 'toggleAddCategoryScreen', value: false));
+                          Flags(name: 'toggleAddCategoryScreen', value: true));
                     },
                   ),
 
