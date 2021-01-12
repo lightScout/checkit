@@ -4,10 +4,15 @@ import 'package:ciao_app/screens/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'task_list_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const id = 'HomeScreen';
   const HomeScreen({Key key}) : super(key: key);
 
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(

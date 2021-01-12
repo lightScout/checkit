@@ -29,6 +29,7 @@ class CarouselItemForTaskScreen extends StatefulWidget {
 
 class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
   bool isMenuOpen = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -176,7 +177,8 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                           bottomRight: Radius.circular(30),
                         ),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                       child: ListBuilder(
                           listCategory: widget.category,
                           tasksBox: widget.tasksBox),

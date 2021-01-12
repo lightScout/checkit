@@ -4,130 +4,128 @@ import 'package:hive/hive.dart';
 
 import 'task_tile.dart';
 
-class ListBuilder extends StatelessWidget {
+class ListBuilder extends StatefulWidget {
   final Box tasksBox;
   //* if true, textile bg gradiente will be inverted to toggle task state
   final bool isBgGradientInverted;
   final listCategory;
-  final Color dismissibleBackGroundColor1 = Color(0xFFF9B16E);
-  final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
   final ScrollController hideButtonController;
   final List<Task> taskList;
 
-  ListBuilder(
-      {this.tasksBox,
-      this.listCategory,
-      this.hideButtonController,
-      this.isBgGradientInverted = false,
-      this.taskList});
+  ListBuilder({
+    this.tasksBox,
+    this.listCategory,
+    this.hideButtonController,
+    this.isBgGradientInverted = false,
+    this.taskList,
+  });
+
+  @override
+  _ListBuilderState createState() => _ListBuilderState();
+}
+
+class _ListBuilderState extends State<ListBuilder> {
+  final Color dismissibleBackGroundColor1 = Color(0xFFF9B16E);
+
+  final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
+  List<Task> dataFromBox = [];
+  List<Task> itemList = [];
+
+  GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+//
+  Future<void> _loadItems() async {
+    dataFromBox.clear();
+    var future = Future(() {});
+    if (widget.taskList != null) {
+      dataFromBox = widget.taskList;
+    } else {
+      List listOfTaksKeys = widget.tasksBox.keys.toList();
+      listOfTaksKeys.forEach((element) async {
+        Task task = widget.tasksBox.get(element) as Task;
+        task.key = element;
+        //print(task.key);
+        if (task.category == widget.listCategory) {
+          dataFromBox.insert(0, task);
+        }
+      });
+      for (var i = 0; i < dataFromBox.length; i++) {
+        future = future.then((_) {
+          return Future.delayed(Duration(milliseconds: 100), () {
+            itemList.insert(i, dataFromBox[i]);
+            if (_listKey.currentState != null) {
+              _listKey.currentState
+                  .insertItem(i, duration: const Duration(milliseconds: 400));
+            }
+          });
+        });
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<Task> listOfTasks = [];
-
     // print(listOfKeys);
 
-    if (taskList != null) {
-      listOfTasks = taskList;
-    } else {
-      List listOfTaksKeys = tasksBox.keys.toList();
-      listOfTaksKeys.forEach((element) {
-        Task task = tasksBox.get(element) as Task;
-        task.key = element;
-        //print(task.key);
-        if (task.category == listCategory) {
-          listOfTasks.add(task);
-        }
-      });
-    }
-
-    return ListView.separated(
+    return AnimatedList(
+      key: _listKey,
       scrollDirection: Axis.vertical,
-      controller: hideButtonController,
+      controller: widget.hideButtonController,
       shrinkWrap: true,
-      itemBuilder: (context, index) {
-        // print(box.keys);
-        // print(box.keys.toList()[index]);
-        final task = listOfTasks[index];
-        // print(task.category);
-        return Dismissible(
-          background: DismissibleBackGround(
-            color1: dismissibleBackGroundColor1,
-            color2: dismissibleBackGroundColor2,
-          ),
-          secondaryBackground: Container(
-            color: Colors.transparent,
-          ),
-          dismissThresholds: {DismissDirection.endToStart: 1.0},
-          onDismissed: (DismissDirection direction) {
-            tasksBox.delete(task.key);
-            if (taskList != null) {
-              listOfTasks.remove(task);
-            }
-            // listOfTask.remove(task);
-          },
-          key: Key('${task.name}${index.toString()}'),
-          direction: DismissDirection.horizontal,
-          child: TaskTile(
-            title: task.name,
-            category: task.category,
-            dueDate: task.dueDateTime,
-            isChecked: task.isDone,
-            isCheckCallBack: () {
-              task.toggleDone();
-              return tasksBox.put(task.key, task);
-            },
-            deleteTask: () {
-              tasksBox.delete(key);
-            },
-            isBgGradientInverted: isBgGradientInverted,
-          ),
-        );
+      itemBuilder: (context, index, animation) {
+        final task = itemList[index];
+
+        return _slideIt(
+            context,
+            TaskTile(
+              title: task.name,
+              category: task.category,
+              dueDate: task.dueDateTime,
+              isChecked: task.isDone,
+              isCheckCallBack: () {
+                task.toggleDone();
+                return widget.tasksBox.put(task.key, task);
+              },
+              deleteTask: () {
+                widget.tasksBox.delete(task.key);
+                itemList.remove(task);
+                AnimatedListRemovedItemBuilder builder = (context, animation) {
+                  return _buildItem(animation);
+                };
+                _listKey.currentState.removeItem(index, builder);
+              },
+              isBgGradientInverted: widget.isBgGradientInverted,
+            ),
+            animation);
       },
-      separatorBuilder: (context, index) {
-        return Divider(
-          height: 16,
-        );
-      },
-      itemCount: listOfTasks.length,
+      initialItemCount: itemList.length,
     );
   }
 }
 
-class DismissibleBackGround extends StatelessWidget {
-  final Color color1;
-  final Color color2;
+Widget _slideIt(BuildContext context, TaskTile item, animation) {
+  return SlideTransition(
+    position: Tween<Offset>(
+      begin: const Offset(-1, 0),
+      end: Offset(0, 0),
+    ).animate(animation),
+    child: item,
+  );
+}
 
-  DismissibleBackGround({this.color1, this.color2});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [color1, color2]),
-        borderRadius: BorderRadius.all(
-          Radius.circular(30),
-        ),
-      ),
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 30),
-            child: Center(
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
-                size: 40,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+Widget _buildItem(Animation animation) {
+  return SizeTransition(
+    sizeFactor: animation,
+    child: SizedBox(
+      height: 0,
+      width: 0,
+    ),
+  );
 }
 
 // PageView.builder(

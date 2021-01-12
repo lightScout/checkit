@@ -1,5 +1,6 @@
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
 class TaskTile extends StatefulWidget {
@@ -10,7 +11,6 @@ class TaskTile extends StatefulWidget {
   final Function isCheckCallBack;
   final String category;
   final DateTime dueDate;
-  final String _fontFamily = 'PressStart2P';
   final Color _checkedColor1 = Color(0xFF00458E);
   final Color _checkedColor2 = Color(0xFF000328);
   final Color _uncheckedColor1 = Color(0xFF0F8099);
@@ -31,104 +31,160 @@ class TaskTile extends StatefulWidget {
 class _TaskTileState extends State<TaskTile> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onDoubleTap: widget.isCheckCallBack,
-      child: Container(
-        /**
-         * Decoration
-         * **/
-        decoration: BoxDecoration(
-          gradient: widget.isBgGradientInverted
-              ? widget.isChecked
-                  ? LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [Colors.red, widget._checkedColor2])
-                  : LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [widget._checkedColor1, widget._checkedColor2])
-              : widget.isChecked
-                  ? LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [widget._checkedColor1, widget._checkedColor2])
-                  : LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                          KTopLinearGradientColor,
-                          widget._uncheckedColor1
-                        ]),
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-        ),
-        child: ListTile(
-          // leading: Container(
-          //   decoration: BoxDecoration(
-          //     shape: BoxShape.circle,
-          //     /**
-          //      * Circular Shadows
-          //      * **/
-          //     boxShadow: [
-          //       BoxShadow(
-          //         color: !widget.isChecked ? Colors.white : Color(0xFF00458E),
-          //         offset: Offset(0.0, 0.0),
-          //         blurRadius: 20.0,
-          //         spreadRadius: 5.4,
-          //       ),
-          //     ],
-          //   ),
-          //   /**
-          //    * Check Icon
-          //    * **/
-          //   child: CircleAvatar(
-          //     radius: 16,
-          //     child: null,
-          //     backgroundColor:
-          //         widget.isChecked ? Color(0xFF00458E) : Colors.white,
-          //   ),
-          // ),
-          // /**
-          //  * Possible Task Delete Icon
-          //  * **/
-          //TODO: implement delete task here
-          trailing: InkWell(
-            child: Icon(
-              Icons.delete,
-              color: Colors.white,
-              size: 30,
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: GestureDetector(
+        onDoubleTap: widget.isCheckCallBack,
+        child: Container(
+            /**
+           * Decoration
+           * **/
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(50),
+              ),
             ),
-            onTap: widget.deleteTask,
-          ),
-          /**
-           * Task Title
-           * **/
-          title: Text(
-            widget.title,
-            style: TextStyle(
-                fontFamily: widget._fontFamily,
-                color: Color(0xFFf8f0bc),
-                fontSize: 14,
-                decoration:
-                    widget.isChecked ? TextDecoration.lineThrough : null),
-          ),
-          /**
-           * Pro: Task Due Date
-           * **/
-          subtitle: (widget.dueDate != null)
-              ? Text(
-                  "${DateFormat.yMd().add_jm().format(widget.dueDate)}",
-                  style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.white60,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: widget._fontFamily),
-                )
-              : null,
-        ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+              child: Slidable(
+                actionPane: SlidableDrawerActionPane(),
+                actionExtentRatio: 0.25,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                  decoration: BoxDecoration(
+                    gradient: widget.isBgGradientInverted
+                        ? widget.isChecked
+                            ? LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [Colors.red, widget._checkedColor2])
+                            : LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                    widget._checkedColor1,
+                                    widget._checkedColor2
+                                  ])
+                        : widget.isChecked
+                            ? LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                    widget._checkedColor1,
+                                    widget._checkedColor2
+                                  ])
+                            : LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                    KTopLinearGradientColor,
+                                    widget._uncheckedColor1
+                                  ]),
+                  ),
+                  child: ListTile(
+//            * Task Title
+//            * **/
+                    title: Text(
+                      widget.title,
+                      style: TextStyle(
+                          fontFamily: KMainFontFamily,
+                          color: Color(0xFFf8f0bc),
+                          fontSize: 14,
+                          decoration: widget.isChecked
+                              ? TextDecoration.lineThrough
+                              : null),
+                    ),
+                    subtitle: (widget.dueDate != null)
+                        ? Text(
+                            "${DateFormat.yMd().add_jm().format(widget.dueDate)}",
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.white60,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: KMainFontFamily,
+                            ),
+                          )
+                        : Text(
+                            '${DateFormat.yMd().format(DateTime.now())}',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.white60,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: KMainFontFamily,
+                            ),
+                          ),
+                  ),
+                ),
+                actions: <Widget>[
+                  IconSlideAction(
+                    caption: 'checKit',
+                    color: widget.isBgGradientInverted
+                        ? Color(0xFF071F86)
+                        : Colors.teal[500].withOpacity(.9),
+                    icon: Icons.check,
+                    onTap: () => {},
+                  ),
+                  //TODO: research on how to share to phone system
+                  // IconSlideAction(
+                  //   caption: 'Share',
+                  //   color: Colors.indigo,
+                  //   icon: Icons.share,
+                  //   onTap: () => {},
+                  // ),
+                ],
+                secondaryActions: <Widget>[
+                  IconSlideAction(
+                    caption: 'Delete',
+                    color: widget.isBgGradientInverted
+                        ? Colors.red
+                        : Colors.blue[500].withOpacity(.9),
+                    icon: Icons.delete,
+                    onTap: widget.deleteTask,
+                  ),
+                ],
+              ),
+            )),
       ),
     );
   }
 }
+
+// ListTile(
+
+//           //  * Possible Task Delete Icon
+//           //  * **/
+//           //TODO: implement delete task here
+//           trailing: InkWell(
+//             child: Icon(
+//               Icons.delete_sweep,
+//               color: Colors.white,
+//               size: 30,
+//             ),
+//             onTap: widget.deleteTask,
+//           ),
+//           /**
+//            * Task Title
+//            * **/
+//           title: Text(
+//             widget.title,
+//             style: TextStyle(
+//                 fontFamily: widget._fontFamily,
+//                 color: Color(0xFFf8f0bc),
+//                 fontSize: 14,
+//                 decoration:
+//                     widget.isChecked ? TextDecoration.lineThrough : null),
+//           ),
+//           /**
+//            * Pro: Task Due Date
+//            * **/
+//           subtitle: (widget.dueDate != null)
+//               ? Text(
+//                   "${DateFormat.yMd().add_jm().format(widget.dueDate)}",
+//                   style: TextStyle(
+//                       fontSize: 10,
+//                       color: Colors.white60,
+//                       fontWeight: FontWeight.w700,
+//                       fontFamily: widget._fontFamily),
+//                 )
+//               : null,
+//         ),

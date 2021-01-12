@@ -5,6 +5,7 @@ import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/widgets/add_category_alert.dart';
+import 'package:ciao_app/widgets/list_builder.dart';
 import 'package:ciao_app/widgets/no_name_alert.dart';
 import 'package:ciao_app/widgets/carousel_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -265,25 +266,32 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               categoryTitle: (categoriesBox.get(element) as Category).name));
     });
 
-    //* sycning the carousel when task list screen carousel get its page turned
-    if ((Hive.box('flags').getAt(3) as Flags).value != null) {
-      if ((Hive.box('flags').getAt(3) as Flags).value) {
-        var indexName = (Hive.box('flags').getAt(3) as Flags).data;
-        carouselCategoriesList.forEach((element) {
-          if ((element as CarouselItem).categoryTitle == indexName) {
-            _carouselController
-                .animateToPage(carouselCategoriesList.indexOf(element));
-            //* flag to signal synced carousel
-            Hive.box('flags').putAt(
-                3,
-                Flags(
-                  name: 'taskListScreenCarouselPageTurned',
-                  value: false,
-                  data: null,
-                ));
-          }
-        });
-      }
+    //* syncing the carousel when task list screen carousel get its page turned
+
+    if ((Hive.box('flags').getAt(3) as Flags).value) {
+      var indexName = (Hive.box('flags').getAt(3) as Flags).data;
+      carouselCategoriesList.forEach((element) {
+        if ((element as CarouselItem).categoryTitle == indexName) {
+          //* syncing the carousel
+          _carouselController
+              .animateToPage(carouselCategoriesList.indexOf(element));
+          //* storing category valeu
+          selectedCategory =
+              (carouselCategoriesList[carouselCategoriesList.indexOf(element)]
+                      as CarouselItem)
+                  .categoryTitle;
+          categoriesBoxLength = categoriesBox.length;
+
+          //* flag to signal synced carousel
+          Hive.box('flags').putAt(
+              3,
+              Flags(
+                name: 'taskListScreenCarouselPageTurned',
+                value: false,
+                data: null,
+              ));
+        }
+      });
     }
   }
 
@@ -621,6 +629,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                           : null;
                                                   task.isDone = false;
                                                   addTask(task);
+
                                                   _scheduleNotification(
                                                       selectedCategory,
                                                       newTaskTitle);

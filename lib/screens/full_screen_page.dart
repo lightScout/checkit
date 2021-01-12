@@ -124,19 +124,19 @@ class _FullScreenPageState extends State<FullScreenPage> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(top: 8.0),
                       child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white12,
                             borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(50),
-                              topLeft: Radius.circular(50),
-                              bottomLeft: Radius.circular(30),
-                              bottomRight: Radius.circular(30),
+                              topRight: Radius.circular(15),
+                              topLeft: Radius.circular(15),
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15),
                             ),
                           ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 20),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 20),
                           child: ValueListenableBuilder(
                             valueListenable: Hive.box('tasks').listenable(),
                             builder: (context, box, widget) {
