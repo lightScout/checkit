@@ -69,7 +69,7 @@ class _ListBuilderState extends State<ListBuilder> {
     }
   }
 
-  Future<void> _checkIfItemWasAdded() async {
+  Future<void> _stateCheck() async {
     int boxSize = widget.tasksBox.length;
     if (itemCount > boxSize) {
       _loadItems();
@@ -102,23 +102,21 @@ class _ListBuilderState extends State<ListBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    _checkIfItemWasAdded();
+    _stateCheck();
     return AnimatedList(
       key: _listKey,
       scrollDirection: Axis.vertical,
       controller: widget.hideButtonController,
       shrinkWrap: true,
       itemBuilder: (context, index, animation) {
-        if (itemList.isNotEmpty) {
+        if (itemList.isNotEmpty && index <= itemList.length - 1) {
           final task = itemList[index];
 
           return _buildItem(context, task, animation, itemList, _listKey, index,
               widget.isBgGradientInverted);
         } else
-          return SizedBox(
-            height: 0,
-            width: 0,
-          );
+          //* Animated List needs to received null when the list becomes empty
+          return null;
       },
       initialItemCount: itemList.length,
     );

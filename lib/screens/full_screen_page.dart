@@ -124,15 +124,20 @@ class _FullScreenPageState extends State<FullScreenPage> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                      padding: const EdgeInsets.only(
+                        top: 8.0,
+                        bottom: 8.0,
+                        left: 8.0,
+                        right: 8.0,
+                      ),
                       child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white12,
                             borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(15),
-                              topLeft: Radius.circular(15),
-                              bottomLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15),
+                              topRight: Radius.circular(50),
+                              topLeft: Radius.circular(50),
+                              bottomLeft: Radius.circular(50),
+                              bottomRight: Radius.circular(50),
                             ),
                           ),
                           padding:
