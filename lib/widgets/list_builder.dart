@@ -42,24 +42,28 @@ class _ListBuilderState extends State<ListBuilder> {
       dataFromBox = widget.taskList;
     } else {
       List listOfTaksKeys = widget.tasksBox.keys.toList();
-      listOfTaksKeys.forEach((element) async {
-        Task task = widget.tasksBox.get(element) as Task;
-        task.key = element;
-        //print(task.key);
-        if (task.category == widget.listCategory) {
-          dataFromBox.insert(0, task);
-        }
-      });
-      for (var i = 0; i < dataFromBox.length; i++) {
-        future = future.then((_) {
-          return Future.delayed(Duration(milliseconds: 100), () {
-            itemList.insert(i, dataFromBox[i]);
-            if (_listKey.currentState != null) {
-              _listKey.currentState
-                  .insertItem(i, duration: const Duration(milliseconds: 300));
-            }
+      listOfTaksKeys.forEach(
+        (element) async {
+          Task task = widget.tasksBox.get(element) as Task;
+          task.key = element;
+
+          if (task.category == widget.listCategory) {
+            dataFromBox.insert(0, task);
+          }
+        },
+      );
+      if (dataFromBox.isNotEmpty) {
+        for (var i = 0; i < dataFromBox.length; i++) {
+          future = future.then((_) {
+            return Future.delayed(Duration(milliseconds: 100), () {
+              itemList.insert(i, dataFromBox[i]);
+              if (_listKey.currentState != null) {
+                _listKey.currentState
+                    .insertItem(i, duration: const Duration(milliseconds: 300));
+              }
+            });
           });
-        });
+        }
       }
       itemCount = widget.tasksBox.length;
     }
@@ -67,11 +71,13 @@ class _ListBuilderState extends State<ListBuilder> {
 
   Future<void> _checkIfItemWasAdded() async {
     int boxSize = widget.tasksBox.length;
-
+    if (itemCount > boxSize) {
+      _loadItems();
+    }
     if (widget.tasksBox.isEmpty) {
       itemCount = 0;
     }
-//TODO: wrong category is being selected on loading
+
     if (itemCount < boxSize) {
       int lastKey = widget.tasksBox.keys.last;
       Task task = widget.tasksBox.get(lastKey) as Task;
@@ -103,16 +109,23 @@ class _ListBuilderState extends State<ListBuilder> {
       controller: widget.hideButtonController,
       shrinkWrap: true,
       itemBuilder: (context, index, animation) {
-        final task = itemList[index];
+        if (itemList.isNotEmpty) {
+          final task = itemList[index];
 
-        return _buildItem(context, task, animation, itemList, _listKey, index,
-            widget.isBgGradientInverted);
+          return _buildItem(context, task, animation, itemList, _listKey, index,
+              widget.isBgGradientInverted);
+        } else
+          return SizedBox(
+            height: 0,
+            width: 0,
+          );
       },
       initialItemCount: itemList.length,
     );
   }
 }
 
+//* list item builder
 Widget _buildItem(
   BuildContext context,
   Task item,
@@ -142,16 +155,17 @@ Widget _buildItem(
 
         listKey.currentState.removeItem(
             index,
-            (_, animation) => _removedItem(context, item, animation, itemList,
+            (_, animation) => _deletedItem(context, item, animation, itemList,
                 listKey, index, isBgInverted),
-            duration: Duration(milliseconds: 200));
+            duration: Duration(milliseconds: 600));
       },
       isBgGradientInverted: isBgInverted,
     ),
   );
 }
 
-Widget _removedItem(
+//* list deleted item builder
+Widget _deletedItem(
   BuildContext context,
   Task item,
   animation,
@@ -167,44 +181,7 @@ Widget _removedItem(
       category: item.category,
       dueDate: item.dueDateTime,
       isChecked: item.isDone,
-      isCheckCallBack: () {
-        // item.toggleDone();
-        // return Hive.box('tasks').put(item.key, item);
-      },
-      deleteTask: () {
-        // Hive.box('tasks').delete(item.key);
-        // itemList.remove(item);
-
-        // listKey.currentState.removeItem(
-        //     index,
-        //     (_, animation) => _buildItem(context, item, animation,
-        //         itemList, listKey, index, isBgInverted,
-        //        ),
-        //     duration: Duration(milliseconds: 600));
-      },
       isBgGradientInverted: isBgInverted,
     ),
   );
 }
-
-// PageView.builder(
-// physics: ScrollPhysics(),
-// controller: PageController(viewportFraction: 0.8),
-// scrollDirection: Axis.horizontal,
-// pageSnapping: true,
-// itemBuilder: (context, index) {
-// final task = taskData.tasksList(listCategory)[index];
-// return MustDoTaskTile(
-// title: task.name,
-// isChecked: task.isDone,
-// isCheckCallBack: () {
-// taskData.updateTask(task);
-// print(task.isDone);
-// },
-// deleteTask: () {
-// taskData.deleteTask(listCategory, task);
-// },
-// );
-// },
-// itemCount: taskData.taskCount(listCategory),
-// );

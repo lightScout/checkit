@@ -237,6 +237,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   void buildCarouselList() {
+    //TODO: wrong category is being selected on loading
     //*clean carouselCateogryList and grabbing reference to categoriesBox keys
     carouselCategoriesList.clear();
     List listOfKey = categoriesBox.keys.toList();
