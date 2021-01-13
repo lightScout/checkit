@@ -30,11 +30,13 @@ class _ListBuilderState extends State<ListBuilder> {
   final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
   List<Task> dataFromBox = [];
   List<Task> itemList = [];
+  int itemCount = 0;
 
   GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 //
   Future<void> _loadItems() async {
     dataFromBox.clear();
+    itemList.clear();
     var future = Future(() {});
     if (widget.taskList != null) {
       dataFromBox = widget.taskList;
@@ -54,11 +56,35 @@ class _ListBuilderState extends State<ListBuilder> {
             itemList.insert(i, dataFromBox[i]);
             if (_listKey.currentState != null) {
               _listKey.currentState
-                  .insertItem(i, duration: const Duration(milliseconds: 400));
+                  .insertItem(i, duration: const Duration(milliseconds: 300));
             }
           });
         });
       }
+      itemCount = widget.tasksBox.length;
+    }
+  }
+
+  Future<void> _checkIfItemWasAdded() async {
+    int boxSize = widget.tasksBox.length;
+
+    if (widget.tasksBox.isEmpty) {
+      itemCount = 0;
+    }
+//TODO: wrong category is being selected on loading
+    if (itemCount < boxSize) {
+      int lastKey = widget.tasksBox.keys.last;
+      Task task = widget.tasksBox.get(lastKey) as Task;
+      task.key = lastKey;
+      if (task.category == widget.listCategory) {
+        itemList.insert(0, task);
+        if (_listKey.currentState != null) {
+          _listKey.currentState
+              .insertItem(0, duration: const Duration(milliseconds: 600));
+        }
+      }
+
+      itemCount = boxSize;
     }
   }
 
@@ -70,8 +96,7 @@ class _ListBuilderState extends State<ListBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    // print(listOfKeys);
-
+    _checkIfItemWasAdded();
     return AnimatedList(
       key: _listKey,
       scrollDirection: Axis.vertical,
@@ -80,50 +105,84 @@ class _ListBuilderState extends State<ListBuilder> {
       itemBuilder: (context, index, animation) {
         final task = itemList[index];
 
-        return _slideIt(
-            context,
-            TaskTile(
-              title: task.name,
-              category: task.category,
-              dueDate: task.dueDateTime,
-              isChecked: task.isDone,
-              isCheckCallBack: () {
-                task.toggleDone();
-                return widget.tasksBox.put(task.key, task);
-              },
-              deleteTask: () {
-                widget.tasksBox.delete(task.key);
-                itemList.remove(task);
-                AnimatedListRemovedItemBuilder builder = (context, animation) {
-                  return _buildItem(animation);
-                };
-                _listKey.currentState.removeItem(index, builder);
-              },
-              isBgGradientInverted: widget.isBgGradientInverted,
-            ),
-            animation);
+        return _buildItem(context, task, animation, itemList, _listKey, index,
+            widget.isBgGradientInverted);
       },
       initialItemCount: itemList.length,
     );
   }
 }
 
-Widget _slideIt(BuildContext context, TaskTile item, animation) {
+Widget _buildItem(
+  BuildContext context,
+  Task item,
+  animation,
+  List<Task> itemList,
+  GlobalKey<AnimatedListState> listKey,
+  int index,
+  bool isBgInverted,
+) {
   return SlideTransition(
     position: Tween<Offset>(
       begin: const Offset(-1, 0),
       end: Offset(0, 0),
     ).animate(animation),
-    child: item,
+    child: TaskTile(
+      title: item.name,
+      category: item.category,
+      dueDate: item.dueDateTime,
+      isChecked: item.isDone,
+      isCheckCallBack: () {
+        item.toggleDone();
+        return Hive.box('tasks').put(item.key, item);
+      },
+      deleteTask: () {
+        Hive.box('tasks').delete(item.key);
+        itemList.remove(item);
+
+        listKey.currentState.removeItem(
+            index,
+            (_, animation) => _removedItem(context, item, animation, itemList,
+                listKey, index, isBgInverted),
+            duration: Duration(milliseconds: 200));
+      },
+      isBgGradientInverted: isBgInverted,
+    ),
   );
 }
 
-Widget _buildItem(Animation animation) {
-  return SizeTransition(
-    sizeFactor: animation,
-    child: SizedBox(
-      height: 0,
-      width: 0,
+Widget _removedItem(
+  BuildContext context,
+  Task item,
+  animation,
+  List<Task> itemList,
+  GlobalKey<AnimatedListState> listKey,
+  int index,
+  bool isBgInverted,
+) {
+  return FadeTransition(
+    opacity: animation,
+    child: TaskTile(
+      title: item.name,
+      category: item.category,
+      dueDate: item.dueDateTime,
+      isChecked: item.isDone,
+      isCheckCallBack: () {
+        // item.toggleDone();
+        // return Hive.box('tasks').put(item.key, item);
+      },
+      deleteTask: () {
+        // Hive.box('tasks').delete(item.key);
+        // itemList.remove(item);
+
+        // listKey.currentState.removeItem(
+        //     index,
+        //     (_, animation) => _buildItem(context, item, animation,
+        //         itemList, listKey, index, isBgInverted,
+        //        ),
+        //     duration: Duration(milliseconds: 600));
+      },
+      isBgGradientInverted: isBgInverted,
     ),
   );
 }
