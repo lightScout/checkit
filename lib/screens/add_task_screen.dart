@@ -248,7 +248,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     if (categoriesBoxLength == 0 && categoriesBox.length > 0) {
       categoriesBoxLength = categoriesBox.length;
       selectedCategory =
-          (categoriesBox.get(categoriesBox.keys.first) as Category).name;
+          (categoriesBox.get(categoriesBox.keys.last) as Category).name;
     }
 //* check if new category was added
     if ((categoriesBox.isNotEmpty) &&
