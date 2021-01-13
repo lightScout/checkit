@@ -122,7 +122,7 @@ class _TaskTileState extends State<TaskTile> {
                         ? Color(0xFF071F86)
                         : Colors.teal[500].withOpacity(.9),
                     icon: Icons.check,
-                    onTap: () => {},
+                    onTap: widget.isCheckCallBack,
                   ),
                   //TODO: research on how to share to phone system
                   // IconSlideAction(
