@@ -84,36 +84,37 @@ class _TaskTileState extends State<TaskTile> {
                   child: ListTile(
 //            * Task Title
 //            * **/
-                    title: Text(
-                      widget.title,
-                      style: TextStyle(
-                          fontFamily: KMainFontFamily,
-                          color: Color(0xFFf8f0bc),
-                          fontSize: 14,
-                          decoration: widget.isChecked
-                              ? TextDecoration.lineThrough
-                              : null),
-                    ),
-                    subtitle: (widget.dueDate != null)
-                        ? Text(
-                            "${DateFormat.yMd().add_jm().format(widget.dueDate)}",
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.white60,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: KMainFontFamily,
-                            ),
-                          )
-                        : Text(
-                            '${DateFormat.yMd().format(DateTime.now())}',
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.white60,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: KMainFontFamily,
-                            ),
-                          ),
-                  ),
+                      title: Text(
+                        widget.title,
+                        style: TextStyle(
+                            fontFamily: KMainFontFamily,
+                            color: Color(0xFFf8f0bc),
+                            fontSize: 14,
+                            decoration: widget.isChecked
+                                ? TextDecoration.lineThrough
+                                : null),
+                      ),
+                      subtitle: (widget.dueDate != null)
+                          ? Text(
+                              "${DateFormat.yMd().add_jm().format(widget.dueDate)}",
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.white60,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: KMainFontFamily,
+                              ),
+                            )
+                          : null
+                      // : Text(
+                      //     '${DateFormat.yMd().format(DateTime.now())}',
+                      //     style: TextStyle(
+                      //       fontSize: 10,
+                      //       color: Colors.white60,
+                      //       fontWeight: FontWeight.w700,
+                      //       fontFamily: KMainFontFamily,
+                      //     ),
+                      //   ),
+                      ),
                 ),
                 actions: <Widget>[
                   IconSlideAction(
