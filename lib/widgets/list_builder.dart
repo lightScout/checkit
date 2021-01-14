@@ -72,7 +72,7 @@ class _ListBuilderState extends State<ListBuilder> {
   Future<void> _stateCheck() async {
     int boxSize = widget.tasksBox.length;
     if (itemCount > boxSize) {
-      _loadItems();
+      itemCount = boxSize;
     }
     if (widget.tasksBox.isEmpty) {
       itemCount = 0;
