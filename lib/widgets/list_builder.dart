@@ -6,9 +6,6 @@ import 'package:hive/hive.dart';
 import 'task_tile.dart';
 
 class ListBuilder extends StatefulWidget {
-  //* Page Controller
-  final ListBuilderController controller;
-
   final Box tasksBox;
   //* if true, textile bg gradiente will be inverted to toggle task state
   final bool isBgGradientInverted;
@@ -24,18 +21,14 @@ class ListBuilder extends StatefulWidget {
     this.isBgGradientInverted = false,
     this.taskList,
     this.isTaskScreen,
-    this.controller,
-  });
+    Key key,
+  }) : super(key: key);
 
   @override
-  _ListBuilderState createState() => _ListBuilderState(controller);
+  ListBuilderState createState() => ListBuilderState();
 }
 
-class _ListBuilderState extends State<ListBuilder> {
-  _ListBuilderState(ListBuilderController _controller) {
-    _controller.emptyList = emptyList;
-  }
-
+class ListBuilderState extends State<ListBuilder> {
   final Color dismissibleBackGroundColor1 = Color(0xFFF9B16E);
 
   final Color dismissibleBackGroundColor2 = Color(0xFFF68080);

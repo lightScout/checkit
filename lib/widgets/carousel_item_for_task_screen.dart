@@ -1,3 +1,4 @@
+import 'package:ciao_app/model/list_builder_controller.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/full_screen_page.dart';
 import 'package:ciao_app/widgets/list_builder.dart';
@@ -29,8 +30,7 @@ class CarouselItemForTaskScreen extends StatefulWidget {
 
 class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
   bool isMenuOpen = false;
-  final GlobalKey<_ListBuilderState> _myWidgetState =
-      GlobalKey<_ListBuilderState>();
+  final GlobalKey<ListBuilderState> _listBuilderKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +138,11 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                                         color: KMainPurple,
                                       ),
                                       label: Text(""),
-                                      onPressed: widget.function,
+                                      onPressed: () {
+                                        _listBuilderKey.currentState
+                                            .emptyList();
+                                        widget.function();
+                                      },
                                     ),
                                     MenuItem(
                                       icon: Icon(
@@ -182,6 +186,7 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                       child: ListBuilder(
+                        key: _listBuilderKey,
                         listCategory: widget.category,
                         tasksBox: widget.tasksBox,
                         isTaskScreen: true,
