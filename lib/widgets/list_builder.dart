@@ -1,3 +1,4 @@
+import 'package:ciao_app/model/list_builder_controller.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -5,12 +6,16 @@ import 'package:hive/hive.dart';
 import 'task_tile.dart';
 
 class ListBuilder extends StatefulWidget {
+  //* Page Controller
+  final ListBuilderController controller;
+
   final Box tasksBox;
   //* if true, textile bg gradiente will be inverted to toggle task state
   final bool isBgGradientInverted;
   final listCategory;
   final ScrollController hideButtonController;
   final List<Task> taskList;
+  final bool isTaskScreen;
 
   ListBuilder({
     this.tasksBox,
@@ -18,13 +23,19 @@ class ListBuilder extends StatefulWidget {
     this.hideButtonController,
     this.isBgGradientInverted = false,
     this.taskList,
+    this.isTaskScreen,
+    this.controller,
   });
 
   @override
-  _ListBuilderState createState() => _ListBuilderState();
+  _ListBuilderState createState() => _ListBuilderState(controller);
 }
 
 class _ListBuilderState extends State<ListBuilder> {
+  _ListBuilderState(ListBuilderController _controller) {
+    _controller.emptyList = emptyList;
+  }
+
   final Color dismissibleBackGroundColor1 = Color(0xFFF9B16E);
 
   final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
@@ -33,7 +44,52 @@ class _ListBuilderState extends State<ListBuilder> {
   int itemCount = 0;
 
   GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-//
+  //
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _stateCheck();
+    return AnimatedList(
+      key: _listKey,
+      scrollDirection: Axis.vertical,
+      controller: widget.hideButtonController,
+      shrinkWrap: true,
+      itemBuilder: (context, index, animation) {
+        if (itemList.isNotEmpty && index <= itemList.length - 1) {
+          final task = itemList[index];
+
+          return widget.isTaskScreen
+              ? _simpleItem(context, task, itemList, _listKey, index,
+                  widget.isBgGradientInverted)
+              : _buildItem(context, task, animation, itemList, _listKey, index,
+                  widget.isBgGradientInverted);
+        } else
+          //* Animated List needs to received null when the list becomes empty
+          return null;
+      },
+      initialItemCount: itemList.length,
+    );
+  }
+
+  void emptyList() {
+    final length = itemList.length;
+
+    for (int i = length - 1; i >= 0; i--) {
+      Task removedItem = itemList.removeAt(i);
+      _listKey.currentState.removeItem(
+          i,
+          (_, animation) => _deletedItem(
+              context, removedItem, animation, itemList, _listKey, i, false),
+          duration: Duration(milliseconds: 600));
+    }
+  }
+
   Future<void> _loadItems() async {
     dataFromBox.clear();
     itemList.clear();
@@ -92,34 +148,6 @@ class _ListBuilderState extends State<ListBuilder> {
 
       itemCount = boxSize;
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadItems();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _stateCheck();
-    return AnimatedList(
-      key: _listKey,
-      scrollDirection: Axis.vertical,
-      controller: widget.hideButtonController,
-      shrinkWrap: true,
-      itemBuilder: (context, index, animation) {
-        if (itemList.isNotEmpty && index <= itemList.length - 1) {
-          final task = itemList[index];
-
-          return _buildItem(context, task, animation, itemList, _listKey, index,
-              widget.isBgGradientInverted);
-        } else
-          //* Animated List needs to received null when the list becomes empty
-          return null;
-      },
-      initialItemCount: itemList.length,
-    );
   }
 }
 
@@ -181,5 +209,36 @@ Widget _deletedItem(
       isChecked: item.isDone,
       isBgGradientInverted: isBgInverted,
     ),
+  );
+}
+
+Widget _simpleItem(
+  BuildContext context,
+  Task item,
+  List<Task> itemList,
+  GlobalKey<AnimatedListState> listKey,
+  int index,
+  bool isBgInverted,
+) {
+  return TaskTile(
+    title: item.name,
+    category: item.category,
+    dueDate: item.dueDateTime,
+    isChecked: item.isDone,
+    isCheckCallBack: () {
+      item.toggleDone();
+      return Hive.box('tasks').put(item.key, item);
+    },
+    deleteTask: () {
+      Hive.box('tasks').delete(item.key);
+      itemList.remove(item);
+
+      listKey.currentState.removeItem(
+          index,
+          (_, animation) => _deletedItem(
+              context, item, animation, itemList, listKey, index, isBgInverted),
+          duration: Duration(milliseconds: 600));
+    },
+    isBgGradientInverted: isBgInverted,
   );
 }

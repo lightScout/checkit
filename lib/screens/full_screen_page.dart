@@ -5,7 +5,7 @@ import 'package:ciao_app/widgets/list_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:animations/animations.dart';
+import 'package:dynamic_overflow_menu_bar/dynamic_overflow_menu_bar.dart';
 import 'add_task_screen2.dart';
 
 class FullScreenPage extends StatefulWidget {
@@ -18,6 +18,7 @@ class FullScreenPage extends StatefulWidget {
 }
 
 class _FullScreenPageState extends State<FullScreenPage> {
+  TextEditingController _titleTextController;
   bool wasAllTaskToggled = false;
   double yOffset = 0;
   double scaleFactor = 1;
@@ -25,78 +26,87 @@ class _FullScreenPageState extends State<FullScreenPage> {
   double topBorderRadius = 0;
 
   @override
+  void initState() {
+    super.initState();
+    _titleTextController = TextEditingController(
+      text: "${widget.category}",
+    );
+    _titleTextController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     String category = widget.category;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'FULLSCREENPAGEFAB',
-        backgroundColor: Color(0xFF071F86),
-        onPressed: () {
-          if (isPageMinimized) {
-            setState(() {
-              isPageMinimized = false;
-              yOffset = 0;
-              topBorderRadius = 0;
-            });
-          } else {
-            setState(() {
-              topBorderRadius = 50;
-              yOffset = MediaQuery.of(context).size.height / 2.5;
-              isPageMinimized = true;
-            });
-          }
-        },
-        child: Icon(
-          Icons.add,
-          size: 40,
-        ),
-      ),
+
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text(
-          widget.category,
-          style: TextStyle(
-            fontFamily: KMainFontFamily,
-            fontSize: 14,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Color(0xFF071F86),
-                  child: InkWell(
-                    onTap: () {
-                      _toggleAllTask();
-                    },
-                    child: Icon(Icons.delete_forever),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                CircleAvatar(
-                  radius: 60,
-                  backgroundColor:
-                      wasAllTaskToggled ? Colors.blue[800] : Colors.red,
-                  child: InkWell(
-                    onTap: () {
-                      _toggleAllTask();
-                    },
-                    child: Icon(Icons.done_all),
-                  ),
-                ),
-              ],
+        title: DynamicOverflowMenuBar(
+          title: Text(
+            _titleTextController.text,
+            style: TextStyle(
+              fontFamily: KMainFontFamily,
+              fontSize: 14,
             ),
-          )
-        ],
+          ),
+          actions: <OverFlowMenuItem>[
+            OverFlowMenuItem(
+                child: IconButton(
+                  tooltip: "Delete Category",
+                  icon: Icon(Icons.delete_forever),
+                  onPressed: () {},
+                ),
+                label: "Delete Category",
+                onPressed: () {}),
+            OverFlowMenuItem(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: IconButton(
+                    splashColor: Color(0xFF000328).withBlue(-20),
+                    splashRadius: 22.2,
+                    tooltip: 'checKit all',
+                    icon: Icon(Icons.done_all),
+                    onPressed: () {
+                      _toggleAllTask();
+                    },
+                  ),
+                ),
+                label: 'checKit all',
+                onPressed: () {}),
+            OverFlowMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 25.0),
+                child: IconButton(
+                    tooltip: 'Add task',
+                    splashColor: Color(0xFF000328).withBlue(-20),
+                    splashRadius: 22.2,
+                    onPressed: () {
+                      if (isPageMinimized) {
+                        setState(() {
+                          isPageMinimized = false;
+                          yOffset = 0;
+                          topBorderRadius = 0;
+                        });
+                      } else {
+                        setState(() {
+                          topBorderRadius = 50;
+                          yOffset = MediaQuery.of(context).size.height / 2.5;
+                          isPageMinimized = true;
+                        });
+                      }
+                    },
+                    icon: Icon(Icons.add)),
+              ),
+              label: 'Add Task',
+              onPressed: () {},
+            ),
+          ],
+        ),
       ),
       //* STACK
       body: Stack(
