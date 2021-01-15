@@ -337,7 +337,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                       Text(
                                         'Add task',
                                         style: Klogo.copyWith(
-                                          fontSize: 16,
+                                          fontSize: 33,
                                           shadows: [
                                             Shadow(
                                               color: KMainPurple,
@@ -361,7 +361,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                     TextCapitalization.sentences,
                                 controller: textFieldController,
                                 style: Klogo.copyWith(
-                                  fontSize: 13,
+                                  fontFamily: 'DMSerifTextRegular',
+                                  fontSize: 20,
                                   color: Colors.white,
                                   shadows: [],
                                 ),
@@ -374,7 +375,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(25),
+                                      Radius.circular(50),
                                     ),
                                     borderSide: BorderSide(
                                         color: Colors.white70, width: 5.0),
@@ -425,10 +426,10 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                     child: Container(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              .17,
+                                              .13,
                                       width:
                                           MediaQuery.of(context).size.height *
-                                              .17,
+                                              .13,
                                       decoration: BoxDecoration(
                                         boxShadow: [
                                           BoxShadow(

@@ -209,7 +209,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                         Text(
                                           'Add category',
                                           style: Klogo.copyWith(
-                                            fontSize: 16,
+                                            fontSize: 33,
                                             shadows: [
                                               Shadow(
                                                 color: Colors.red,
@@ -271,12 +271,12 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                       style: TextStyle(
                                                           fontFamily:
                                                               KMainFontFamily,
-                                                          fontSize: 14,
+                                                          fontSize: 20,
                                                           color:
                                                               Colors.blue[50]),
                                                     ),
                                                     SizedBox(
-                                                      height: 40,
+                                                      height: 33,
                                                     ),
                                                     //*
                                                     //*SECOND: TEXTFEILD 'ADD CATEGORY HERE'
@@ -288,7 +288,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                       controller:
                                                           textFieldController,
                                                       style: Klogo.copyWith(
-                                                        fontSize: 18,
+                                                        fontSize: 22,
                                                         color: Colors.white,
                                                         shadows: [],
                                                       ),

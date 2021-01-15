@@ -1,4 +1,4 @@
-import 'package:ciao_app/model/list_builder_controller.dart';
+import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -7,6 +7,7 @@ import 'task_tile.dart';
 
 class ListBuilder extends StatefulWidget {
   final Box tasksBox;
+  final int boxKey;
   //* if true, textile bg gradiente will be inverted to toggle task state
   final bool isBgGradientInverted;
   final listCategory;
@@ -21,6 +22,7 @@ class ListBuilder extends StatefulWidget {
     this.isBgGradientInverted = false,
     this.taskList,
     this.isTaskScreen,
+    this.boxKey,
     Key key,
   }) : super(key: key);
 
@@ -33,8 +35,9 @@ class ListBuilderState extends State<ListBuilder> {
 
   final Color dismissibleBackGroundColor2 = Color(0xFFF68080);
   List<Task> dataFromBox = [];
-  List<Task> itemList = [];
+  List<Task> itemList;
   int itemCount = 0;
+  bool firstBuild = true;
 
   GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   //
@@ -42,6 +45,7 @@ class ListBuilderState extends State<ListBuilder> {
   @override
   void initState() {
     super.initState();
+    itemList = [];
     _loadItems();
   }
 
@@ -57,11 +61,8 @@ class ListBuilderState extends State<ListBuilder> {
         if (itemList.isNotEmpty && index <= itemList.length - 1) {
           final task = itemList[index];
 
-          return widget.isTaskScreen
-              ? _simpleItem(context, task, itemList, _listKey, index,
-                  widget.isBgGradientInverted)
-              : _buildItem(context, task, animation, itemList, _listKey, index,
-                  widget.isBgGradientInverted);
+          return _buildItem(context, task, animation, itemList, _listKey, index,
+              widget.isBgGradientInverted);
         } else
           //* Animated List needs to received null when the list becomes empty
           return null;
@@ -81,11 +82,13 @@ class ListBuilderState extends State<ListBuilder> {
               context, removedItem, animation, itemList, _listKey, i, false),
           duration: Duration(milliseconds: 600));
     }
+    itemCount = 0;
   }
 
   Future<void> _loadItems() async {
+    emptyList();
     dataFromBox.clear();
-    itemList.clear();
+
     var future = Future(() {});
     if (widget.taskList != null) {
       dataFromBox = widget.taskList;

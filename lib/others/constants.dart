@@ -10,7 +10,7 @@ const Color KMainOrange = Color(0xFFFA9700);
 const Color KMainRed = Color(0xFFFF1d1d);
 const Color KTopLinearGradientColor = Color(0xFF9bdeff);
 const Color KBottomLinearGradientColor = Color(0xFFEBF8FF);
-const String KMainFontFamily = 'PressStart2P';
+const String KMainFontFamily = 'RighteousRegular';
 
 const LinearGradient KMainLinearGradient = LinearGradient(
   begin: Alignment.topRight,
@@ -20,9 +20,8 @@ const LinearGradient KMainLinearGradient = LinearGradient(
 
 const TextStyle Klogo = TextStyle(
   fontSize: 33,
-  color: Color(0xFF071F86),
-  fontWeight: FontWeight.bold,
-  fontFamily: 'PressStart2P',
+  color: Colors.white,
+  fontFamily: 'FrauncesBoldItalic',
   shadows: [
     Shadow(
       blurRadius: 2.0,

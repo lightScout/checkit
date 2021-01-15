@@ -88,33 +88,12 @@ class _TaskListScreenState extends State<TaskListScreen>
   void buildCarouselList() {
     carouselList.clear();
     listOfCategoriesKeys = categoriesBox.keys.toList();
-    //*syncing the carousel with the last added category
-    if (carouselIndex == categoriesBox.length) {
-      // _carouselController.animateToPage(carouselIndex - 1);
-    }
-    // //* sycning the carousel when another carousel get its page turned
-    // if ((Hive.box('flags').getAt(2) as Flags).value) {
-    //   _carouselController
-    //       .animateToPage((Hive.box('flags').getAt(2) as Flags).data);
-    //   //* flag to signal synced carousel
-    //   Hive.box('flags').putAt(
-    //       2,
-    //       Flags(
-    //         name: 'CAROUSELPAGETURNED',
-    //         value: false,
-    //       ));
-    // }
 
     if (carouselIndex == 0 && categoriesBox.length > 0) {
       carouselIndex = categoriesBox.length;
     }
     if ((categoriesBox.isNotEmpty && carouselIndex < categoriesBox.length)) {
       carouselIndex = categoriesBox.length;
-      // carouselIndexNeedsUpdate = true;
-      // _carouselController.animateToPage(carouselIndex - 1);
-      // print((categoriesBox.isNotEmpty) &&
-      //     (categoriesBoxLength < categoriesBox.length ||
-      //         categoriesBox.length < 2));
     }
 
     listOfCategoriesKeys.forEach((element) {
@@ -124,7 +103,7 @@ class _TaskListScreenState extends State<TaskListScreen>
       carouselList.insert(
           0,
           CarouselItemForTaskScreen(
-            a.categoryName,
+            a.name,
             a.key,
             tasksBox,
             categoriesBox,
@@ -530,7 +509,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                                     Text(
                                       'checKit',
                                       style: Constant.Klogo.copyWith(
-                                        fontSize: 20,
+                                        fontSize: 44,
                                         shadows: [
                                           Shadow(
                                             blurRadius: 2.0,

@@ -24,6 +24,7 @@ class _FullScreenPageState extends State<FullScreenPage> {
   double scaleFactor = 1;
   bool isPageMinimized = false;
   double topBorderRadius = 0;
+  final GlobalKey<ListBuilderState> _listBuilderKey = GlobalKey();
 
   @override
   void initState() {
@@ -50,58 +51,61 @@ class _FullScreenPageState extends State<FullScreenPage> {
           title: Text(
             _titleTextController.text,
             style: TextStyle(
-              fontFamily: KMainFontFamily,
-              fontSize: 14,
+              fontFamily: 'DMSerifTextRegular',
+              fontSize: 22,
             ),
           ),
           actions: <OverFlowMenuItem>[
             OverFlowMenuItem(
                 child: IconButton(
                   tooltip: "Delete Category",
-                  icon: Icon(Icons.delete_forever),
+                  icon: Icon(
+                    Icons.delete_forever,
+                    size: 33,
+                  ),
                   onPressed: () {},
                 ),
-                label: "Delete Category",
+                label: "Delete all",
                 onPressed: () {}),
             OverFlowMenuItem(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: IconButton(
-                    splashColor: Color(0xFF000328).withBlue(-20),
-                    splashRadius: 22.2,
-                    tooltip: 'checKit all',
-                    icon: Icon(Icons.done_all),
-                    onPressed: () {
-                      _toggleAllTask();
-                    },
+                child: IconButton(
+                  splashColor: Color(0xFF000328).withBlue(-20),
+                  splashRadius: 22.2,
+                  tooltip: 'checKit all',
+                  icon: Icon(
+                    Icons.done_all,
+                    size: 33,
                   ),
+                  onPressed: () {
+                    _toggleAllTask();
+                  },
                 ),
                 label: 'checKit all',
                 onPressed: () {}),
             OverFlowMenuItem(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 25.0),
-                child: IconButton(
-                    tooltip: 'Add task',
-                    splashColor: Color(0xFF000328).withBlue(-20),
-                    splashRadius: 22.2,
-                    onPressed: () {
-                      if (isPageMinimized) {
-                        setState(() {
-                          isPageMinimized = false;
-                          yOffset = 0;
-                          topBorderRadius = 0;
-                        });
-                      } else {
-                        setState(() {
-                          topBorderRadius = 50;
-                          yOffset = MediaQuery.of(context).size.height / 2.5;
-                          isPageMinimized = true;
-                        });
-                      }
-                    },
-                    icon: Icon(Icons.add)),
-              ),
+              child: IconButton(
+                  tooltip: 'Add task',
+                  splashColor: Color(0xFF000328).withBlue(-20),
+                  splashRadius: 22.2,
+                  onPressed: () {
+                    if (isPageMinimized) {
+                      setState(() {
+                        isPageMinimized = false;
+                        yOffset = 0;
+                        topBorderRadius = 0;
+                      });
+                    } else {
+                      setState(() {
+                        topBorderRadius = 50;
+                        yOffset = MediaQuery.of(context).size.height / 2.5;
+                        isPageMinimized = true;
+                      });
+                    }
+                  },
+                  icon: Icon(
+                    Icons.add,
+                    size: 33,
+                  )),
               label: 'Add Task',
               onPressed: () {},
             ),
@@ -111,9 +115,11 @@ class _FullScreenPageState extends State<FullScreenPage> {
       //* STACK
       body: Stack(
         children: [
+          //* Back container
           AddTaskScreen2(
             category: category,
           ),
+          //* Front container
           AnimatedContainer(
             curve: Curves.ease,
             transform: Matrix4.translationValues(
@@ -142,7 +148,10 @@ class _FullScreenPageState extends State<FullScreenPage> {
                       ),
                       child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.white12,
+                            gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [Colors.indigo[900], Colors.indigo]),
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(50),
                               topLeft: Radius.circular(50),
@@ -156,9 +165,11 @@ class _FullScreenPageState extends State<FullScreenPage> {
                             valueListenable: Hive.box('tasks').listenable(),
                             builder: (context, box, widget) {
                               return ListBuilder(
+                                key: _listBuilderKey,
                                 listCategory: category,
                                 tasksBox: Hive.box('tasks'),
                                 isBgGradientInverted: true,
+                                isTaskScreen: false,
                               );
                             },
                           )),

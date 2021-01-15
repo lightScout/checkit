@@ -1,7 +1,8 @@
-import 'package:ciao_app/model/list_builder_controller.dart';
+import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/full_screen_page.dart';
 import 'package:ciao_app/widgets/list_builder.dart';
+import 'package:ciao_app/widgets/simple_list_builder.dart';
 import 'package:ciao_app/widgets/slider_side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -85,41 +86,49 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                                   ? Container()
                                   : Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.white24,
+                                        color: Colors.white12,
                                         gradient: LinearGradient(
                                             begin: Alignment.center,
-                                            end: Alignment.topRight,
+                                            end: Alignment.topLeft,
                                             colors: [
-                                              Colors.white12,
-                                              Color(0xFFEBF8FF)
+                                              Colors.blue,
+                                              Colors.white,
                                             ]),
                                         borderRadius: BorderRadius.only(
                                           topRight: Radius.circular(30),
-                                          bottomLeft: Radius.circular(30),
+                                          bottomLeft: Radius.circular(50),
                                           bottomRight: Radius.circular(30),
-                                          topLeft: Radius.circular(30),
+                                          topLeft: Radius.circular(15),
                                         ),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(14.0),
-                                        child: Text(
-                                          widget.category,
-                                          style: Klogo.copyWith(
-                                            fontSize: 15,
-                                            shadows: [
-                                              Shadow(
-                                                blurRadius: 2.0,
-                                                color: Colors.blue,
-                                                offset: Offset(5.0, 5.0),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(14.0),
+                                            child: Text(
+                                              widget.category,
+                                              style: Klogo.copyWith(
+                                                color: KMainPurple,
+                                                fontFamily:
+                                                    'DMSerifTextRegular',
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 22,
+                                                shadows: [
+                                                  Shadow(
+                                                    blurRadius: 2.0,
+                                                    color: Colors.blue,
+                                                    offset: Offset(3.3, 3.3),
+                                                  ),
+                                                  Shadow(
+                                                    color: Colors.white,
+                                                    blurRadius: 6.0,
+                                                    offset: Offset(2.0, 2.0),
+                                                  ),
+                                                ],
                                               ),
-                                              Shadow(
-                                                color: Colors.white,
-                                                blurRadius: 6.0,
-                                                offset: Offset(2.0, 2.0),
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ),
                                     ),
                               SliderSideMenu(
@@ -139,8 +148,6 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                                       ),
                                       label: Text(""),
                                       onPressed: () {
-                                        _listBuilderKey.currentState
-                                            .emptyList();
                                         widget.function();
                                       },
                                     ),
@@ -185,11 +192,11 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                       ),
                       padding:
                           EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                      child: ListBuilder(
-                        key: _listBuilderKey,
-                        listCategory: widget.category,
+                      child: SimpleListBuilder(
+                        listCategory: (Hive.box('categories')
+                                .get(widget.categoryKey) as Category)
+                            .name,
                         tasksBox: widget.tasksBox,
-                        isTaskScreen: true,
                       ),
                     ),
                   )

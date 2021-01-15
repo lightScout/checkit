@@ -54,6 +54,30 @@ flutter:
     - family: PressStart2P
       fonts:
         - asset: assets/fonts/PressStart2P-Regular.ttf
+    - family: FrauncesThin
+      fonts:
+        - asset: assets/fonts/FrauncesThin.ttf    
+    - family: FrauncesBoldItalic
+      fonts:
+        - asset: assets/fonts/FrauncesBoldItalic.ttf
+    - family: FrauncesBold
+      fonts:
+        - asset: assets/fonts/FrauncesBold.ttf     
+    - family: RighteousRegular
+      fonts:
+        - asset: assets/fonts/RighteousRegular.ttf   
+         
+    - family: FrauncesRegular
+      fonts:
+        - asset: assets/fonts/FrauncesRegular.ttf   
+         
+    - family: RobotoRegular
+      fonts:
+        - asset: assets/fonts/RobotoRegular.ttf  
+
+    - family: DMSerifTextRegular 
+      fonts:
+        - asset: assets/fonts/DMSerifTextRegular.ttf                
 
   # To add assets to your application, add an assets section, like this:
   # assets:

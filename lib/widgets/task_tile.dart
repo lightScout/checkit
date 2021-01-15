@@ -13,7 +13,7 @@ class TaskTile extends StatefulWidget {
   final DateTime dueDate;
   final Color _checkedColor1 = Color(0xFF00458E);
   final Color _checkedColor2 = Color(0xFF000328);
-  final Color _uncheckedColor1 = Color(0xFF0F8099);
+  final Color _uncheckedColor1 = Colors.indigoAccent;
 
   TaskTile(
       {this.title,
@@ -45,25 +45,32 @@ class _TaskTileState extends State<TaskTile> {
               ),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
+              borderRadius: BorderRadius.all(Radius.circular(50)),
               child: Slidable(
                 actionPane: SlidableDrawerActionPane(),
                 actionExtentRatio: 0.25,
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    border: widget.isBgGradientInverted
+                        ? Border.all(
+                            color: Colors.white12,
+                            width: 4,
+                          )
+                        : null,
                     gradient: widget.isBgGradientInverted
                         ? widget.isChecked
                             ? LinearGradient(
                                 begin: Alignment.topRight,
                                 end: Alignment.bottomLeft,
-                                colors: [Colors.red, widget._checkedColor2])
+                                colors: [Colors.red, KMainPurple])
                             : LinearGradient(
                                 begin: Alignment.topRight,
                                 end: Alignment.bottomLeft,
                                 colors: [
-                                    widget._checkedColor1,
-                                    widget._checkedColor2
+                                    KMainPurple,
+                                    Colors.cyan,
                                   ])
                         : widget.isChecked
                             ? LinearGradient(
@@ -87,11 +94,14 @@ class _TaskTileState extends State<TaskTile> {
                       title: Text(
                         widget.title,
                         style: TextStyle(
-                            fontFamily: KMainFontFamily,
-                            color: Color(0xFFf8f0bc),
-                            fontSize: 14,
+                            fontFamily: 'DMSerifTextRegular',
+                            color: widget.isBgGradientInverted
+                                ? Colors.white.withOpacity(.88)
+                                : Colors.blue[50],
+                            fontSize: 20,
                             decoration: widget.isChecked
-                                ? TextDecoration.lineThrough
+                                ? TextDecoration.combine(
+                                    [TextDecoration.lineThrough])
                                 : null),
                       ),
                       subtitle: (widget.dueDate != null)
