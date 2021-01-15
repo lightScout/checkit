@@ -270,7 +270,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                           TextAlign.center,
                                                       style: TextStyle(
                                                           fontFamily:
-                                                              KMainFontFamily,
+                                                              'DMSerifTextRegular',
                                                           fontSize: 20,
                                                           color:
                                                               Colors.blue[50]),
@@ -289,6 +289,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                           textFieldController,
                                                       style: Klogo.copyWith(
                                                         fontSize: 22,
+                                                        fontFamily:
+                                                            'DMSerifTextRegular',
                                                         color: Colors.white,
                                                         shadows: [],
                                                       ),

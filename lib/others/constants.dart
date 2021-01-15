@@ -8,14 +8,14 @@ const Color KBabyBlue = Color(0xFF9bdeff);
 const Color KPersinanGreen = Color(0xFF2A9D8F);
 const Color KMainOrange = Color(0xFFFA9700);
 const Color KMainRed = Color(0xFFFF1d1d);
-const Color KTopLinearGradientColor = Color(0xFF9bdeff);
+const Color KTopLinearGradientColor = KMainPurple;
 const Color KBottomLinearGradientColor = Color(0xFFEBF8FF);
 const String KMainFontFamily = 'RighteousRegular';
 
 const LinearGradient KMainLinearGradient = LinearGradient(
   begin: Alignment.topRight,
   end: Alignment.bottomLeft,
-  colors: [KTopLinearGradientColor, KBottomLinearGradientColor],
+  colors: [Color(0xFF2A9D8F), KBottomLinearGradientColor],
 );
 
 const TextStyle Klogo = TextStyle(

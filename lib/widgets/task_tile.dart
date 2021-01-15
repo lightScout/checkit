@@ -50,15 +50,13 @@ class _TaskTileState extends State<TaskTile> {
                 actionPane: SlidableDrawerActionPane(),
                 actionExtentRatio: 0.25,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
-                    border: widget.isBgGradientInverted
-                        ? Border.all(
-                            color: Colors.white12,
-                            width: 4,
-                          )
-                        : null,
+                    border: Border.all(
+                      color: Colors.white12,
+                      width: 4,
+                    ),
                     gradient: widget.isBgGradientInverted
                         ? widget.isChecked
                             ? LinearGradient(

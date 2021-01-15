@@ -145,7 +145,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     end: Alignment.topCenter,
                     colors: [
                       Colors.transparent.withOpacity(.80),
-                      Colors.blueAccent
+                      Colors.indigo
                     ]),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50.0),
@@ -165,9 +165,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       CircleAvatar(
+                        backgroundColor: KMainPurple,
                         radius: 40,
                         child: GestureDetector(
-                            child: Icon(Icons.remove),
+                            child: Icon(Icons.remove_rounded),
                             onTap: () {
                               setState(() {
                                 notificationOn = false;
@@ -194,7 +195,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           radius: 60,
                           backgroundColor: KMainOrange,
                           child: Icon(
-                            Icons.add,
+                            Icons.add_rounded,
                             size: 60,
                           ),
                         ),
@@ -207,8 +208,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         textTheme: CupertinoTextThemeData(
                           dateTimePickerTextStyle: TextStyle(
                             color: Colors.white,
-                            fontFamily: KMainFontFamily,
-                            fontSize: 15,
+                            fontFamily: 'DMSerifTextRegular',
+                            fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -338,7 +339,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         //   blurRadius: 30.0,
                         // ),
                       ],
-                      color: Colors.teal.withOpacity(.7),
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(90.0),
                           topRight: Radius.circular(90.0),
@@ -396,11 +397,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             //*
             body: Container(
               decoration: BoxDecoration(
-                // image: DecorationImage(
-                //   image: AssetImage(
-                //       'assets/textures/add_task_screen_texture5.png'),
-                //   fit: BoxFit.cover,
-                // ),
+                image: DecorationImage(
+                  image: AssetImage(
+                      'assets/textures/add_category_screen_texture3.png'),
+                  fit: BoxFit.cover,
+                ),
                 border: Border.all(
                   color: Colors.white54,
                   width: 10,
@@ -409,8 +410,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.teal[400],
-                      Colors.green[900],
+                      Colors.indigo[900],
+                      Colors.purple[700],
                     ]),
               ),
               child: Column(
@@ -450,7 +451,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       CustomClipRRect.customClipRRect(
                                         colors: [
                                           KMainPurple,
-                                          Colors.teal,
+                                          Colors.purple,
                                         ],
                                         child: AnimateIcons(
                                           controller: _animateIconController,
@@ -482,12 +483,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       Text(
                                         'Add task',
                                         style: Klogo.copyWith(
-                                          fontSize: 16,
+                                          fontSize: 33,
                                           shadows: [
                                             Shadow(
-                                              color: KMainPurple,
+                                              color: Colors.tealAccent
+                                                  .withOpacity(.2),
                                               blurRadius: 1,
                                               offset: Offset(5.0, 5.0),
+                                            ),
+                                            Shadow(
+                                              color: Colors.white24,
+                                              blurRadius: 1,
+                                              offset: Offset(2.0, 2.0),
                                             )
                                           ],
                                           color: Colors.blue[50],
@@ -518,7 +525,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               ),
 
                               SizedBox(
-                                height: 20,
+                                height: 27,
                               ),
                               //*
                               //* SECOND: TEXTFEILD 'ADD TASK HERE'
@@ -528,7 +535,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     TextCapitalization.sentences,
                                 controller: textFieldController,
                                 style: Klogo.copyWith(
-                                  fontSize: 13,
+                                  fontSize: 22,
+                                  fontFamily: 'DMSerifTextRegular',
                                   color: Colors.white,
                                   shadows: [],
                                 ),
@@ -537,24 +545,26 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                 decoration: InputDecoration(
                                   hintText: 'Task name here',
                                   hintStyle: TextStyle(
+                                    fontFamily: 'DMSerifTextRegular',
+                                    fontSize: 20,
                                     color: Colors.grey[350],
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(25),
+                                      Radius.circular(50),
                                     ),
                                     borderSide: BorderSide(
-                                        color: Colors.white70, width: 5.0),
+                                        color: Colors.white54, width: 3.3),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.white70, width: 5.0),
+                                        color: Colors.white54, width: 3.3),
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(25),
+                                      Radius.circular(50),
                                     ),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.teal,
+                                  fillColor: Color(0xFF2A9D8F).withOpacity(.7),
                                 ),
                                 autofocus: false,
                                 onChanged: (value) {
@@ -563,11 +573,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                 },
                               ),
                               SizedBox(
-                                height: 10,
+                                height: 27,
                               ),
-                              //*
-                              //* THIRD: Notification buttom
-                              //*
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -577,9 +584,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                   )
                                 ],
                               ),
-                              SizedBox(
-                                height: 0,
-                              ),
+
                               //*
                               //*FOURTH: ADD TASK BUTTON
                               //*
@@ -592,16 +597,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     child: Container(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              .17,
+                                              .15,
                                       width:
                                           MediaQuery.of(context).size.height *
-                                              .17,
+                                              .15,
                                       decoration: BoxDecoration(
                                         boxShadow: [
                                           BoxShadow(
-                                            color: KTopLinearGradientColor,
-                                            offset:
-                                                Offset(-10.0, -15.0), //(x,y)
+                                            color: Colors.purple[800],
+                                            offset: Offset(-10.0, -15.0),
                                             blurRadius: 22.0,
                                           ),
                                         ],
@@ -610,7 +614,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                         padding: const EdgeInsets.all(8.0),
                                         child: FloatingActionButton(
                                             splashColor: KMainOrange,
-                                            backgroundColor: KMainPurple,
+                                            backgroundColor: Colors.black,
                                             onPressed: () {
                                               if (newTaskTitle == null ||
                                                   newTaskTitle.trim() == '') {
@@ -686,12 +690,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                               }
                                             },
                                             child: Icon(
-                                              Icons.fingerprint,
+                                              Icons.fingerprint_rounded,
                                               size: MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  .09,
-                                              color: Colors.greenAccent,
+                                                  .07,
+                                              color: Colors.pink[100],
                                             )),
                                       ),
                                     ),

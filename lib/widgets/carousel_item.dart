@@ -18,20 +18,20 @@ class CarouselItem extends StatelessWidget {
         height: 25,
         width: 150,
         decoration: BoxDecoration(
-          border: Border.all(
-            width: 5,
-            color: Colors.white54,
-          ),
+          // border: Border.all(
+          //   width: 0,
+          //   color: Colors.white54,
+          // ),
           // color: Color(0xff420010),
           gradient: LinearGradient(
-              begin: Alignment.topCenter,
+              begin: Alignment.topRight,
               end: Alignment.bottomCenter,
               colors: [
-                KMainPurple,
-                Colors.teal[400],
+                KMainOrange,
+                KMainRed,
               ]),
           borderRadius: BorderRadius.all(
-            Radius.circular(25.0),
+            Radius.circular(50),
           ),
         ),
         child: Center(
@@ -39,7 +39,9 @@ class CarouselItem extends StatelessWidget {
           categoryTitle,
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontFamily: 'PressStart2P', fontSize: 11, color: Colors.blue[50]),
+              fontFamily: 'DMSerifTextRegular',
+              fontSize: 18,
+              color: Colors.blue[50]),
         )),
       ),
     );
