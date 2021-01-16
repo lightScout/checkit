@@ -27,8 +27,8 @@ class CarouselItem extends StatelessWidget {
               begin: Alignment.topRight,
               end: Alignment.bottomCenter,
               colors: [
-                KMainOrange,
-                KMainRed,
+                Colors.indigo[900],
+                Colors.purple,
               ]),
           borderRadius: BorderRadius.all(
             Radius.circular(50),

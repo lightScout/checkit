@@ -10,7 +10,6 @@ import 'package:ciao_app/screens/search_screen.dart';
 import 'package:ciao_app/screens/settings_screen.dart';
 import 'package:ciao_app/widgets/carousel_item_for_task_screen.dart';
 import 'package:ciao_app/widgets/delete_category_alert.dart';
-import 'package:ciao_app/widgets/add_category_alert.dart';
 
 import 'package:ciao_app/widgets/no_name_alert.dart';
 import 'package:ciao_app/widgets/slider_side_menu.dart';
@@ -299,7 +298,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                     ),
                     onTap: () {
                       //* triger for animated container
-                      addCategoryAlert(context);
+
                       if ((Hive.box('flags').getAt(1) as Flags).value) {
                         setState(() {
                           yOffsetFrontContainer = 0;
@@ -319,9 +318,9 @@ class _TaskListScreenState extends State<TaskListScreen>
                       if (_animateIconController.isStart()) {
                         _animateIconController.animateToEnd();
                       }
-                      //* flag triger to minimize add category screen
-                      Hive.box('flags').putAt(0,
-                          Flags(name: 'toggleAddCategoryScreen', value: true));
+                      //* flag triger to opem add category screen if closed
+                      Hive.box('flags').putAt(
+                          5, Flags(name: 'openAddCategoryScreen', value: true));
                     },
                   ),
 

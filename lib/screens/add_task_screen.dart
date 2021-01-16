@@ -4,7 +4,6 @@ import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
-import 'package:ciao_app/widgets/add_category_alert.dart';
 import 'package:ciao_app/widgets/list_builder.dart';
 import 'package:ciao_app/widgets/no_name_alert.dart';
 import 'package:ciao_app/widgets/carousel_item.dart';

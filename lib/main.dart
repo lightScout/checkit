@@ -87,9 +87,11 @@ void main() async {
   flagsBox.deleteAll(flagsBox.keys.toList());
 
   Hive.box('flags')
-      .add(Flags(name: 'toggleAddCategoryScreen', value: false, data: null));
+      .add(Flags(name: 'closeAddCategoryScreen', value: false, data: null));
   Hive.box('flags').putAt(
-      0, Flags(name: 'toggleAddCategoryScreen', value: false, data: null));
+      0, Flags(name: 'closeAddCategoryScreen', value: false, data: null));
+  Hive.box('flags')
+      .add(Flags(name: 'openAddCategoryScreen', value: false, data: null));
 
   Hive.box('flags')
       .add(Flags(name: 'searchPageIsOpen', value: false, data: null));
@@ -113,6 +115,9 @@ void main() async {
 
   Hive.box('flags')
       .putAt(4, Flags(name: 'searchInProgress', value: false, data: null));
+
+  Hive.box('flags')
+      .putAt(5, Flags(name: 'openAddCategoryScreen', value: false, data: null));
 
   //
   //Adding permanent category 'General' to categories box

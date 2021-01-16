@@ -255,11 +255,11 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
             //*
             body: Container(
               decoration: BoxDecoration(
-                  // image: DecorationImage(
-                  //   image: AssetImage(
-                  //       'assets/textures/add_task_screen_texture5.png'),
-                  //   fit: BoxFit.cover,
-                  // ),
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/textures/add_category_screen_texture3.png'),
+                    fit: BoxFit.cover,
+                  ),
                   border: Border.all(
                     color: Colors.white54,
                     width: 10,

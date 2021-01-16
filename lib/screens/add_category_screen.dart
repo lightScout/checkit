@@ -27,6 +27,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
   double scaleFactor = 1;
   double topBorderRadius = 0;
   bool isPageClosed = false;
+  bool internalStateChange = false;
 
   //* TEXT FIELD CONTROLLER
   final textFieldController = TextEditingController();
@@ -35,10 +36,20 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
   Box categoriesBox = Hive.box('categories');
   void stateCheck() {
     //*add category case
-    if (categoriesBox.isEmpty && isPageClosed) {
+    if (!isPageClosed &&
+        (((Hive.box('flags').getAt(5)) as Flags).value &&
+            Hive.box('flags').getAt(5) != null)) {
+      Hive.box('flags')
+          .putAt(5, Flags(name: 'openAddCategoryScreen', value: false));
+    }
+    if (isPageClosed &&
+        (((Hive.box('flags').getAt(5)) as Flags).value &&
+            Hive.box('flags').getAt(5) != null)) {
       yOffset = 0;
       topBorderRadius = 0;
       isPageClosed = false;
+      Hive.box('flags')
+          .putAt(5, Flags(name: 'openAddCategoryScreen', value: false));
       if (_animateIconController.isEnd()) {
         _animateIconController.animateToStart();
       }
@@ -183,6 +194,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                         .height /
                                                     1.5;
                                                 isPageClosed = true;
+                                                internalStateChange = true;
                                               });
                                               return true;
                                             },
