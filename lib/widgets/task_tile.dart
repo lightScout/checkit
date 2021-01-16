@@ -35,165 +35,135 @@ class _TaskTileState extends State<TaskTile> {
       padding: const EdgeInsets.only(top: 8.0),
       child: GestureDetector(
         onDoubleTap: widget.isCheckCallBack,
-        child: Container(
-            /**
-           * Decoration
-           * **/
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(25),
-              ),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(50)),
-              child: Slidable(
-                actionPane: SlidableDrawerActionPane(),
-                actionExtentRatio: 0.25,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(0)),
-                    // border: Border.all(
-                    //   color: Colors.white12,
-                    //   width: 6,
-                    // ),
-                    gradient: widget.isBgGradientInverted
-                        ? widget.isChecked
-                            ? LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors: [Colors.red, KMainPurple])
-                            : LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors: [
-                                    KMainPurple,
-                                    Colors.cyan,
-                                  ])
-                        : widget.isChecked
-                            ? LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors: [
-                                    widget._checkedColor1,
-                                    widget._checkedColor2
-                                  ])
-                            : LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors: [
-                                    KTopLinearGradientColor,
-                                    widget._uncheckedColor1
-                                  ]),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(50.0),
+          child: Container(
+              /**
+             * Decoration
+             * **/
+              margin: const EdgeInsets.only(bottom: 6.0), //
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.indigoAccent,
+                    offset: Offset(22.2, 11.1), //(x,y)
+                    blurRadius: 33.3,
                   ),
-                  child: ListTile(
+                ],
+                borderRadius: BorderRadius.all(
+                  Radius.circular(0),
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+                child: Slidable(
+                  actionPane: SlidableDrawerActionPane(),
+                  actionExtentRatio: 0.25,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                      // border: Border.all(
+                      //   color: Colors.white12,
+                      //   width: 6,
+                      // ),
+
+                      gradient: widget.isBgGradientInverted
+                          ? widget.isChecked
+                              ? LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [Colors.red, KMainPurple])
+                              : LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [
+                                      KMainPurple,
+                                      Colors.cyan,
+                                    ])
+                          : widget.isChecked
+                              ? LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [
+                                      widget._checkedColor1,
+                                      widget._checkedColor2
+                                    ])
+                              : LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [
+                                      KTopLinearGradientColor,
+                                      widget._uncheckedColor1
+                                    ]),
+                    ),
+                    child: ListTile(
 //            * Task Title
 //            * **/
-                      title: Text(
-                        widget.title,
-                        style: TextStyle(
-                            fontFamily: 'DMSerifTextRegular',
-                            color: widget.isBgGradientInverted
-                                ? Colors.white.withOpacity(.88)
-                                : Colors.blue[50],
-                            fontSize: 20,
-                            decoration: widget.isChecked
-                                ? TextDecoration.combine(
-                                    [TextDecoration.lineThrough])
-                                : null),
-                      ),
-                      subtitle: (widget.dueDate != null)
-                          ? Text(
-                              "${DateFormat.yMd().add_jm().format(widget.dueDate)}",
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.white60,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: KPageTitleFontFamily,
-                              ),
-                            )
-                          : null
-                      // : Text(
-                      //     '${DateFormat.yMd().format(DateTime.now())}',
-                      //     style: TextStyle(
-                      //       fontSize: 10,
-                      //       color: Colors.white60,
-                      //       fontWeight: FontWeight.w700,
-                      //       fontFamily: KMainFontFamily,
-                      //     ),
-                      //   ),
-                      ),
+                        title: Text(
+                          widget.title,
+                          style: TextStyle(
+                              fontFamily: 'DMSerifTextRegular',
+                              color: widget.isBgGradientInverted
+                                  ? Colors.white.withOpacity(.88)
+                                  : Colors.blue[50],
+                              fontSize: 20,
+                              decoration: widget.isChecked
+                                  ? TextDecoration.combine(
+                                      [TextDecoration.lineThrough])
+                                  : null),
+                        ),
+                        subtitle: (widget.dueDate != null)
+                            ? Text(
+                                "${DateFormat.yMd().add_jm().format(widget.dueDate)}",
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.white60,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: KPageTitleFontFamily,
+                                ),
+                              )
+                            : null
+                        // : Text(
+                        //     '${DateFormat.yMd().format(DateTime.now())}',
+                        //     style: TextStyle(
+                        //       fontSize: 10,
+                        //       color: Colors.white60,
+                        //       fontWeight: FontWeight.w700,
+                        //       fontFamily: KMainFontFamily,
+                        //     ),
+                        //   ),
+                        ),
+                  ),
+                  actions: <Widget>[
+                    IconSlideAction(
+                      caption: 'checKit',
+                      color: widget.isBgGradientInverted
+                          ? Color(0xFF071F86)
+                          : Colors.indigoAccent[700],
+                      icon: Icons.check,
+                      onTap: widget.isCheckCallBack,
+                    ),
+                    //TODO: research on how to share to phone system - 2.1
+                    // IconSlideAction(
+                    //   caption: 'Share',
+                    //   color: Colors.indigo,
+                    //   icon: Icons.share,
+                    //   onTap: () => {},
+                    // ),
+                  ],
+                  secondaryActions: <Widget>[
+                    IconSlideAction(
+                      caption: 'Delete',
+                      color: Colors.red,
+                      icon: Icons.delete,
+                      onTap: widget.deleteTask,
+                    ),
+                  ],
                 ),
-                actions: <Widget>[
-                  IconSlideAction(
-                    caption: 'checKit',
-                    color: widget.isBgGradientInverted
-                        ? Color(0xFF071F86)
-                        : Colors.teal[500].withOpacity(.9),
-                    icon: Icons.check,
-                    onTap: widget.isCheckCallBack,
-                  ),
-                  //TODO: research on how to share to phone system
-                  // IconSlideAction(
-                  //   caption: 'Share',
-                  //   color: Colors.indigo,
-                  //   icon: Icons.share,
-                  //   onTap: () => {},
-                  // ),
-                ],
-                secondaryActions: <Widget>[
-                  IconSlideAction(
-                    caption: 'Delete',
-                    color: widget.isBgGradientInverted
-                        ? Colors.red
-                        : Colors.blue[500].withOpacity(.9),
-                    icon: Icons.delete,
-                    onTap: widget.deleteTask,
-                  ),
-                ],
-              ),
-            )),
+              )),
+        ),
       ),
     );
   }
 }
-
-// ListTile(
-
-//           //  * Possible Task Delete Icon
-//           //  * **/
-//           //TODO: implement delete task here
-//           trailing: InkWell(
-//             child: Icon(
-//               Icons.delete_sweep,
-//               color: Colors.white,
-//               size: 30,
-//             ),
-//             onTap: widget.deleteTask,
-//           ),
-//           /**
-//            * Task Title
-//            * **/
-//           title: Text(
-//             widget.title,
-//             style: TextStyle(
-//                 fontFamily: widget._fontFamily,
-//                 color: Color(0xFFf8f0bc),
-//                 fontSize: 14,
-//                 decoration:
-//                     widget.isChecked ? TextDecoration.lineThrough : null),
-//           ),
-//           /**
-//            * Pro: Task Due Date
-//            * **/
-//           subtitle: (widget.dueDate != null)
-//               ? Text(
-//                   "${DateFormat.yMd().add_jm().format(widget.dueDate)}",
-//                   style: TextStyle(
-//                       fontSize: 10,
-//                       color: Colors.white60,
-//                       fontWeight: FontWeight.w700,
-//                       fontFamily: widget._fontFamily),
-//                 )
-//               : null,
-//         ),
