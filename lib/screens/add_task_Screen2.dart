@@ -255,11 +255,11 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
             //*
             body: Container(
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        'assets/textures/add_category_screen_texture3.png'),
-                    fit: BoxFit.cover,
-                  ),
+                  // image: DecorationImage(
+                  //   image: AssetImage(
+                  //       'assets/textures/add_category_screen_texture3.png'),
+                  //   fit: BoxFit.cover,
+                  // ),
                   border: Border.all(
                     color: Colors.white54,
                     width: 10,
@@ -384,7 +384,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                     borderSide: BorderSide(
                                         color: Colors.white70, width: 5.0),
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(25),
+                                      Radius.circular(50),
                                     ),
                                   ),
                                   filled: true,

@@ -36,6 +36,31 @@ const TextStyle Klogo = TextStyle(
   ],
 );
 
+const TextStyle KAlertTextStyleInfoText = TextStyle(
+  fontFamily: 'DMSerifTextRegular',
+  fontSize: 22,
+  shadows: [
+    Shadow(
+      blurRadius: 2.0,
+      color: Colors.red,
+      offset: Offset(5.0, 5.0),
+    ),
+  ],
+);
+
+const TextStyle KAlertTextStyleTitle = TextStyle(
+  fontFamily: 'DMSerifTextRegular',
+  fontSize: 33,
+  shadows: [
+    Shadow(
+      blurRadius: 2.0,
+      color: Colors.red,
+      offset: Offset(5.0, 5.0),
+    ),
+  ],
+  color: Colors.white,
+);
+
 const TextStyle KAddTaskScreenTitles = TextStyle(
   fontSize: 14,
   color: Colors.white,

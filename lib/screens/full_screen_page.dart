@@ -1,5 +1,6 @@
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
+import 'package:ciao_app/widgets/delete_all_tasks_alert.dart';
 
 import 'package:ciao_app/widgets/list_builder.dart';
 import 'package:flutter/material.dart';
@@ -62,26 +63,34 @@ class _FullScreenPageState extends State<FullScreenPage> {
                   icon: Icon(
                     Icons.delete_forever,
                     size: 33,
+                    color: KMainRed,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    deleteCategoryAlert(
+                        context, _listBuilderKey.currentState.emptyList);
+                  },
                 ),
                 label: "Delete all",
                 onPressed: () {}),
             OverFlowMenuItem(
-                child: IconButton(
-                  splashColor: Color(0xFF000328).withBlue(-20),
-                  splashRadius: 22.2,
-                  tooltip: 'checKit all',
-                  icon: Icon(
-                    Icons.done_all,
-                    size: 33,
-                  ),
-                  onPressed: () {
-                    _toggleAllTask();
-                  },
+              child: IconButton(
+                splashColor: Color(0xFF000328).withBlue(-20),
+                splashRadius: 22.2,
+                tooltip: 'checKit all',
+                icon: Icon(
+                  Icons.done_all,
+                  size: 33,
+                  color: KPersinanGreen,
                 ),
-                label: 'checKit all',
-                onPressed: () {}),
+                onPressed: () {
+                  _toggleAllTask();
+                },
+              ),
+              label: 'checKit all',
+              onPressed: () {
+                _toggleAllTask();
+              },
+            ),
             OverFlowMenuItem(
               child: IconButton(
                   tooltip: 'Add task',
@@ -105,9 +114,24 @@ class _FullScreenPageState extends State<FullScreenPage> {
                   icon: Icon(
                     Icons.add,
                     size: 33,
+                    color: Color(0xFF000328),
                   )),
               label: 'Add Task',
-              onPressed: () {},
+              onPressed: () {
+                if (isPageMinimized) {
+                  setState(() {
+                    isPageMinimized = false;
+                    yOffset = 0;
+                    topBorderRadius = 0;
+                  });
+                } else {
+                  setState(() {
+                    topBorderRadius = 50;
+                    yOffset = MediaQuery.of(context).size.height / 2.5;
+                    isPageMinimized = true;
+                  });
+                }
+              },
             ),
           ],
         ),
