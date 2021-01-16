@@ -48,7 +48,7 @@ class _CalendarScreenState extends State<CalendarScreen>
         backgroundColor: Colors.black,
         title: Text(
           'Calendar',
-          style: TextStyle(fontFamily: KMainFontFamily),
+          style: TextStyle(fontFamily: KPageTitleFontFamily),
         ),
       ),
       backgroundColor: Colors.black,
@@ -244,7 +244,7 @@ class _CalendarScreenState extends State<CalendarScreen>
           style: TextStyle().copyWith(
             color: Colors.white,
             fontSize: 11.0,
-            fontFamily: KMainFontFamily,
+            fontFamily: KPageTitleFontFamily,
           ),
         ),
       ),
@@ -266,7 +266,7 @@ class _CalendarScreenState extends State<CalendarScreen>
                   title: Text(event.toString(),
                       style: TextStyle().copyWith(
                         color: Colors.white,
-                        fontFamily: KMainFontFamily,
+                        fontFamily: KPageTitleFontFamily,
                         fontSize: 12,
                       )),
                   onTap: () => print('$event tapped!'),

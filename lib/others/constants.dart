@@ -10,12 +10,13 @@ const Color KMainOrange = Color(0xFFFA9700);
 const Color KMainRed = Color(0xFFFF1d1d);
 const Color KTopLinearGradientColor = KMainPurple;
 const Color KBottomLinearGradientColor = Color(0xFFEBF8FF);
-const String KMainFontFamily = 'RighteousRegular';
+const String KPageTitleFontFamily = 'RighteousRegular';
+const String KTextFontFamily = 'DMSerifTextRegular';
 
 const LinearGradient KMainLinearGradient = LinearGradient(
   begin: Alignment.topRight,
   end: Alignment.bottomLeft,
-  colors: [Color(0xFF2A9D8F), KBottomLinearGradientColor],
+  colors: [Color(0xFF9bdeff), KBottomLinearGradientColor],
 );
 
 const TextStyle Klogo = TextStyle(

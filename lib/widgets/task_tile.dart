@@ -41,7 +41,7 @@ class _TaskTileState extends State<TaskTile> {
            * **/
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
-                Radius.circular(50),
+                Radius.circular(25),
               ),
             ),
             child: ClipRRect(
@@ -52,11 +52,11 @@ class _TaskTileState extends State<TaskTile> {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    border: Border.all(
-                      color: Colors.white12,
-                      width: 4,
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(0)),
+                    // border: Border.all(
+                    //   color: Colors.white12,
+                    //   width: 6,
+                    // ),
                     gradient: widget.isBgGradientInverted
                         ? widget.isChecked
                             ? LinearGradient(
@@ -109,7 +109,7 @@ class _TaskTileState extends State<TaskTile> {
                                 fontSize: 10,
                                 color: Colors.white60,
                                 fontWeight: FontWeight.w700,
-                                fontFamily: KMainFontFamily,
+                                fontFamily: KPageTitleFontFamily,
                               ),
                             )
                           : null

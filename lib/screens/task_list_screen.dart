@@ -120,6 +120,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                   Hive.box('flags').putAt(
                       1, Flags(name: 'toggleAddCategoryScreen', value: false));
                   //* tringer for animated icon
+
                   if (_animateIconController.isEnd()) {
                     _animateIconController.animateToStart();
                   }
@@ -428,15 +429,10 @@ class _TaskListScreenState extends State<TaskListScreen>
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     CustomClipRRect.customClipRRect(
-                                      colors: categoriesBox.isNotEmpty
-                                          ? [
-                                              Colors.white,
-                                              Colors.white10,
-                                            ]
-                                          : [
-                                              Color(0xFF2A9D8F),
-                                              Color(0xFF9bdeff),
-                                            ],
+                                      colors: [
+                                        Colors.white,
+                                        Colors.white10,
+                                      ],
                                       child: AnimateIcons(
                                         controller: _animateIconController,
                                         startIcon: categoriesBox.isNotEmpty

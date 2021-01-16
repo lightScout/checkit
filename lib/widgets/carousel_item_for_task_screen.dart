@@ -31,7 +31,6 @@ class CarouselItemForTaskScreen extends StatefulWidget {
 
 class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
   bool isMenuOpen = false;
-  final GlobalKey<ListBuilderState> _listBuilderKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +51,7 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                 gradient: LinearGradient(
                     begin: Alignment.center,
                     end: Alignment.bottomLeft,
-                    colors: [Colors.teal[100], Color(0xFFEBF8FF)]),
+                    colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(0),
                   topLeft: Radius.circular(15),

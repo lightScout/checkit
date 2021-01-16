@@ -203,7 +203,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                         textTheme: CupertinoTextThemeData(
                           dateTimePickerTextStyle: TextStyle(
                             color: Colors.white,
-                            fontFamily: KMainFontFamily,
+                            fontFamily: KPageTitleFontFamily,
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),

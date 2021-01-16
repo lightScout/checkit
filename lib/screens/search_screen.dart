@@ -3,6 +3,7 @@ import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/widgets/list_builder.dart';
 import 'package:ciao_app/widgets/no_name_alert.dart';
+import 'package:ciao_app/widgets/simple_list_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -33,7 +34,10 @@ class _SearchScreenState extends State<SearchScreen> {
       Task task = Hive.box('tasks').get(element) as Task;
 
       task.key = element;
-      if ((Hive.box('tasks').get(element) as Task).name.contains(value)) {
+      if ((Hive.box('tasks').get(element) as Task)
+          .name
+          .toLowerCase()
+          .contains(value.toLowerCase())) {
         searchResultsList.add(task);
         print(task.key);
       }
@@ -72,8 +76,9 @@ class _SearchScreenState extends State<SearchScreen> {
             TextField(
               textCapitalization: TextCapitalization.sentences,
               controller: _textFieldController,
-              style: Klogo.copyWith(
-                fontSize: 13,
+              style: TextStyle(
+                fontSize: 20,
+                fontFamily: KTextFontFamily,
                 color: KMainPurple,
                 shadows: [],
               ),
@@ -86,14 +91,14 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(25),
+                    Radius.circular(50),
                   ),
                   borderSide: BorderSide(color: Colors.white70, width: 5.0),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70, width: 5.0),
                   borderRadius: BorderRadius.all(
-                    Radius.circular(25),
+                    Radius.circular(50),
                   ),
                 ),
                 filled: true,
@@ -107,7 +112,7 @@ class _SearchScreenState extends State<SearchScreen> {
               },
             ),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             //* Search button
             Row(
@@ -150,7 +155,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           },
                           child: Icon(
                             Icons.fingerprint,
-                            size: MediaQuery.of(context).size.height * .08,
+                            size: MediaQuery.of(context).size.height * .07,
                             color: Colors.white,
                           )),
                     ),
@@ -159,7 +164,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ],
             ),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             isSearch
                 ? searchResultsList.isEmpty
@@ -168,7 +173,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           'Nothing found',
                           style: TextStyle(
                             color: KMainPurple.withOpacity(.3),
-                            fontFamily: KMainFontFamily,
+                            fontFamily: KPageTitleFontFamily,
                           ),
                         ),
                       )
@@ -191,7 +196,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: ValueListenableBuilder(
                               valueListenable: Hive.box('tasks').listenable(),
                               builder: (context, box, widget) {
-                                return ListBuilder(
+                                return SimpleListBuilder(
                                   taskList: searchResultsList,
                                   isBgGradientInverted: true,
                                   tasksBox: Hive.box('tasks'),

@@ -114,7 +114,7 @@ class _FullScreenPageState extends State<FullScreenPage> {
                   icon: Icon(
                     Icons.add,
                     size: 33,
-                    color: Color(0xFF000328),
+                    color: Colors.blueAccent,
                   )),
               label: 'Add Task',
               onPressed: () {
