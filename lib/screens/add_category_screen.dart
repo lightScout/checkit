@@ -179,7 +179,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                             endIcon:
                                                 Icons.keyboard_arrow_up_rounded,
                                             color: Colors.blueAccent[700],
-                                            size: 21,
+                                            size: 33,
                                             onStartIconPress: () {
                                               if (categoriesBox.isEmpty) {
                                                 Category newCategory =

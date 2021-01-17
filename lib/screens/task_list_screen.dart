@@ -442,8 +442,7 @@ class _TaskListScreenState extends State<TaskListScreen>
                                         endTooltip: 'Icons.close',
                                         endIcon: Icons.close,
                                         color: Color(0xFF071F86),
-                                        size:
-                                            categoriesBox.isNotEmpty ? 33 : 29,
+                                        size: 33,
                                         onStartIconPress: () {
                                           if (categoriesBox.isNotEmpty) {
                                             setState(() {
