@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:vibration/vibration.dart';
 
 part 'task.g.dart';
 
@@ -26,9 +27,16 @@ class Task {
       this.dueDateTime,
       this.key});
 
-  bool toggleDone() {
+  Future<bool> toggleDone() async {
     isDone = !isDone;
     bool result = isDone;
+    if (await Vibration.hasVibrator()) {
+      if (await Vibration.hasAmplitudeControl()) {
+        Vibration.vibrate(amplitude: 128);
+      } else {
+        Vibration.vibrate();
+      }
+    }
     return result;
   }
 }

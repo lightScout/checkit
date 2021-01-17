@@ -36,7 +36,7 @@ class SimpleListBuilder extends StatelessWidget {
         task.key = element;
         //print(task.key);
         if (task.category == listCategory) {
-          listOfTasks.add(task);
+          listOfTasks.insert(0, task);
         }
       });
     }

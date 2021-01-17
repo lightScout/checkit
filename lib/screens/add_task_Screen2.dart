@@ -445,7 +445,7 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                         child: FloatingActionButton(
                                             splashColor: KMainOrange,
                                             backgroundColor: KMainPurple,
-                                            onPressed: () {
+                                            onPressed: () async {
                                               if (newTaskTitle == null ||
                                                   newTaskTitle.trim() == '') {
                                                 noNameAlert(context, 'Task');
