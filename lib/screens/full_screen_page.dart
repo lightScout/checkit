@@ -67,7 +67,9 @@ class _FullScreenPageState extends State<FullScreenPage> {
                   ),
                   onPressed: () {
                     deleteCategoryAlert(
-                        context, _listBuilderKey.currentState.emptyList);
+                        context,
+                        _listBuilderKey.currentState.emptyList,
+                        widget.category);
                   },
                 ),
                 label: "Delete all",

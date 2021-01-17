@@ -1,12 +1,23 @@
+import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
-void deleteCategoryAlert(BuildContext context, Function function) {
-  // flutter defined function
+void deleteCategoryAlert(
+    BuildContext context, Function function, String category) {
+  void _deleteAllTask() {
+    List listOfKeys = Hive.box('tasks').keys.toList();
+
+    listOfKeys.forEach((element) {
+      if ((Hive.box('tasks').get(element) as Task).category == category) {
+        Hive.box('tasks').delete(element);
+      }
+    });
+  }
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      // return object of type Dialog
       return AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -43,6 +54,7 @@ void deleteCategoryAlert(BuildContext context, Function function) {
                   backgroundColor: Colors.white38,
                   onPressed: () {
                     function();
+                    _deleteAllTask();
                     Navigator.of(context).pop();
                   },
                   child: Text(
