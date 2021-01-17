@@ -81,55 +81,53 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                             alignment: Alignment.center,
                             children: [
                               //* Title
-                              isMenuOpen
-                                  ? Container()
-                                  : Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white12,
-                                        gradient: LinearGradient(
-                                            begin: Alignment.center,
-                                            end: Alignment.topLeft,
-                                            colors: [
-                                              Colors.blue,
-                                              Colors.white,
-                                            ]),
-                                        borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(30),
-                                          bottomLeft: Radius.circular(50),
-                                          bottomRight: Radius.circular(30),
-                                          topLeft: Radius.circular(15),
+
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white12,
+                                  gradient: LinearGradient(
+                                      begin: Alignment.center,
+                                      end: Alignment.topLeft,
+                                      colors: [
+                                        Colors.blue,
+                                        Colors.white,
+                                      ]),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(30),
+                                    bottomLeft: Radius.circular(50),
+                                    bottomRight: Radius.circular(30),
+                                    topLeft: Radius.circular(15),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(14.0),
+                                      child: Text(
+                                        isMenuOpen ? '' : widget.category,
+                                        style: Klogo.copyWith(
+                                          color: KMainPurple,
+                                          fontFamily: 'DMSerifTextRegular',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 22,
+                                          shadows: [
+                                            Shadow(
+                                              blurRadius: 2.0,
+                                              color: Colors.blue,
+                                              offset: Offset(3.3, 3.3),
+                                            ),
+                                            Shadow(
+                                              color: Colors.white,
+                                              blurRadius: 6.0,
+                                              offset: Offset(2.0, 2.0),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(14.0),
-                                            child: Text(
-                                              widget.category,
-                                              style: Klogo.copyWith(
-                                                color: KMainPurple,
-                                                fontFamily:
-                                                    'DMSerifTextRegular',
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 22,
-                                                shadows: [
-                                                  Shadow(
-                                                    blurRadius: 2.0,
-                                                    color: Colors.blue,
-                                                    offset: Offset(3.3, 3.3),
-                                                  ),
-                                                  Shadow(
-                                                    color: Colors.white,
-                                                    blurRadius: 6.0,
-                                                    offset: Offset(2.0, 2.0),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
                                     ),
+                                  ],
+                                ),
+                              ),
                               SliderSideMenu(
                                   function: () {
                                     setState(() {
