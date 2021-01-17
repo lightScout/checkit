@@ -10,7 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
-
+import 'package:responsive_framework/responsive_framework.dart';
 import 'model/category.dart';
 import 'model/flags.dart';
 import 'screens/task_list_screen.dart';
@@ -148,6 +148,15 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitDown,
     ]);
     return MaterialApp(
+      builder: (context, widget) => ResponsiveWrapper.builder(
+        BouncingScrollWrapper.builder(context, widget),
+        defaultScale: true,
+        breakpoints: [
+          ResponsiveBreakpoint.resize(480, name: MOBILE),
+          // ResponsiveBreakpoint.autoScale(800, name: TABLET),
+          // ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+        ],
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.id,
       routes: {

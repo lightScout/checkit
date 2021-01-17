@@ -29,6 +29,7 @@ dependencies:
   animations: ^1.1.2
   flutter_slidable: ^0.5.7
   dynamic_overflow_menu_bar: ^0.1.2
+  responsive_framework: ^0.0.14
 
 
 
