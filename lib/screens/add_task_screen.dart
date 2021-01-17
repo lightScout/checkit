@@ -110,20 +110,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         duration: Duration(milliseconds: 1500),
         messageText: Text(
           'Pick a future date or time',
-          style: Klogo.copyWith(color: Colors.white, shadows: [], fontSize: 14),
+          style: TextStyle(
+            fontFamily: KTextFontFamily,
+            color: Colors.white,
+            shadows: [],
+            fontSize: 14,
+          ),
         ),
         flushbarStyle: FlushbarStyle.FLOATING,
       ).show(context);
       result = false;
     } else if (selectedDate.isAfter(DateTime.now())) {
-      // Flushbar(
-      //   duration: Duration(seconds: 2),
-      //   messageText: Text(
-      //     'Date and time selected successfully',
-      //     style: Klogo.copyWith(color: Colors.white, shadows: [], fontSize: 14),
-      //   ),
-      //   flushbarStyle: FlushbarStyle.FLOATING,
-      // ).show(context);
       result = true;
     }
     return result;
@@ -563,7 +560,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     ),
                                   ),
                                   filled: true,
-                                  fillColor: Color(0xFF2A9D8F).withOpacity(.7),
+                                  fillColor: Colors.white12.withOpacity(.3),
                                 ),
                                 autofocus: false,
                                 onChanged: (value) {
@@ -646,8 +643,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                         milliseconds: 1500),
                                                     messageText: Text(
                                                       'Task and reminder added successfuly.',
-                                                      style: Klogo.copyWith(
-                                                          color: Colors.white,
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              KTextFontFamily,
                                                           shadows: [],
                                                           fontSize: 14),
                                                     ),
@@ -674,7 +672,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                         milliseconds: 1500),
                                                     messageText: Text(
                                                       'Task added successfuly.',
-                                                      style: Klogo.copyWith(
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              KTextFontFamily,
                                                           color: Colors.white,
                                                           shadows: [],
                                                           fontSize: 14),

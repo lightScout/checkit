@@ -422,7 +422,12 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                                                   duration: Duration(seconds: 2),
                                                                                   messageText: Text(
                                                                                     'Category added successfuly.',
-                                                                                    style: Klogo.copyWith(color: Colors.white, shadows: [], fontSize: 14),
+                                                                                    style: TextStyle(
+                                                                                      fontFamily: KTextFontFamily,
+                                                                                      color: Colors.white,
+                                                                                      shadows: [],
+                                                                                      fontSize: 14,
+                                                                                    ),
                                                                                   ),
                                                                                   flushbarStyle: FlushbarStyle.FLOATING)
                                                                               .show(context);

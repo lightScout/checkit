@@ -474,7 +474,9 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                                         milliseconds: 1500),
                                                     messageText: Text(
                                                       'Task and reminder added successfuly.',
-                                                      style: Klogo.copyWith(
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              KTextFontFamily,
                                                           color: Colors.white,
                                                           shadows: [],
                                                           fontSize: 14),
