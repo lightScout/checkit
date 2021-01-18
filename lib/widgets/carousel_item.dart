@@ -15,8 +15,11 @@ class CarouselItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(.5),
       child: Container(
-        height: 25,
-        width: 150,
+        width: 120,
+        //TODO: make the category item with less height
+        // constraints: BoxConstraints(
+        //   maxHeight: 5,
+        // ),
         decoration: BoxDecoration(
           // border: Border.all(
           //   width: 0,

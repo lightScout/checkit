@@ -2,7 +2,7 @@ import 'package:ciao_app/screens/add_category_screen.dart';
 import 'package:ciao_app/screens/add_task_screen.dart';
 import 'package:ciao_app/screens/calendar_screen.dart';
 import 'package:flutter/material.dart';
-import 'task_list_screen.dart';
+import 'dashboard.dart';
 
 class HomeScreen extends StatefulWidget {
   static const id = 'HomeScreen';
@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Stack(children: [
         AddTaskScreen(),
         AddCategoryScreen(),
-        TaskListScreen(),
+        Dashboard(),
       ]),
     );
   }

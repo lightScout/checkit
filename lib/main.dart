@@ -13,7 +13,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:responsive_framework/responsive_framework.dart';
 import 'model/category.dart';
 import 'model/flags.dart';
-import 'screens/task_list_screen.dart';
+import 'screens/dashboard.dart';
 import 'screens/splash_screen.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -160,7 +160,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.id,
       routes: {
-        TaskListScreen.id: (context) => TaskListScreen(),
+        Dashboard.id: (context) => Dashboard(),
         SplashScreen.id: (context) => SplashScreen(),
         InfoScreen.id: (context) => InfoScreen(),
         TestScreen.id: (context) => TestScreen(),

@@ -7,6 +7,7 @@ import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/widgets/list_builder.dart';
 import 'package:ciao_app/widgets/no_name_alert.dart';
 import 'package:ciao_app/widgets/carousel_item.dart';
+import 'package:ciao_app/widgets/title_bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -347,7 +348,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     child: CarouselSlider(
                       carouselController: _carouselController,
                       options: CarouselOptions(
-                          viewportFraction: .43,
+                          viewportFraction: .38,
                           aspectRatio: 3.8,
                           enlargeCenterPage: true,
                           enableInfiniteScroll: false,
@@ -475,29 +476,38 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       //*
                                       //* SCREEN TITLE
                                       //*
-                                      Text(
-                                        'Add task',
-                                        style: Klogo.copyWith(
-                                          fontSize: 33,
-                                          shadows: [
-                                            Shadow(
-                                              color: Colors.tealAccent
-                                                  .withOpacity(.2),
-                                              blurRadius: 1,
-                                              offset: Offset(5.0, 5.0),
-                                            ),
-                                            Shadow(
-                                              color: Colors.white24,
-                                              blurRadius: 1,
-                                              offset: Offset(2.0, 2.0),
-                                            )
-                                          ],
-                                          color: Colors.blue[50],
+                                      TitleBubble(
+                                        borderColor:
+                                            Colors.white12.withOpacity(.045),
+                                        insideColor:
+                                            Colors.indigo[400].withOpacity(.2),
+                                        child: Text(
+                                          'Add task',
+                                          style: Klogo.copyWith(
+                                            fontSize: 32,
+                                            shadows: [
+                                              Shadow(
+                                                color: Colors.tealAccent
+                                                    .withOpacity(.2),
+                                                blurRadius: 1,
+                                                offset: Offset(5.0, 5.0),
+                                              ),
+                                              Shadow(
+                                                color: Colors.white24,
+                                                blurRadius: 1,
+                                                offset: Offset(2.0, 2.0),
+                                              )
+                                            ],
+                                            color: Colors.blue[50],
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
+                              ),
+                              SizedBox(
+                                height: 70,
                               ),
                               //*
                               //*FIRST: CATGORY CAROUSEL
@@ -520,64 +530,61 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               ),
 
                               SizedBox(
-                                height: 27,
+                                height: 25,
                               ),
                               //*
                               //* SECOND: TEXTFEILD 'ADD TASK HERE'
                               //*
-                              TextField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                controller: textFieldController,
-                                style: Klogo.copyWith(
-                                  fontSize: 22,
-                                  fontFamily: 'DMSerifTextRegular',
-                                  color: Colors.white,
-                                  shadows: [],
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 21,
                                 ),
-                                maxLines: 1,
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  hintText: 'Task name here',
-                                  hintStyle: TextStyle(
+                                child: TextField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  controller: textFieldController,
+                                  style: Klogo.copyWith(
+                                    fontSize: 22,
                                     fontFamily: 'DMSerifTextRegular',
-                                    fontSize: 20,
-                                    color: Colors.grey[350],
+                                    color: Colors.white,
+                                    shadows: [],
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(50),
+                                  maxLines: 1,
+                                  textAlign: TextAlign.center,
+                                  decoration: InputDecoration(
+                                    hintText: 'Task name here',
+                                    hintStyle: TextStyle(
+                                      fontFamily: 'DMSerifTextRegular',
+                                      fontSize: 20,
+                                      color: Colors.grey[350],
                                     ),
-                                    borderSide: BorderSide(
-                                        color: Colors.white54, width: 3.3),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.white54, width: 3.3),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(50),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(50),
+                                      ),
+                                      borderSide: BorderSide(
+                                          color: Colors.white54, width: 3.3),
                                     ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.white54, width: 3.3),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(50),
+                                      ),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white12.withOpacity(.12),
                                   ),
-                                  filled: true,
-                                  fillColor: Colors.white12.withOpacity(.3),
+                                  autofocus: false,
+                                  onChanged: (value) {
+                                    newTaskTitle = value;
+                                    // print(newTaskTitle);
+                                  },
                                 ),
-                                autofocus: false,
-                                onChanged: (value) {
-                                  newTaskTitle = value;
-                                  // print(newTaskTitle);
-                                },
                               ),
                               SizedBox(
-                                height: 27,
-                              ),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Row(
-                                    children: [],
-                                  )
-                                ],
+                                height: 20,
                               ),
 
                               //*
@@ -592,10 +599,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     child: Container(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              .15,
+                                              .12,
                                       width:
                                           MediaQuery.of(context).size.height *
-                                              .15,
+                                              .12,
                                       decoration: BoxDecoration(
                                         boxShadow: [
                                           BoxShadow(
@@ -692,7 +699,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                               size: MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  .07,
+                                                  .06,
                                               color: Colors.pink[100],
                                             )),
                                       ),

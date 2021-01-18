@@ -45,7 +45,10 @@ class _SplashScreenState extends State<SplashScreen>
               gradient: LinearGradient(
                   begin: Alignment.center,
                   end: Alignment.topCenter,
-                  colors: [Colors.white, Color(0xFF9bdeff)]),
+                  colors: [
+                    Color(0xFF000000),
+                    Colors.indigo[900],
+                  ]),
             ),
             child: Container(
               child: Column(
@@ -62,10 +65,11 @@ class _SplashScreenState extends State<SplashScreen>
                   ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(90)),
                     child: Container(
-                      height: 140,
-                      width: 140,
+                      height: 222,
+                      width: 222,
                       child: Image(
-                        image: AssetImage('assets/icon/app_icon_v2.png'),
+                        image: AssetImage(
+                            'assets/textures/splash_screen_texture.png'),
                       ),
                     ),
                   ),

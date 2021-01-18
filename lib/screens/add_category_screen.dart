@@ -4,6 +4,7 @@ import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/widgets/no_category_alert.dart';
 import 'package:ciao_app/widgets/no_name_alert.dart';
+import 'package:ciao_app/widgets/title_bubble.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -59,7 +60,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
         categoriesBox.isNotEmpty &&
         (((Hive.box('flags').getAt(0)) as Flags).value &&
             Hive.box('flags').getAt(0) != null)) {
-      yOffset = MediaQuery.of(context).size.height / 1.5;
+      yOffset = MediaQuery.of(context).size.height / 1.40;
       topBorderRadius = 50;
       isPageClosed = true;
       Hive.box('flags')
@@ -192,7 +193,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                 yOffset = MediaQuery.of(context)
                                                         .size
                                                         .height /
-                                                    1.5;
+                                                    1.40;
                                                 isPageClosed = true;
                                                 internalStateChange = true;
                                               });
@@ -218,18 +219,22 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                         //*
                                         //* SCREEN TITLE
                                         //*
-                                        Text(
-                                          'Add category',
-                                          style: Klogo.copyWith(
-                                            fontSize: 33,
-                                            shadows: [
-                                              Shadow(
-                                                color: Colors.red,
-                                                blurRadius: 1,
-                                                offset: Offset(5.0, 5.0),
-                                              )
-                                            ],
-                                            color: Colors.blue[50],
+                                        TitleBubble(
+                                          borderColor: Colors.orange,
+                                          insideColor: Colors.white24,
+                                          child: Text(
+                                            'Add category',
+                                            style: Klogo.copyWith(
+                                              fontSize: 32,
+                                              shadows: [
+                                                Shadow(
+                                                  color: Colors.red,
+                                                  blurRadius: 1,
+                                                  offset: Offset(5.0, 5.0),
+                                                )
+                                              ],
+                                              color: Colors.blue[50],
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -321,7 +326,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                             OutlineInputBorder(
                                                           borderRadius:
                                                               BorderRadius.all(
-                                                            Radius.circular(25),
+                                                            Radius.circular(50),
                                                           ),
                                                           borderSide:
                                                               BorderSide(
@@ -338,7 +343,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                                   width: 1.0),
                                                           borderRadius:
                                                               BorderRadius.all(
-                                                            Radius.circular(25),
+                                                            Radius.circular(50),
                                                           ),
                                                         ),
                                                         filled: true,
