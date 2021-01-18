@@ -8,6 +8,8 @@ PODS:
     - Flutter
   - path_provider (0.0.1):
     - Flutter
+  - vibration (1.7.3):
+    - Flutter
 
 DEPENDENCIES:
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
@@ -15,6 +17,7 @@ DEPENDENCIES:
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_native_timezone (from `.symlinks/plugins/flutter_native_timezone/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - vibration (from `.symlinks/plugins/vibration/ios`)
 
 EXTERNAL SOURCES:
   app_settings:
@@ -27,6 +30,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_native_timezone/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  vibration:
+    :path: ".symlinks/plugins/vibration/ios"
 
 SPEC CHECKSUMS:
   app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
@@ -34,6 +39,7 @@ SPEC CHECKSUMS:
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_native_timezone: e72ff1900460ff57cfd331d1758050c9269f3e99
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  vibration: b5a33e764c3f609a975b9dca73dce20fdde627dc
 
 PODFILE CHECKSUM: d7b2ef7726d611fea42dfeb29ac4c6ff6cc21ca8
 

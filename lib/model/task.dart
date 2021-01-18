@@ -30,7 +30,7 @@ class Task {
   Future<bool> toggleDone() async {
     isDone = !isDone;
     bool result = isDone;
-    if (await Vibration.hasVibrator()) {
+    if (await Vibration.hasVibrator() && result) {
       if (await Vibration.hasAmplitudeControl()) {
         Vibration.vibrate(amplitude: 128);
       } else {
