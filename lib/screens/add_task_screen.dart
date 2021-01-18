@@ -393,11 +393,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             //*
             body: Container(
               decoration: BoxDecoration(
-                // image: DecorationImage(
-                //   image: AssetImage(
-                //       'assets/textures/add_category_screen_texture3.png'),
-                //   fit: BoxFit.cover,
-                // ),
+                image: DecorationImage(
+                  image:
+                      AssetImage('assets/textures/add_task_screen_texture.png'),
+                ),
                 border: Border.all(
                   color: Colors.white54,
                   width: 10,
