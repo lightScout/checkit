@@ -68,6 +68,9 @@ class _SearchScreenState extends State<SearchScreen> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(topBorderRadius)),
           gradient: KMainLinearGradient,
+          image: DecorationImage(
+            image: AssetImage('assets/textures/search_screen_texture.png'),
+          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -166,14 +169,16 @@ class _SearchScreenState extends State<SearchScreen> {
             SizedBox(
               height: 20,
             ),
+
             isSearch
                 ? searchResultsList.isEmpty
                     ? Container(
                         child: Text(
                           'Nothing found',
                           style: TextStyle(
+                            fontSize: 22,
                             color: KMainPurple.withOpacity(.3),
-                            fontFamily: KPageTitleFontFamily,
+                            fontFamily: KTextFontFamily,
                           ),
                         ),
                       )
