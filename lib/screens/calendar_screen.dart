@@ -45,135 +45,159 @@ class _CalendarScreenState extends State<CalendarScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF164639),
         title: Text(
           'Calendar',
-          style: TextStyle(fontFamily: KPageTitleFontFamily),
+          style: TextStyle(
+            color: Colors.white24,
+            shadows: [
+              Shadow(
+                blurRadius: 1.0,
+                color: Colors.black12,
+                offset: Offset(6.0, 6.0),
+              ),
+              // Shadow(
+              //   color: Colors.white,
+              //   blurRadius: 6.0,
+              //   offset: Offset(2.0, 2.0),
+              // ),
+            ],
+            fontFamily: 'FrauncesBoldItalic',
+            fontSize: 33,
+          ),
         ),
       ),
-      backgroundColor: Colors.black,
-      body: Padding(
+      backgroundColor: Colors.transparent,
+      body: Container(
         padding: const EdgeInsets.only(top: 20.0, left: 8, right: 8, bottom: 8),
-        child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.white10.withOpacity(.03),
-                    boxShadow: [
-                      // BoxShadow(
-                      //   color: Colors.blue,
-                      //   offset: Offset(0.0, -4.0), //(x,y)
-                      //   blurRadius: 100.0,
-                      // ),
-                    ],
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
-                child: TableCalendar(
-                  calendarController: _calendarController,
-                  events: _events,
-                  headerStyle: HeaderStyle(
-                    centerHeaderTitle: true,
-                    formatButtonVisible: true,
-                    titleTextStyle: TextStyle().copyWith(
-                      color: Colors.blue[800],
-                      fontSize: 16,
-                      // fontFamily: KMainFontFamily,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF164639), Color(0xFF4D2B16)]),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color(0xFF164639), Color(0xFF4D2B16)]),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.brown,
+                      offset: Offset(0.0, 0.0), //(x,y)
+                      blurRadius: 100.0,
                     ),
-                    formatButtonTextStyle: TextStyle().copyWith(
-                      color: Colors.white,
-                      fontSize: 16,
-                      // fontFamily: KMainFontFamily,
-                    ),
-                    formatButtonDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                      color: Colors.blue[800],
-                    ),
-                    rightChevronIcon: Icon(
-                      Icons.chevron_right,
-                      color: Colors.white,
-                      size: 33,
-                    ),
-                    leftChevronIcon: Icon(
-                      Icons.chevron_left,
-                      color: Colors.white,
-                      size: 33,
-                    ),
+                  ],
+                  borderRadius: BorderRadius.all(Radius.circular(25))),
+              child: TableCalendar(
+                calendarController: _calendarController,
+                events: _events,
+                headerStyle: HeaderStyle(
+                  centerHeaderTitle: true,
+                  formatButtonVisible: true,
+                  titleTextStyle: TextStyle().copyWith(
+                    color: Colors.yellow[50],
+                    fontSize: 30,
+                    fontFamily: KTextFontFamily,
                   ),
-                  formatAnimation: FormatAnimation.slide,
-                  calendarStyle: CalendarStyle(
-                    outsideStyle: TextStyle().copyWith(
-                      color: Colors.grey.shade400,
-                      fontSize: 10,
-                      // fontFamily: KMainFontFamily,
-                    ),
-                    outsideWeekendStyle: TextStyle().copyWith(
-                      color: Colors.grey.shade400,
-                      fontSize: 10,
-                      // fontFamily: KMainFontFamily,
-                    ),
-                    todayStyle: TextStyle().copyWith(
-                      color: Colors.white,
-                      fontSize: 20,
-                      // fontFamily: KMainFontFamily,
-                    ),
-                    selectedColor: Colors.amber,
-                    selectedStyle: TextStyle().copyWith(
-                      color: Colors.blue[800],
-                      fontSize: 20,
-                      // fontFamily: KMainFontFamily,
-                    ),
-                    eventDayStyle: TextStyle().copyWith(
-                      color: Colors.blue[800],
-                      fontSize: 20,
-                      // fontFamily: KMainFontFamily,
-                    ),
-                    weekdayStyle: TextStyle().copyWith(
-                      color: Colors.blue[800],
-                      fontSize: 18,
-                      // fontFamily: KMainFontFamily,
-                    ),
-                    weekendStyle: TextStyle().copyWith(
-                      color: Colors.red[800],
-                      // fontFamily: KMainFontFamily,
-                    ),
-                    holidayStyle: TextStyle().copyWith(color: Colors.blue[800]),
+                  formatButtonTextStyle: TextStyle().copyWith(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontFamily: KTextFontFamily,
                   ),
-                  builders: CalendarBuilders(
-                    markersBuilder: (context, date, events, holidays) {
-                      final children = <Widget>[];
-
-                      if (events.isNotEmpty) {
-                        children.add(
-                          Positioned(
-                            right: 1,
-                            bottom: 1,
-                            child: _buildEventsMarker(date, events),
-                          ),
-                        );
-                      }
-
-                      // if (holidays.isNotEmpty) {
-                      //   children.add(
-                      //     Positioned(
-                      //       right: -2,
-                      //       top: -2,
-                      //       child: _buildHolidaysMarker(),
-                      //     ),
-                      //   );
-                      // }
-
-                      return children;
-                    },
+                  formatButtonDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    color: Colors.blue[800],
                   ),
-                  onDaySelected: (date, events, holiday) =>
-                      _onDaySelected(date, events, holiday),
+                  rightChevronIcon: Icon(
+                    Icons.chevron_right,
+                    color: Colors.white,
+                    size: 33,
+                  ),
+                  leftChevronIcon: Icon(
+                    Icons.chevron_left,
+                    color: Colors.white,
+                    size: 33,
+                  ),
                 ),
+                formatAnimation: FormatAnimation.slide,
+                calendarStyle: CalendarStyle(
+                  outsideStyle: TextStyle().copyWith(
+                    color: Colors.grey.shade400,
+                    fontSize: 22,
+                    fontFamily: KTextFontFamily,
+                  ),
+                  outsideWeekendStyle: TextStyle().copyWith(
+                    color: Colors.grey.shade400,
+                    fontSize: 22,
+                    fontFamily: KTextFontFamily,
+                  ),
+                  todayStyle: TextStyle().copyWith(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontFamily: KTextFontFamily,
+                  ),
+                  selectedColor: Color(0xFFF59F16),
+                  selectedStyle: TextStyle().copyWith(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontFamily: KTextFontFamily,
+                  ),
+                  eventDayStyle: TextStyle().copyWith(
+                    color: Colors.blue[800],
+                    fontSize: 22,
+                    fontFamily: KTextFontFamily,
+                  ),
+                  weekdayStyle: TextStyle().copyWith(
+                    color: Colors.blue[800],
+                    fontSize: 22,
+                    fontFamily: KTextFontFamily,
+                  ),
+                  weekendStyle: TextStyle().copyWith(
+                    color: Colors.red[800],
+                    fontSize: 22,
+                    fontFamily: KTextFontFamily,
+                  ),
+                  holidayStyle: TextStyle().copyWith(color: Colors.blue[800]),
+                ),
+                builders: CalendarBuilders(
+                  markersBuilder: (context, date, events, holidays) {
+                    final children = <Widget>[];
+
+                    if (events.isNotEmpty) {
+                      children.add(
+                        Positioned(
+                          right: 1,
+                          bottom: 1,
+                          child: _buildEventsMarker(date, events),
+                        ),
+                      );
+                    }
+
+                    // if (holidays.isNotEmpty) {
+                    //   children.add(
+                    //     Positioned(
+                    //       right: -2,
+                    //       top: -2,
+                    //       child: _buildHolidaysMarker(),
+                    //     ),
+                    //   );
+                    // }
+
+                    return children;
+                  },
+                ),
+                onDaySelected: (date, events, holiday) =>
+                    _onDaySelected(date, events, holiday),
               ),
-              SizedBox(height: 8.0),
-              Expanded(child: _buildEventList()),
-            ],
-          ),
+            ),
+            SizedBox(height: 8.0),
+            Expanded(child: _buildEventList()),
+          ],
         ),
       ),
     );
@@ -256,7 +280,7 @@ class _CalendarScreenState extends State<CalendarScreen>
       children: _selectedEvents
           .map((event) => Container(
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Color(0xFFF59F16),
                   border: Border.all(width: 0.8),
                   borderRadius: BorderRadius.circular(12.0),
                 ),
@@ -266,8 +290,8 @@ class _CalendarScreenState extends State<CalendarScreen>
                   title: Text(event.toString(),
                       style: TextStyle().copyWith(
                         color: Colors.white,
-                        fontFamily: KPageTitleFontFamily,
-                        fontSize: 12,
+                        fontFamily: KTextFontFamily,
+                        fontSize: 22,
                       )),
                   onTap: () => print('$event tapped!'),
                 ),

@@ -105,7 +105,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(
-                              'assets/textures/add_category_screen_texture3.png'),
+                              'assets/textures/add_category_screen_texture2.png'),
                         ),
                         borderRadius: BorderRadius.only(
                           topLeft: categoriesBox.isEmpty
@@ -257,7 +257,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                           mainAxisSize: MainAxisSize.max,
                                           children: <Widget>[
                                             SizedBox(
-                                              height: 15,
+                                              height: 0,
                                             ),
 
                                             //!
@@ -288,7 +288,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                               Colors.blue[50]),
                                                     ),
                                                     SizedBox(
-                                                      height: 33,
+                                                      height: 30,
                                                     ),
                                                     //*
                                                     //*SECOND: TEXTFEILD 'ADD CATEGORY HERE'
