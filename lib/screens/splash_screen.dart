@@ -19,10 +19,6 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    // _controller =
-    //     AnimationController(duration: const Duration(seconds: 2), vsync: this);
-    // _animation = ColorTween(begin: Colors.white70, end: Colors.lime)
-    //     .animate(_controller);
 
     Timer(
       Duration(seconds: 2),
@@ -54,63 +50,22 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  // Text(
-                  //   'checKit',
-                  //   style: Klogo,
-                  // ),
-
-                  // SizedBox(
-                  //   height: 30,
-                  // ),
                   ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(90)),
+                    borderRadius: BorderRadius.all(Radius.circular(120)),
                     child: Container(
-                      height: 222,
-                      width: 222,
+                      color: Colors.black.withOpacity(.3),
+                      height: 180,
+                      width: 180,
                       child: Image(
                         image: AssetImage(
                             'assets/textures/splash_screen_texture.png'),
                       ),
                     ),
                   ),
-
-                  // Padding(
-                  //   padding: const EdgeInsets.only(top: 122),
-                  //   child: CircularProgressIndicator(
-                  //     valueColor: _animation,
-                  //   ),
-                  // ),
                 ],
               ),
             ),
           ),
-          // Column(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.only(bottom: 10.0),
-          //       child: Text(
-          //         'from JJ Lightscout',
-          //         style: TextStyle(
-          //           fontSize: 14,
-          //           fontWeight: FontWeight.bold,
-          //           color: KMainPurple,
-          //         ),
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.only(bottom: 5.0),
-          //       child: Text(
-          //         '2.0',
-          //         style: TextStyle(
-          //           fontSize: 14,
-          //           fontWeight: FontWeight.bold,
-          //           color: KMainPurple.withOpacity(0.6),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );
