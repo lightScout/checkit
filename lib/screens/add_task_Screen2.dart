@@ -448,7 +448,10 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                             onPressed: () async {
                                               if (newTaskTitle == null ||
                                                   newTaskTitle.trim() == '') {
-                                                noNameAlert(context, 'Task');
+                                                noNameAlert(
+                                                  context,
+                                                  'Task',
+                                                );
                                               } else {
                                                 if (notificationOn &&
                                                     _validateSelectedDate(
