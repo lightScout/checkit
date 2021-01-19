@@ -438,6 +438,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                                               .show(context);
                                                                           textFieldController
                                                                               .clear();
+                                                                          newCategoryTitle =
+                                                                              null;
                                                                         }
                                                                       },
                                                                       child:
