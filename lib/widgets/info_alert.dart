@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 
-AwesomeDialog infoAlert(BuildContext context, String information) {
+AwesomeDialog infoAlert(BuildContext context, String information, String page) {
   return AwesomeDialog(
     context: context,
     customHeader: Container(
@@ -10,7 +10,9 @@ AwesomeDialog infoAlert(BuildContext context, String information) {
       width: 100,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/textures/add_category_screen_texture2.png'),
+          image: (page == 'AddCategory')
+              ? AssetImage('assets/textures/add_category_screen_texture2.png')
+              : AssetImage('assets/textures/add_task_screen_texture.png'),
         ),
       ),
     ),

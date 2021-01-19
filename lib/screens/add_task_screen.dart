@@ -4,6 +4,8 @@ import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
+import 'package:ciao_app/widgets/custom_cliprrect.dart';
+import 'package:ciao_app/widgets/info_alert.dart';
 import 'package:ciao_app/widgets/list_builder.dart';
 import 'package:ciao_app/widgets/no_name_alert.dart';
 import 'package:ciao_app/widgets/carousel_item.dart';
@@ -349,7 +351,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       carouselController: _carouselController,
                       options: CarouselOptions(
                           viewportFraction: .38,
-                          aspectRatio: 3.8,
+                          aspectRatio: 11,
                           enlargeCenterPage: true,
                           enableInfiniteScroll: false,
                           onPageChanged: (index, reason) {
@@ -471,6 +473,33 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                             _selectDate(context);
                                             return true;
                                           },
+                                        ),
+                                      ),
+
+                                      //* INFO BUTTON
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 70.0),
+                                        child: customClipRRect(
+                                          colors: [
+                                            Colors.yellow[50].withOpacity(.5),
+                                            Colors.white12
+                                          ],
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: InkWell(
+                                              onTap: () {
+                                                infoAlert(
+                                                  context,
+                                                  'Choose your category and add your task',
+                                                  'AddTask',
+                                                );
+                                              },
+                                              child: Icon(
+                                                  Icons.error_outline_rounded,
+                                                  color: Colors.white60),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       //*

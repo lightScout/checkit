@@ -25,6 +25,11 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
   //* ANIMATION VARIALBES AND CONTROLLER
 
   AnimateIconController _animateIconController;
+  AnimationController _glowAnimationController;
+  AnimationController _rotateAnimationController;
+  AnimationController _scaleAnimationController;
+  Animation _glowAnimation;
+
   double xOffset = 0;
   double yOffset = 0;
   double scaleFactor = 1;
@@ -80,8 +85,21 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
   //* INIT
   @override
   void initState() {
-    super.initState();
     _animateIconController = AnimateIconController();
+    _rotateAnimationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _scaleAnimationController = AnimationController(
+        duration: Duration(milliseconds: 1000), vsync: this);
+    _glowAnimationController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1750));
+    _glowAnimation =
+        Tween(begin: 1.0, end: 77.0).animate(_glowAnimationController)
+          ..addListener(() {
+            setState(() {});
+          });
+
+    _glowAnimationController.repeat(reverse: true);
+    super.initState();
   }
 
   @override
@@ -109,10 +127,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                     //*
                     body: Container(
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                              'assets/textures/add_category_screen_texture2.png'),
-                        ),
                         borderRadius: BorderRadius.only(
                           topLeft: categoriesBox.isEmpty
                               ? Radius.circular(0)
@@ -146,346 +160,395 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                           ),
                         ],
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Stack(
                         children: [
-                          //*
-                          //* NAVEGATION BUTTON & SCREEN TITLE
-                          //*
-                          Container(
-                            width: MediaQuery.of(context).size.width * .95,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 28,
-                                bottom: 20,
+                          ScaleTransition(
+                            scale: CurvedAnimation(
+                                parent: Tween(begin: 1.0, end: 0.0)
+                                    .animate(_scaleAnimationController),
+                                curve: Curves.easeInBack),
+                            child: RotationTransition(
+                              turns: Tween(begin: 0.0, end: 1.0)
+                                  .animate(_rotateAnimationController),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/textures/add_category_screen_texture2.png'),
+                                  ),
+                                ),
                               ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
+                            ),
+                          ),
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                //*
+                                //* NAVEGATION BUTTON & SCREEN TITLE
+                                //*
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * .95,
+                                  child: Padding(
                                     padding: const EdgeInsets.only(
-                                      left: 22,
-                                      right: 22,
+                                      top: 28,
+                                      bottom: 20,
                                     ),
-                                    child: Row(
+                                    child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.start,
                                       children: [
-                                        //*
-                                        //* NAVEGATION BUTTON
-                                        //*
-                                        customClipRRect(
-                                          colors: [KMainRed, Colors.orange],
-                                          child: AnimateIcons(
-                                            controller: _animateIconController,
-                                            startIcon: Icons
-                                                .keyboard_arrow_down_rounded,
-                                            startTooltip: 'Icons.add',
-                                            endTooltip: 'Icons.close',
-                                            endIcon:
-                                                Icons.keyboard_arrow_up_rounded,
-                                            color: Colors.blueAccent[700],
-                                            size: 33,
-                                            onStartIconPress: () {
-                                              if (categoriesBox.isEmpty) {
-                                                Category newCategory =
-                                                    Category(name: 'General');
-                                                Hive.box('categories')
-                                                    .add(newCategory);
-                                              }
-                                              setState(() {
-                                                topBorderRadius = 50;
-                                                yOffset = MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    1.40;
-                                                isPageClosed = true;
-                                                internalStateChange = true;
-                                              });
-                                              return true;
-                                            },
-                                            onEndIconPress: () {
-                                              setState(() {
-                                                topBorderRadius = 0;
-                                                yOffset = 0;
-                                                isPageClosed = false;
-                                                Hive.box('flags').putAt(
-                                                    0,
-                                                    Flags(
-                                                        name:
-                                                            'toggleAddCategoryScreen',
-                                                        value: false));
-                                              });
-
-                                              return true;
-                                            },
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 22,
+                                            right: 22,
                                           ),
-                                        ),
-                                        //* INFO BUTTON
-                                        customClipRRect(
-                                            colors: [KMainRed, Colors.orange],
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  infoAlert(context,
-                                                      'Create catgory to organize tasks');
-                                                },
-                                                child: Icon(
-                                                    Icons.error_outline_rounded,
-                                                    color: Colors.white60),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              //*
+                                              //* NAVEGATION BUTTON
+                                              //*
+                                              customClipRRect(
+                                                colors: [
+                                                  KMainRed,
+                                                  Colors.orange
+                                                ],
+                                                child: AnimateIcons(
+                                                  controller:
+                                                      _animateIconController,
+                                                  startIcon: Icons
+                                                      .keyboard_arrow_down_rounded,
+                                                  startTooltip: 'Icons.add',
+                                                  endTooltip: 'Icons.close',
+                                                  endIcon: Icons
+                                                      .keyboard_arrow_up_rounded,
+                                                  color: Colors.blueAccent[700],
+                                                  size: 33,
+                                                  onStartIconPress: () {
+                                                    if (categoriesBox.isEmpty) {
+                                                      Category newCategory =
+                                                          Category(
+                                                              name: 'General');
+                                                      Hive.box('categories')
+                                                          .add(newCategory);
+                                                    }
+                                                    setState(() {
+                                                      topBorderRadius = 50;
+                                                      yOffset =
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height /
+                                                              1.40;
+                                                      isPageClosed = true;
+                                                      internalStateChange =
+                                                          true;
+                                                    });
+                                                    return true;
+                                                  },
+                                                  onEndIconPress: () {
+                                                    setState(() {
+                                                      topBorderRadius = 0;
+                                                      yOffset = 0;
+                                                      isPageClosed = false;
+                                                      Hive.box('flags').putAt(
+                                                          0,
+                                                          Flags(
+                                                              name:
+                                                                  'toggleAddCategoryScreen',
+                                                              value: false));
+                                                    });
+
+                                                    return true;
+                                                  },
+                                                ),
                                               ),
-                                            )),
-                                        //*
-                                        //* SCREEN TITLE
-                                        //*
-                                        TitleBubble(
-                                          borderColor: Colors.orange,
-                                          insideColor: Colors.white24,
-                                          child: Text(
-                                            'Add category',
-                                            style: Klogo.copyWith(
-                                              fontSize: 32,
-                                              shadows: [
-                                                Shadow(
-                                                  color: Colors.red,
-                                                  blurRadius: 1,
-                                                  offset: Offset(5.0, 5.0),
-                                                )
-                                              ],
-                                              color: Colors.blue[50],
-                                            ),
+                                              //* INFO BUTTON
+                                              customClipRRect(
+                                                colors: [
+                                                  Colors.yellow[50]
+                                                      .withOpacity(.5),
+                                                  Colors.white12
+                                                ],
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      infoAlert(
+                                                          context,
+                                                          'Create catgory to organize tasks',
+                                                          'AddCategory');
+                                                    },
+                                                    child: Icon(
+                                                        Icons
+                                                            .error_outline_rounded,
+                                                        color: Colors.white60),
+                                                  ),
+                                                ),
+                                              ),
+                                              //*
+                                              //* SCREEN TITLE
+                                              //*
+                                              InkWell(
+                                                onTap: () {
+                                                  // _rotateAnimationController
+                                                  //     .forward()
+                                                  //     .then(
+                                                  //       (value) =>
+                                                  //           _rotateAnimationController
+                                                  //               .reverse(),
+                                                  //     );
+                                                },
+                                                child: TitleBubble(
+                                                  borderColor: Colors.orange,
+                                                  insideColor: Colors.white24,
+                                                  child: Text(
+                                                    'Add category',
+                                                    style: Klogo.copyWith(
+                                                      fontSize: 32,
+                                                      shadows: [
+                                                        Shadow(
+                                                          color: Colors.red,
+                                                          blurRadius: 1,
+                                                          offset:
+                                                              Offset(5.0, 5.0),
+                                                        )
+                                                      ],
+                                                      color: Colors.blue[50],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          //*
-                          //* INFO TEXT, TEXT FEILD AND ADD BUTTON COLLUMN
-                          //*
-                          Expanded(
-                            child: Container(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  ListView(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: <Widget>[
-                                            SizedBox(
-                                              height: 0,
-                                            ),
+                                ),
+                                //*
+                                //* INFO TEXT, TEXT FEILD AND ADD BUTTON COLLUMN
+                                //*
+                                Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      ListView(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: <Widget>[
+                                                SizedBox(
+                                                  height: 0,
+                                                ),
 
-                                            //!
-                                            //! COMPONENTS SECTION
-                                            //!
+                                                //!
+                                                //! COMPONENTS SECTION
+                                                //!
 
-                                            Container(
-                                              //
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(22.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    //*
-                                                    //*FIRST: INFO TEXT
-                                                    //*
-                                                    // Text(
-                                                    //   'Create catgory to organize tasks:',
-                                                    //   textAlign:
-                                                    //       TextAlign.center,
-                                                    //   style: TextStyle(
-                                                    //       fontFamily:
-                                                    //           'DMSerifTextRegular',
-                                                    //       fontSize: 20,
-                                                    //       color:
-                                                    //           Colors.blue[50]),
-                                                    // ),
-                                                    SizedBox(
-                                                      height: 30,
-                                                    ),
-                                                    //*
-                                                    //*SECOND: TEXTFEILD 'ADD CATEGORY HERE'
-                                                    //*
-                                                    TextField(
-                                                      textCapitalization:
-                                                          TextCapitalization
-                                                              .sentences,
-                                                      controller:
-                                                          textFieldController,
-                                                      style: Klogo.copyWith(
-                                                        fontSize: 22,
-                                                        fontFamily:
-                                                            'DMSerifTextRegular',
-                                                        color: Colors.white,
-                                                        shadows: [],
-                                                      ),
-                                                      maxLines: 1,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        hintText:
-                                                            'Category name here',
-                                                        hintStyle: TextStyle(
-                                                          color:
-                                                              Colors.grey[350],
-                                                        ),
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(50),
-                                                          ),
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  width: 1.0),
-                                                        ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  width: 1.0),
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(50),
-                                                          ),
-                                                        ),
-                                                        filled: true,
-                                                        fillColor:
-                                                            Colors.white24,
-                                                      ),
-                                                      autofocus: false,
-                                                      onChanged: (value) {
-                                                        newCategoryTitle =
-                                                            value;
-                                                      },
-                                                    ),
-                                                    SizedBox(
-                                                      height: 40,
-                                                    ),
-
-                                                    //*
-                                                    //*THIRD: ADD CATEGORY BUTTON
-                                                    //*
-                                                    Row(
+                                                Container(
+                                                  //
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            22.0),
+                                                    child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .center,
-                                                      children: [
-                                                        ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          90)),
-                                                          child: Container(
-                                                            height: 140,
-                                                            width: 140,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              boxShadow: [
-                                                                BoxShadow(
-                                                                  color: Colors
-                                                                      .white60,
-                                                                  offset: Offset(
-                                                                      -10.0,
-                                                                      -15.0), //(x,y)
-                                                                  blurRadius:
-                                                                      25.0,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child:
-                                                                  FloatingActionButton(
-                                                                      heroTag:
-                                                                          'ADDCATEGORYSCREEN-FAB',
-                                                                      splashColor:
-                                                                          KMainOrange,
-                                                                      backgroundColor:
-                                                                          KMainOrange,
-                                                                      onPressed:
-                                                                          () {
-                                                                        //! checking to see if category title is null or blank
-                                                                        if (newCategoryTitle ==
-                                                                                null ||
-                                                                            newCategoryTitle.trim() ==
-                                                                                '') {
-                                                                          noNameAlert(
-                                                                              context,
-                                                                              'Category');
-                                                                        } else {
-                                                                          //! Adding new category to categoriesBox
-
-                                                                          Category
-                                                                              newCategory =
-                                                                              Category(name: newCategoryTitle);
-                                                                          Hive.box('categories')
-                                                                              .add(newCategory);
-
-                                                                          //! bottom bar event anuncing successful addtiong of new category
-                                                                          Flushbar(
-                                                                                  duration: Duration(seconds: 2),
-                                                                                  messageText: Text(
-                                                                                    'Category added successfuly.',
-                                                                                    style: TextStyle(
-                                                                                      fontFamily: KTextFontFamily,
-                                                                                      color: Colors.white,
-                                                                                      shadows: [],
-                                                                                      fontSize: 14,
-                                                                                    ),
-                                                                                  ),
-                                                                                  flushbarStyle: FlushbarStyle.FLOATING)
-                                                                              .show(context);
-                                                                          textFieldController
-                                                                              .clear();
-                                                                          newCategoryTitle =
-                                                                              null;
-                                                                        }
-                                                                      },
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .fingerprint,
-                                                                        size:
-                                                                            60,
-                                                                        color: Colors
-                                                                            .white38,
-                                                                      )),
-                                                            ),
+                                                      children: <Widget>[
+                                                        SizedBox(
+                                                          height: 30,
+                                                        ),
+                                                        //*
+                                                        //*FIRST: TEXTFEILD 'ADD CATEGORY HERE'
+                                                        //*
+                                                        TextField(
+                                                          textCapitalization:
+                                                              TextCapitalization
+                                                                  .sentences,
+                                                          controller:
+                                                              textFieldController,
+                                                          style: Klogo.copyWith(
+                                                            fontSize: 22,
+                                                            fontFamily:
+                                                                'DMSerifTextRegular',
+                                                            color: Colors.white,
+                                                            shadows: [],
                                                           ),
+                                                          maxLines: 1,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            hintText:
+                                                                'Category name here',
+                                                            hintStyle:
+                                                                TextStyle(
+                                                              color: Colors
+                                                                  .grey[350],
+                                                            ),
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    50),
+                                                              ),
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  width: 1.0),
+                                                            ),
+                                                            focusedBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  width: 1.0),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    50),
+                                                              ),
+                                                            ),
+                                                            filled: true,
+                                                            fillColor:
+                                                                Colors.white24,
+                                                          ),
+                                                          autofocus: false,
+                                                          onChanged: (value) {
+                                                            newCategoryTitle =
+                                                                value;
+                                                          },
+                                                        ),
+                                                        SizedBox(
+                                                          height: 40,
+                                                        ),
+
+                                                        //*
+                                                        //*SECOND: ADD CATEGORY BUTTON
+                                                        //*
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Container(
+                                                              height: 140,
+                                                              width: 140,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                    color: Colors
+                                                                        .white60,
+                                                                    offset: Offset(
+                                                                        0,
+                                                                        0), //(x,y)
+                                                                    blurRadius:
+                                                                        .5,
+                                                                  ),
+                                                                  BoxShadow(
+                                                                    color: Colors
+                                                                        .orange[
+                                                                            300]
+                                                                        .withOpacity(
+                                                                            .4),
+                                                                    blurRadius:
+                                                                        _glowAnimation
+                                                                            .value,
+                                                                    spreadRadius:
+                                                                        _glowAnimation
+                                                                            .value,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child:
+                                                                    FloatingActionButton(
+                                                                        heroTag:
+                                                                            'ADDCATEGORYSCREEN-FAB',
+                                                                        splashColor:
+                                                                            KMainOrange,
+                                                                        backgroundColor:
+                                                                            KMainOrange,
+                                                                        onPressed:
+                                                                            () {
+                                                                          //! checking to see if category title is null or blank
+                                                                          if (newCategoryTitle == null ||
+                                                                              newCategoryTitle.trim() == '') {
+                                                                            noNameAlert(context,
+                                                                                'Category');
+                                                                          } else {
+                                                                            //! Adding new category to categoriesBox
+
+                                                                            Category
+                                                                                newCategory =
+                                                                                Category(name: newCategoryTitle);
+                                                                            Hive.box('categories').add(newCategory);
+                                                                            _scaleAnimationController.forward().then(
+                                                                                  (value) => _scaleAnimationController.reverse(),
+                                                                                );
+
+                                                                            //! bottom bar event anuncing successful addtiong of new category
+                                                                            Flushbar(
+                                                                                    duration: Duration(seconds: 2),
+                                                                                    messageText: Text(
+                                                                                      'Category added successfuly.',
+                                                                                      style: TextStyle(
+                                                                                        fontFamily: KTextFontFamily,
+                                                                                        color: Colors.white,
+                                                                                        shadows: [],
+                                                                                        fontSize: 14,
+                                                                                      ),
+                                                                                    ),
+                                                                                    flushbarStyle: FlushbarStyle.FLOATING)
+                                                                                .show(context);
+                                                                            textFieldController.clear();
+                                                                            newCategoryTitle =
+                                                                                null;
+                                                                          }
+                                                                        },
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .fingerprint,
+                                                                          size:
+                                                                              60,
+                                                                          color:
+                                                                              Colors.white38,
+                                                                        )),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      ]),
-                                ],
-                              ),
+                                          ]),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
