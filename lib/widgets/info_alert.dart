@@ -1,19 +1,20 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 
-AwesomeDialog noNameAlert(
-  BuildContext context,
-  String type,
-) {
-  return animatedDialog(context, type);
-}
-
-AwesomeDialog animatedDialog(BuildContext context, String type) {
+AwesomeDialog infoAlert(BuildContext context, String information) {
   return AwesomeDialog(
     context: context,
-    dialogType: DialogType.WARNING,
-    animType: AnimType.SCALE,
+    customHeader: Container(
+      height: 100,
+      width: 100,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/textures/add_category_screen_texture2.png'),
+        ),
+      ),
+    ),
+    animType: AnimType.LEFTSLIDE,
     btnOkOnPress: () {
       Navigator.of(context).popUntil((route) => route.isCurrent);
     },
@@ -24,30 +25,10 @@ AwesomeDialog animatedDialog(BuildContext context, String type) {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Text(
-                "Attention!",
-                style: Klogo.copyWith(
-                  fontFamily: KTextFontFamily,
-                  fontSize: 30,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 2.0,
-                      color: Colors.red,
-                      offset: Offset(5.0, 5.0),
-                    ),
-                  ],
-                  color: Colors.yellowAccent[700],
-                ),
-              ),
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.all(6.0),
             child: Text(
-              "$type name is missing or contains only blank space.",
+              information,
               textAlign: TextAlign.center,
               style: Klogo.copyWith(
                 fontFamily: KTextFontFamily,

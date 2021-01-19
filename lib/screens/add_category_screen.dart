@@ -1,9 +1,10 @@
 import 'package:animate_icons/animate_icons.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
+
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/others/constants.dart';
-import 'package:ciao_app/widgets/no_category_alert.dart';
+import 'package:ciao_app/widgets/info_alert.dart';
+
 import 'package:ciao_app/widgets/no_name_alert.dart';
 import 'package:ciao_app/widgets/title_bubble.dart';
 import 'package:flushbar/flushbar.dart';
@@ -36,6 +37,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
   //* String to hold the new category title
   String newCategoryTitle;
   Box categoriesBox = Hive.box('categories');
+
+  //* ToolTip
+
   void stateCheck() {
     //*add category case
     if (!isPageClosed &&
@@ -217,6 +221,22 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                             },
                                           ),
                                         ),
+                                        //* INFO BUTTON
+                                        customClipRRect(
+                                            colors: [KMainRed, Colors.orange],
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  infoAlert(context,
+                                                      'Create catgory to organize tasks');
+                                                },
+                                                child: Icon(
+                                                    Icons.error_outline_rounded,
+                                                    color: Colors.white60),
+                                              ),
+                                            )),
                                         //*
                                         //* SCREEN TITLE
                                         //*
@@ -282,17 +302,17 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                     //*
                                                     //*FIRST: INFO TEXT
                                                     //*
-                                                    Text(
-                                                      'Create catgory to organize tasks:',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'DMSerifTextRegular',
-                                                          fontSize: 20,
-                                                          color:
-                                                              Colors.blue[50]),
-                                                    ),
+                                                    // Text(
+                                                    //   'Create catgory to organize tasks:',
+                                                    //   textAlign:
+                                                    //       TextAlign.center,
+                                                    //   style: TextStyle(
+                                                    //       fontFamily:
+                                                    //           'DMSerifTextRegular',
+                                                    //       fontSize: 20,
+                                                    //       color:
+                                                    //           Colors.blue[50]),
+                                                    // ),
                                                     SizedBox(
                                                       height: 30,
                                                     ),
