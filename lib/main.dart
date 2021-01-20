@@ -1,4 +1,6 @@
 import 'package:ciao_app/model/task.dart';
+import 'package:ciao_app/model/theme_manager.dart';
+import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/calendar_screen.dart';
 import 'package:ciao_app/screens/home_screen.dart';
 import 'package:ciao_app/screens/info_screen.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'model/category.dart';
 import 'model/flags.dart';
@@ -130,7 +133,9 @@ void main() async {
             valueListenable: categoriesBox.listenable(),
             builder: (context, box, widget) => ValueListenableBuilder(
                 valueListenable: tasksBox.listenable(),
-                builder: (context, box, widget) => MyApp()),
+                builder: (context, box, widget) =>
+                    ChangeNotifierProvider<ThemeNotifier>(
+                        create: (_) => ThemeNotifier(), child: MyApp())),
           )));
 }
 
@@ -147,28 +152,31 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return MaterialApp(
-      builder: (context, widget) => ResponsiveWrapper.builder(
-        BouncingScrollWrapper.builder(context, widget),
-        defaultScale: true,
-        breakpoints: [
-          ResponsiveBreakpoint.resize(480, name: MOBILE),
-          // ResponsiveBreakpoint.autoScale(800, name: TABLET),
-          // ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-        ],
+    return Consumer<ThemeNotifier>(
+      builder: (contex, theme, _) => MaterialApp(
+        builder: (context, widget) => ResponsiveWrapper.builder(
+          BouncingScrollWrapper.builder(context, widget),
+          defaultScale: true,
+          breakpoints: [
+            ResponsiveBreakpoint.resize(480, name: MOBILE),
+            // ResponsiveBreakpoint.autoScale(800, name: TABLET),
+            // ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+          ],
+        ),
+        debugShowCheckedModeBanner: false,
+        initialRoute: SplashScreen.id,
+        routes: {
+          Dashboard.id: (context) => Dashboard(),
+          SplashScreen.id: (context) => SplashScreen(),
+          InfoScreen.id: (context) => InfoScreen(),
+          TestScreen.id: (context) => TestScreen(),
+          HomeScreen.id: (context) => HomeScreen(),
+          IntroScreen.id: (context) => IntroScreen(),
+          CalendarScreen.id: (context) => CalendarScreen(),
+        },
+        theme: theme.getTheme(),
+        home: HomeScreen(),
       ),
-      debugShowCheckedModeBanner: false,
-      initialRoute: SplashScreen.id,
-      routes: {
-        Dashboard.id: (context) => Dashboard(),
-        SplashScreen.id: (context) => SplashScreen(),
-        InfoScreen.id: (context) => InfoScreen(),
-        TestScreen.id: (context) => TestScreen(),
-        HomeScreen.id: (context) => HomeScreen(),
-        IntroScreen.id: (context) => IntroScreen(),
-        CalendarScreen.id: (context) => CalendarScreen(),
-      },
-      home: HomeScreen(),
     );
   }
 
@@ -180,3 +188,51 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 }
+
+// class DefaultTheme extends CustomThemeData {
+//   static final _default = DefaultTheme();
+
+//   static DefaultTheme of(BuildContext context) =>
+//       CustomThemes.of(context) ?? _default;
+
+//   final TextStyle screensTitleTextStyle = TextStyle(
+//     fontFamily: KPageTitleFontFamily,
+//     fontSize: 43,
+//     shadows: [
+//       Shadow(
+//         blurRadius: 2.0,
+//         color: Colors.blue,
+//         offset: Offset(5.0, 5.0),
+//       ),
+//       Shadow(
+//         color: Colors.white,
+//         blurRadius: 6.0,
+//         offset: Offset(2.0, 2.0),
+//       ),
+//     ],
+//   );
+//   final TextStyle dashboardCarouselItemTitleStyle = TextStyle(
+//     color: KMainPurple,
+//     fontFamily: 'DMSerifTextRegular',
+//     fontWeight: FontWeight.bold,
+//     fontSize: 22,
+//     shadows: [
+//       Shadow(
+//         blurRadius: 2.0,
+//         color: Colors.blue,
+//         offset: Offset(3.3, 3.3),
+//       ),
+//       Shadow(
+//         color: Colors.white,
+//         blurRadius: 6.0,
+//         offset: Offset(2.0, 2.0),
+//       ),
+//     ],
+//   );
+//   final TextStyle dashboardTaskTileTitleStyle = TextStyle(
+//     fontFamily: 'DMSerifTextRegular',
+//     color: Colors.blue[50],
+//     fontSize: 20,
+//   );
+//   final Gradient dashboardGradientColors = KMainLinearGradient;
+// }

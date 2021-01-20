@@ -1,4 +1,5 @@
 import 'package:ciao_app/model/category.dart';
+import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/full_screen_page.dart';
 import 'package:ciao_app/widgets/list_builder.dart';
@@ -6,6 +7,7 @@ import 'package:ciao_app/widgets/simple_list_builder.dart';
 import 'package:ciao_app/widgets/slider_side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 
 class CarouselItemForTaskScreen extends StatefulWidget {
   final String category;
@@ -43,15 +45,12 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
           Expanded(
             child: Container(
               margin: const EdgeInsets.only(
-                  bottom: 10.0, left: 0, top: 0.0, right: 00.0),
+                  bottom: 15.0, left: 0.0, top: 15.0, right: 0.0),
               decoration: BoxDecoration(
-                // border: Border.all(
-                //   color: Colors.blue.withOpacity(.1.8),
-                // ),
-                gradient: LinearGradient(
-                    begin: Alignment.center,
-                    end: Alignment.bottomLeft,
-                    colors: [Color(0xFF9bdeff), Color(0xFFEBF8FF)]),
+                gradient:
+                    (Provider.of<ThemeNotifier>(context).getThemeMode == 'dark')
+                        ? KCarouselItemForTaskScreenBGGradientDark
+                        : KCarouselItemForTaskScreenBGGradient,
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(0),
                   topLeft: Radius.circular(15),
@@ -59,11 +58,9 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                   bottomRight: Radius.circular(15),
                 ),
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.blueAccent[400],
-                    offset: Offset(5.0, 5.0), //(x,y)
-                    blurRadius: 5.0,
-                  ),
+                  (Provider.of<ThemeNotifier>(context).getThemeMode == 'dark')
+                      ? KCarouselItemBoxShadowDark
+                      : KCarouselItemBoxShadow
                 ],
               ),
               child: Column(
@@ -89,7 +86,11 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                                       begin: Alignment.center,
                                       end: Alignment.topLeft,
                                       colors: [
-                                        Colors.blue,
+                                        (Provider.of<ThemeNotifier>(context)
+                                                    .getThemeMode ==
+                                                'dark')
+                                            ? KMainPurple
+                                            : Colors.blue,
                                         Colors.white,
                                       ]),
                                   borderRadius: BorderRadius.only(
@@ -105,24 +106,12 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                                       padding: const EdgeInsets.all(14.0),
                                       child: Text(
                                         isMenuOpen ? '' : widget.category,
-                                        style: Klogo.copyWith(
-                                          color: KMainPurple,
-                                          fontFamily: 'DMSerifTextRegular',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 22,
-                                          shadows: [
-                                            Shadow(
-                                              blurRadius: 2.0,
-                                              color: Colors.blue,
-                                              offset: Offset(3.3, 3.3),
-                                            ),
-                                            Shadow(
-                                              color: Colors.white,
-                                              blurRadius: 6.0,
-                                              offset: Offset(2.0, 2.0),
-                                            ),
-                                          ],
-                                        ),
+                                        style: (Provider.of<ThemeNotifier>(
+                                                        context)
+                                                    .getThemeMode ==
+                                                'dark')
+                                            ? KCarouseItemForTaskScreenTitleStyleDark
+                                            : KCarouseItemForTaskScreenTitleStyle,
                                       ),
                                     ),
                                   ],
@@ -183,8 +172,8 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                         borderRadius: BorderRadius.only(
                           topRight: Radius.circular(50),
                           topLeft: Radius.circular(50),
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30),
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15),
                         ),
                       ),
                       padding:

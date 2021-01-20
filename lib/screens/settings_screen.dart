@@ -1,10 +1,19 @@
+import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/screens/info_screen.dart';
 import 'package:ciao_app/widgets/app_reset_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
+  @override
+  _SettingsScreenState createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    ThemeNotifier _theme = Provider.of<ThemeNotifier>(context);
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 22, vertical: 22),
       decoration: BoxDecoration(
@@ -65,6 +74,34 @@ class SettingsScreen extends StatelessWidget {
                     color: Colors.white,
                     fontSize: 12),
               ),
+            ),
+          ),
+          Container(
+            child: Row(
+              children: [
+                RaisedButton(onPressed: () {
+                  bool _isDarkMode =
+                      _theme.getThemeMode == 'dark' ? true : false;
+                  if (_isDarkMode) {
+                    _theme.setLightMode();
+                  } else if (!_isDarkMode) {
+                    _theme.setDarkMode();
+                  }
+                }),
+                // ListTile(
+                //   leading: Icon(
+                //     Icons.star,
+                //     color: Colors.white,
+                //   ),
+                //   title: Text(
+                //     'Dark mode!',
+                //     style: TextStyle(
+                //         fontFamily: 'PressStart2P',
+                //         color: Colors.white,
+                //         fontSize: 12),
+                //   ),
+                // ),
+              ],
             ),
           ),
           ListTile(

@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/flags.dart';
+import 'package:ciao_app/model/theme_manager.dart';
 
 import 'package:ciao_app/others/constants.dart' as Constant;
 import 'package:ciao_app/others/constants.dart';
@@ -21,7 +22,9 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ciao_app/widgets/custom_cliprrect.dart' as CustomClipRRect;
 import 'package:animate_icons/animate_icons.dart';
+import 'package:provider/provider.dart';
 
+import '../main.dart';
 import '../widgets/list_builder.dart';
 
 final Color bgColor = Color(0xFF4A5A58);
@@ -204,16 +207,9 @@ class _DashboardState extends State<Dashboard>
   @override
   Widget build(BuildContext context) {
     checkState();
-    return NotificationListener(
-      onNotification: (t) {
-        // if (t is ScrollStartNotification) {
-        //   _hideFabController.reverse();
-        // } else if (t is ScrollEndNotification) {
-        //   _hideFabController.forward();
-        // }
-        return true;
-      },
-      child: AnimatedContainer(
+
+    return Consumer<ThemeNotifier>(
+      builder: (contex, theme, _) => AnimatedContainer(
         curve: Curves.fastOutSlowIn,
         transform: Matrix4.translationValues(
           0,
@@ -224,6 +220,7 @@ class _DashboardState extends State<Dashboard>
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.transparent,
+            //* FAB Page Controller
             floatingActionButton: FabCircularMenu(
                 ringDiameter: MediaQuery.of(context).size.width * 0.75,
                 ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
@@ -430,7 +427,7 @@ class _DashboardState extends State<Dashboard>
                 ]),
             body: Stack(
               children: [
-//* Back container
+                //* Back container
                 SearchScreen(
                   topBorderRadius: topBorderRadiusContainer,
                 ),
@@ -449,7 +446,11 @@ class _DashboardState extends State<Dashboard>
                         topLeft: Radius.circular(topBorderRadius),
                         topRight: Radius.circular(topBorderRadius),
                       ),
-                      gradient: Constant.KMainLinearGradient,
+                      gradient:
+                          (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                                  'dark')
+                              ? Constant.KDashboardBGGradientDark
+                              : Constant.KDashboardBGGradient,
                       border: Border.all(
                         color: Colors.white54,
                         width: 10,
@@ -496,10 +497,18 @@ class _DashboardState extends State<Dashboard>
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       CustomClipRRect.customClipRRect(
-                                        colors: [
-                                          Colors.white,
-                                          Colors.white10,
-                                        ],
+                                        colors:
+                                            (Provider.of<ThemeNotifier>(context)
+                                                        .getThemeMode ==
+                                                    'dark')
+                                                ? [
+                                                    Colors.white24,
+                                                    Colors.white12,
+                                                  ]
+                                                : [
+                                                    Colors.white,
+                                                    Colors.white10,
+                                                  ],
                                         child: AnimateIcons(
                                           controller: _animateIconController,
                                           startIcon: categoriesBox.isNotEmpty
@@ -508,7 +517,12 @@ class _DashboardState extends State<Dashboard>
                                           startTooltip: 'Icons.add',
                                           endTooltip: 'Icons.close',
                                           endIcon: Icons.close,
-                                          color: Color(0xFF071F86),
+                                          color: (Provider.of<ThemeNotifier>(
+                                                          context)
+                                                      .getThemeMode ==
+                                                  'dark')
+                                              ? KMainOrange
+                                              : Color(0xFF071F86),
                                           size: 33,
                                           onStartIconPress: () {
                                             if (categoriesBox.isNotEmpty) {
@@ -570,21 +584,12 @@ class _DashboardState extends State<Dashboard>
                                       //*
                                       Text(
                                         'checKit',
-                                        style: Constant.Klogo.copyWith(
-                                          fontSize: 43,
-                                          shadows: [
-                                            Shadow(
-                                              blurRadius: 2.0,
-                                              color: Colors.blue,
-                                              offset: Offset(5.0, 5.0),
-                                            ),
-                                            Shadow(
-                                              color: Colors.white,
-                                              blurRadius: 6.0,
-                                              offset: Offset(2.0, 2.0),
-                                            ),
-                                          ],
-                                        ),
+                                        style: (Provider.of<ThemeNotifier>(
+                                                        context)
+                                                    .getThemeMode ==
+                                                'dark')
+                                            ? Constant.KDashboardScreenTitleDark
+                                            : Constant.KDashboardScreenTitle,
                                       ),
                                     ],
                                   ),

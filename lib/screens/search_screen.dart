@@ -67,7 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(topBorderRadius)),
-          gradient: KMainLinearGradient,
+          gradient: KDashboardBGGradient,
           image: DecorationImage(
             image: AssetImage('assets/textures/search_screen_texture.png'),
           ),
