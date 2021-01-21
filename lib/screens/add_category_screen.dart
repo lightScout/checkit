@@ -2,6 +2,7 @@ import 'package:animate_icons/animate_icons.dart';
 
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/flags.dart';
+import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/widgets/info_alert.dart';
 
@@ -12,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ciao_app/widgets/custom_cliprrect.dart';
+import 'package:provider/provider.dart';
+import 'package:pattern_formatter/pattern_formatter.dart';
 
 class AddCategoryScreen extends StatefulWidget {
   const AddCategoryScreen({Key key}) : super(key: key);
@@ -123,7 +126,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                     backgroundColor: Colors.transparent,
                     resizeToAvoidBottomInset: false,
                     //*
-                    //* SCREEN MAIN CONTAINER
+                    //* SCREEN MAIN Stack
                     //*
                     body: Container(
                       decoration: BoxDecoration(
@@ -135,14 +138,18 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                               ? Radius.circular(0)
                               : Radius.circular(topBorderRadius),
                         ),
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
-                            KMainRed,
-                            KMainOrange,
-                          ],
-                        ),
+                        gradient:
+                            (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                                    'dark')
+                                ? KBGGradientDark
+                                : LinearGradient(
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                    colors: [
+                                      KMainRed,
+                                      KMainOrange,
+                                    ],
+                                  ),
                         border: Border.all(
                           color: Colors.white54,
                           width: 10,
@@ -162,6 +169,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                       ),
                       child: Stack(
                         children: [
+                          //*BG Texture
                           ScaleTransition(
                             scale: CurvedAnimation(
                                 parent: Tween(begin: 1.0, end: 0.0)
@@ -180,6 +188,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                               ),
                             ),
                           ),
+                          //* Page Content
                           Container(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -212,10 +221,13 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                               //* NAVEGATION BUTTON
                                               //*
                                               customClipRRect(
-                                                colors: [
-                                                  KMainRed,
-                                                  Colors.orange
-                                                ],
+                                                colors: (Provider.of<
+                                                                    ThemeNotifier>(
+                                                                context)
+                                                            .getThemeMode ==
+                                                        'dark')
+                                                    ? KButtonsBGGrandientColorsDark
+                                                    : [KMainRed, Colors.orange],
                                                 child: AnimateIcons(
                                                   controller:
                                                       _animateIconController,
@@ -225,7 +237,14 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                   endTooltip: 'Icons.close',
                                                   endIcon: Icons
                                                       .keyboard_arrow_up_rounded,
-                                                  color: Colors.blueAccent[700],
+                                                  color:
+                                                      (Provider.of<ThemeNotifier>(
+                                                                      context)
+                                                                  .getThemeMode ==
+                                                              'dark')
+                                                          ? Colors.white
+                                                          : Colors
+                                                              .blueAccent[700],
                                                   size: 33,
                                                   onStartIconPress: () {
                                                     if (categoriesBox.isEmpty) {
@@ -292,36 +311,25 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                               //*
                                               //* SCREEN TITLE
                                               //*
-                                              InkWell(
-                                                onTap: () {
-                                                  // _rotateAnimationController
-                                                  //     .forward()
-                                                  //     .then(
-                                                  //       (value) =>
-                                                  //           _rotateAnimationController
-                                                  //               .reverse(),
-                                                  //     );
-                                                },
-                                                child: TitleBubble(
-                                                  borderColor: Colors.orange,
-                                                  insideColor: Colors.white24,
-                                                  child: Text(
-                                                    'Add category',
-                                                    style: Klogo.copyWith(
-                                                      fontSize: 32,
-                                                      shadows: [
-                                                        Shadow(
-                                                          color: Colors.red,
-                                                          blurRadius: 1,
-                                                          offset:
-                                                              Offset(5.0, 5.0),
-                                                        )
-                                                      ],
-                                                      color: Colors.blue[50],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
+                                              // TitleBubble(
+                                              //   borderColor: Colors.orange,
+                                              //   insideColor: Colors.white24,
+                                              //   child: Text(
+                                              //     'Add category',
+                                              //     style: Klogo.copyWith(
+                                              //       fontSize: 32,
+                                              //       shadows: [
+                                              //         Shadow(
+                                              //           color: Colors.red,
+                                              //           blurRadius: 1,
+                                              //           offset:
+                                              //               Offset(5.0, 5.0),
+                                              //         )
+                                              //       ],
+                                              //       color: Colors.blue[50],
+                                              //     ),
+                                              //   ),
+                                              // ),
                                             ],
                                           ),
                                         ),
@@ -330,221 +338,159 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                   ),
                                 ),
                                 //*
-                                //* INFO TEXT, TEXT FEILD AND ADD BUTTON COLLUMN
+                                //* TEXT FEILD AND ADD BUTTON
                                 //*
+
                                 Container(
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      ListView(
-                                          scrollDirection: Axis.vertical,
-                                          shrinkWrap: true,
-                                          children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: <Widget>[
-                                                SizedBox(
-                                                  height: 0,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+
+                                      //*                              <--- FIRST: TEXTFEILD 'ADD CATEGORY HERE'
+                                      TextField(
+                                        cursorColor: Colors.white,
+                                        textCapitalization:
+                                            TextCapitalization.sentences,
+                                        controller: textFieldController,
+                                        style: Klogo.copyWith(
+                                          fontSize: 22,
+                                          fontFamily: 'DMSerifTextRegular',
+                                          color: Colors.white,
+                                          shadows: [],
+                                        ),
+                                        maxLines: 1,
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          hintText: 'Category name here',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey[350],
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                            ),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          filled: false,
+                                          fillColor: Colors.white24,
+                                        ),
+                                        autofocus: false,
+                                        onChanged: (value) {
+                                          newCategoryTitle = value;
+                                        },
+                                      ),
+
+                                      //*
+                                      //*SECOND: ADD CATEGORY BUTTON
+                                      //*
+                                      SizedBox(
+                                        height: 130,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: 140,
+                                            width: 140,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.white60,
+                                                  offset: Offset(0, 0), //(x,y)
+                                                  blurRadius: .5,
                                                 ),
-
-                                                //!
-                                                //! COMPONENTS SECTION
-                                                //!
-
-                                                Container(
-                                                  //
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            22.0),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        SizedBox(
-                                                          height: 30,
-                                                        ),
-                                                        //*
-                                                        //*FIRST: TEXTFEILD 'ADD CATEGORY HERE'
-                                                        //*
-                                                        TextField(
-                                                          textCapitalization:
-                                                              TextCapitalization
-                                                                  .sentences,
-                                                          controller:
-                                                              textFieldController,
-                                                          style: Klogo.copyWith(
-                                                            fontSize: 22,
-                                                            fontFamily:
-                                                                'DMSerifTextRegular',
-                                                            color: Colors.white,
-                                                            shadows: [],
-                                                          ),
-                                                          maxLines: 1,
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          decoration:
-                                                              InputDecoration(
-                                                            hintText:
-                                                                'Category name here',
-                                                            hintStyle:
-                                                                TextStyle(
-                                                              color: Colors
-                                                                  .grey[350],
-                                                            ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .all(
-                                                                Radius.circular(
-                                                                    50),
-                                                              ),
-                                                              borderSide: BorderSide(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  width: 1.0),
-                                                            ),
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  width: 1.0),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .all(
-                                                                Radius.circular(
-                                                                    50),
-                                                              ),
-                                                            ),
-                                                            filled: true,
-                                                            fillColor:
-                                                                Colors.white24,
-                                                          ),
-                                                          autofocus: false,
-                                                          onChanged: (value) {
-                                                            newCategoryTitle =
-                                                                value;
-                                                          },
-                                                        ),
-                                                        SizedBox(
-                                                          height: 40,
-                                                        ),
-
-                                                        //*
-                                                        //*SECOND: ADD CATEGORY BUTTON
-                                                        //*
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Container(
-                                                              height: 140,
-                                                              width: 140,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                    color: Colors
-                                                                        .white60,
-                                                                    offset: Offset(
-                                                                        0,
-                                                                        0), //(x,y)
-                                                                    blurRadius:
-                                                                        .5,
-                                                                  ),
-                                                                  BoxShadow(
-                                                                    color: Colors
-                                                                        .orange[
-                                                                            300]
-                                                                        .withOpacity(
-                                                                            .4),
-                                                                    blurRadius:
-                                                                        _glowAnimation
-                                                                            .value,
-                                                                    spreadRadius:
-                                                                        _glowAnimation
-                                                                            .value,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child:
-                                                                    FloatingActionButton(
-                                                                        heroTag:
-                                                                            'ADDCATEGORYSCREEN-FAB',
-                                                                        splashColor:
-                                                                            KMainOrange,
-                                                                        backgroundColor:
-                                                                            KMainOrange,
-                                                                        onPressed:
-                                                                            () {
-                                                                          //! checking to see if category title is null or blank
-                                                                          if (newCategoryTitle == null ||
-                                                                              newCategoryTitle.trim() == '') {
-                                                                            noNameAlert(context,
-                                                                                'Category');
-                                                                          } else {
-                                                                            //! Adding new category to categoriesBox
-
-                                                                            Category
-                                                                                newCategory =
-                                                                                Category(name: newCategoryTitle);
-                                                                            Hive.box('categories').add(newCategory);
-                                                                            _scaleAnimationController.forward().then(
-                                                                                  (value) => _scaleAnimationController.reverse(),
-                                                                                );
-
-                                                                            //! bottom bar event anuncing successful addtiong of new category
-                                                                            Flushbar(
-                                                                                    duration: Duration(seconds: 2),
-                                                                                    messageText: Text(
-                                                                                      'Category added successfuly.',
-                                                                                      style: TextStyle(
-                                                                                        fontFamily: KTextFontFamily,
-                                                                                        color: Colors.white,
-                                                                                        shadows: [],
-                                                                                        fontSize: 14,
-                                                                                      ),
-                                                                                    ),
-                                                                                    flushbarStyle: FlushbarStyle.FLOATING)
-                                                                                .show(context);
-                                                                            textFieldController.clear();
-                                                                            newCategoryTitle =
-                                                                                null;
-                                                                          }
-                                                                        },
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .fingerprint,
-                                                                          size:
-                                                                              60,
-                                                                          color:
-                                                                              Colors.white38,
-                                                                        )),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                BoxShadow(
+                                                  color: Colors.orange[300]
+                                                      .withOpacity(.4),
+                                                  blurRadius:
+                                                      _glowAnimation.value,
+                                                  spreadRadius:
+                                                      _glowAnimation.value,
                                                 ),
                                               ],
                                             ),
-                                          ]),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: FloatingActionButton(
+                                                  heroTag:
+                                                      'ADDCATEGORYSCREEN-FAB',
+                                                  splashColor: KMainOrange,
+                                                  backgroundColor: KMainOrange,
+                                                  onPressed: () {
+                                                    //! checking to see if category title is null or blank
+                                                    if (newCategoryTitle ==
+                                                            null ||
+                                                        newCategoryTitle
+                                                                .trim() ==
+                                                            '') {
+                                                      noNameAlert(
+                                                          context, 'Category');
+                                                    } else {
+                                                      //! Adding new category to categoriesBox
+
+                                                      Category newCategory =
+                                                          Category(
+                                                              name:
+                                                                  newCategoryTitle);
+                                                      Hive.box('categories')
+                                                          .add(newCategory);
+                                                      _scaleAnimationController
+                                                          .forward()
+                                                          .then(
+                                                            (value) =>
+                                                                _scaleAnimationController
+                                                                    .reverse(),
+                                                          );
+
+                                                      //! bottom bar event anuncing successful addtiong of new category
+                                                      Flushbar(
+                                                              duration:
+                                                                  Duration(
+                                                                      seconds:
+                                                                          2),
+                                                              messageText: Text(
+                                                                'Category added successfuly.',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      KTextFontFamily,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  shadows: [],
+                                                                  fontSize: 14,
+                                                                ),
+                                                              ),
+                                                              flushbarStyle:
+                                                                  FlushbarStyle
+                                                                      .FLOATING)
+                                                          .show(context);
+                                                      textFieldController
+                                                          .clear();
+                                                      FocusScope.of(context)
+                                                          .unfocus();
+                                                      newCategoryTitle = null;
+                                                    }
+                                                  },
+                                                  child: Icon(
+                                                    Icons.fingerprint,
+                                                    size: 60,
+                                                    color: Colors.white38,
+                                                  )),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),

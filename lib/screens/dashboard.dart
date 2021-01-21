@@ -475,7 +475,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                     gradient:
                         (Provider.of<ThemeNotifier>(context).getThemeMode ==
                                 'dark')
-                            ? Constant.KDashboardBGGradientDark
+                            ? Constant.KBGGradientDark
                             : Constant.KDashboardBGGradient,
                     border: Border.all(
                       color: Colors.white54,

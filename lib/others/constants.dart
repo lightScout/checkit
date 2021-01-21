@@ -20,7 +20,7 @@ const LinearGradient KDashboardBGGradient = LinearGradient(
   colors: [Color(0xFF9bdeff), KBottomLinearGradientColor],
 );
 
-const LinearGradient KDashboardBGGradientDark = LinearGradient(
+const LinearGradient KBGGradientDark = LinearGradient(
   begin: Alignment.topRight,
   end: Alignment.bottomLeft,
   colors: [Color(0xFF54525E), Color(0xFF13111B)],

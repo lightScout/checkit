@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/model/task.dart';
+import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/widgets/custom_cliprrect.dart';
 import 'package:ciao_app/widgets/info_alert.dart';
@@ -20,6 +21,7 @@ import 'package:ciao_app/main.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:ciao_app/widgets/custom_cliprrect.dart' as CustomClipRRect;
+import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -407,13 +409,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   color: Colors.white54,
                   width: 10,
                 ),
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.indigo[900],
-                      Colors.purple[700],
-                    ]),
+                gradient:
+                    (Provider.of<ThemeNotifier>(context).getThemeMode == 'dark')
+                        ? KBGGradientDark
+                        : LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                                Colors.indigo[900],
+                                Colors.purple[700],
+                              ]),
               ),
               child: Column(
                 children: [
