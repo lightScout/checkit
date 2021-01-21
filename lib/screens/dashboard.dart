@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ciao_app/Paint/circle_painter.dart';
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/model/theme_manager.dart';
@@ -36,8 +37,7 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard>
-    with SingleTickerProviderStateMixin {
+class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   final tasksBox = Hive.box('tasks');
   final categoriesBox = Hive.box('categories');
   String newTaskCategory;
@@ -46,6 +46,12 @@ class _DashboardState extends State<Dashboard>
       ScrollController(keepScrollOffset: true);
   AnimationController _animationController;
   AnimateIconController _animateIconController;
+
+  //* Circle wave animation controller and variables
+  double waveRadius = 0.0;
+  double waveGap = 10.0;
+  Animation<double> _waveAnimation;
+  AnimationController _waveAnimationController;
 
   //* Carousel Controller
   final _carouselController = CarouselController();
@@ -71,7 +77,18 @@ class _DashboardState extends State<Dashboard>
       vsync: this,
       duration: Duration(milliseconds: 190),
     );
+    _waveAnimationController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1500));
 
+    _waveAnimationController.forward();
+
+    _waveAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _waveAnimationController.reset();
+      } else if (status == AnimationStatus.dismissed) {
+        _waveAnimationController.forward();
+      }
+    });
     // _animation =
     //     CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
     // _animationController.forward();
@@ -80,7 +97,7 @@ class _DashboardState extends State<Dashboard>
   @override
   void dispose() {
     super.dispose();
-    hideButtonController.removeListener(() {});
+    hideButtonController.dispose();
     _animationController.dispose();
   }
 
@@ -208,6 +225,13 @@ class _DashboardState extends State<Dashboard>
   Widget build(BuildContext context) {
     checkState();
 
+    _waveAnimation =
+        Tween(begin: 0.0, end: waveGap).animate(_waveAnimationController)
+          ..addListener(() {
+            setState(() {
+              waveRadius = _waveAnimation.value;
+            });
+          });
     return Consumer<ThemeNotifier>(
       builder: (contex, theme, _) => AnimatedContainer(
         curve: Curves.fastOutSlowIn,
@@ -425,238 +449,251 @@ class _DashboardState extends State<Dashboard>
                     ),
                   ),
                 ]),
-            body: Stack(
-              children: [
-                //* Back container
-                SearchScreen(
-                  topBorderRadius: topBorderRadiusContainer,
-                ),
-                //* Front container
-                AnimatedContainer(
-                  curve: Curves.fastOutSlowIn,
-                  transform: Matrix4.translationValues(
-                    0,
-                    yOffsetFrontContainer,
-                    0,
-                  )..scale(scaleFactor),
-                  duration: Duration(milliseconds: 600),
+            body: Stack(children: [
+              //* Back container
+              SearchScreen(
+                topBorderRadius: topBorderRadiusContainer,
+              ),
+              //* Front container
+              AnimatedContainer(
+                curve: Curves.fastOutSlowIn,
+                transform: Matrix4.translationValues(
+                  0,
+                  yOffsetFrontContainer,
+                  0,
+                )..scale(scaleFactor),
+                duration: Duration(milliseconds: 600),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(topBorderRadius),
+                      topRight: Radius.circular(topBorderRadius),
+                    ),
+                    gradient:
+                        (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                                'dark')
+                            ? Constant.KDashboardBGGradientDark
+                            : Constant.KDashboardBGGradient,
+                    border: Border.all(
+                      color: Colors.white54,
+                      width: 10,
+                    ),
+                    boxShadow: [
+                      // BoxShadow(
+                      //   color: Colors.pink[300],
+                      //   offset: Offset(0.0, -4.0), //(x,y)
+                      //   blurRadius: 100.0,
+                      // ),
+                      // BoxShadow(
+                      //   color: Colors.pink[700],
+                      //   offset: Offset(0.0, -2.0), //(x,y)
+                      //   blurRadius: 11.1,
+                      // ),
+                    ],
+                  ),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(topBorderRadius),
-                        topRight: Radius.circular(topBorderRadius),
-                      ),
-                      gradient:
-                          (Provider.of<ThemeNotifier>(context).getThemeMode ==
-                                  'dark')
-                              ? Constant.KDashboardBGGradientDark
-                              : Constant.KDashboardBGGradient,
-                      border: Border.all(
-                        color: Colors.white54,
-                        width: 10,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.pink[300],
-                          offset: Offset(0.0, -4.0), //(x,y)
-                          blurRadius: 100.0,
+                        // image: DecorationImage(
+                        //   image: AssetImage(
+                        //       'assets/textures/task_list_screen_texture.png'),
+                        // ),
+
                         ),
-                        BoxShadow(
-                          color: Colors.pink[700],
-                          offset: Offset(0.0, -2.0), //(x,y)
-                          blurRadius: 11.1,
+                    child: Stack(
+                      children: [
+                        //*
+                        CustomPaint(
+                          size: Size(double.infinity, double.infinity),
+                          painter: CirclePainter(waveRadius),
+                          child: Container(),
                         ),
-                      ],
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                              'assets/textures/task_list_screen_texture.png'),
-                        ),
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          //*
-                          //* NAVEGATION BUTTON and Screen TITLE
-                          //*
-                          Container(
-                            padding: EdgeInsets.only(
-                                left: 0, right: 0, top: 24, bottom: 0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 22,
-                                    right: 22,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      CustomClipRRect.customClipRRect(
-                                        colors:
-                                            (Provider.of<ThemeNotifier>(context)
-                                                        .getThemeMode ==
-                                                    'dark')
-                                                ? [
-                                                    Colors.white24,
-                                                    Colors.white12,
-                                                  ]
-                                                : [
-                                                    Colors.white,
-                                                    Colors.white10,
-                                                  ],
-                                        child: AnimateIcons(
-                                          controller: _animateIconController,
-                                          startIcon: categoriesBox.isNotEmpty
-                                              ? Icons.search
-                                              : Icons.add,
-                                          startTooltip: 'Icons.add',
-                                          endTooltip: 'Icons.close',
-                                          endIcon: Icons.close,
-                                          color: (Provider.of<ThemeNotifier>(
+                        Column(
+                          children: <Widget>[
+                            //*
+                            //* NAVEGATION BUTTON and Screen TITLE
+                            //*
+                            Container(
+                              padding: EdgeInsets.only(
+                                  left: 0, right: 0, top: 24, bottom: 0),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 22,
+                                      right: 22,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CustomClipRRect.customClipRRect(
+                                          colors: (Provider.of<ThemeNotifier>(
                                                           context)
                                                       .getThemeMode ==
                                                   'dark')
-                                              ? KMainOrange
-                                              : Color(0xFF071F86),
-                                          size: 33,
-                                          onStartIconPress: () {
-                                            if (categoriesBox.isNotEmpty) {
+                                              ? [
+                                                  Colors.white24,
+                                                  Colors.white12,
+                                                ]
+                                              : [
+                                                  Colors.white,
+                                                  Colors.white10,
+                                                ],
+                                          child: AnimateIcons(
+                                            controller: _animateIconController,
+                                            startIcon: categoriesBox.isNotEmpty
+                                                ? Icons.search
+                                                : Icons.add,
+                                            startTooltip: 'Icons.add',
+                                            endTooltip: 'Icons.close',
+                                            endIcon: Icons.close,
+                                            color: (Provider.of<ThemeNotifier>(
+                                                            context)
+                                                        .getThemeMode ==
+                                                    'dark')
+                                                ? KMainOrange
+                                                : Color(0xFF071F86),
+                                            size: 33,
+                                            onStartIconPress: () {
+                                              if (categoriesBox.isNotEmpty) {
+                                                setState(() {
+                                                  topBorderRadius = 50;
+                                                  yOffsetFrontContainer =
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height /
+                                                          2.6;
+                                                  //* flag to signal search page is open
+                                                  Hive.box('flags').putAt(
+                                                      1,
+                                                      Flags(
+                                                          name:
+                                                              'searchPageIsOpen',
+                                                          value: true));
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  topBorderRadius = 50;
+                                                  topBorderRadiusContainer = 50;
+
+                                                  yOffsetPage =
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height /
+                                                          1.15;
+                                                });
+                                              }
+                                              return true;
+                                            },
+                                            onEndIconPress: () {
                                               setState(() {
-                                                topBorderRadius = 50;
-                                                yOffsetFrontContainer =
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .height /
-                                                        2.6;
-                                                //* flag to signal search page is open
+                                                topBorderRadius = 0;
+                                                topBorderRadiusContainer = 0;
+                                                yOffsetPage = 0;
+                                                yOffsetFrontContainer = 0;
+
+                                                //* flag to signal search page is closed
                                                 Hive.box('flags').putAt(
                                                     1,
                                                     Flags(
                                                         name:
                                                             'searchPageIsOpen',
-                                                        value: true));
+                                                        value: false));
+                                                Hive.box('flags').putAt(
+                                                    4,
+                                                    Flags(
+                                                        name:
+                                                            'searchInProgress',
+                                                        value: false,
+                                                        data: null));
                                               });
-                                            } else {
-                                              setState(() {
-                                                topBorderRadius = 50;
-                                                topBorderRadiusContainer = 50;
-
-                                                yOffsetPage =
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .height /
-                                                        1.15;
-                                              });
-                                            }
-                                            return true;
-                                          },
-                                          onEndIconPress: () {
-                                            setState(() {
-                                              topBorderRadius = 0;
-                                              topBorderRadiusContainer = 0;
-                                              yOffsetPage = 0;
-                                              yOffsetFrontContainer = 0;
-
-                                              //* flag to signal search page is closed
-                                              Hive.box('flags').putAt(
-                                                  1,
-                                                  Flags(
-                                                      name: 'searchPageIsOpen',
-                                                      value: false));
-                                              Hive.box('flags').putAt(
-                                                  4,
-                                                  Flags(
-                                                      name: 'searchInProgress',
-                                                      value: false,
-                                                      data: null));
-                                            });
-                                            return true;
-                                          },
+                                              return true;
+                                            },
+                                          ),
                                         ),
-                                      ),
-                                      //*
-                                      //* Title
-                                      //*
-                                      Text(
-                                        'checKit',
-                                        style: (Provider.of<ThemeNotifier>(
-                                                        context)
-                                                    .getThemeMode ==
-                                                'dark')
-                                            ? Constant.KDashboardScreenTitleDark
-                                            : Constant.KDashboardScreenTitle,
-                                      ),
-                                    ],
+                                        //*
+                                        //* Title
+                                        //*
+                                        Text(
+                                          'checKit',
+                                          style: (Provider.of<ThemeNotifier>(
+                                                          context)
+                                                      .getThemeMode ==
+                                                  'dark')
+                                              ? Constant
+                                                  .KDashboardScreenTitleDark
+                                              : Constant.KDashboardScreenTitle,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          //*
-                          //* Category Carousel
-                          //*
-                          Expanded(
-                            child: Container(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  ValueListenableBuilder(
-                                      valueListenable:
-                                          Hive.box('flags').listenable(),
-                                      builder: (context, box, widget) {
-                                        return ValueListenableBuilder(
-                                            valueListenable:
-                                                Hive.box('categories')
-                                                    .listenable(),
-                                            builder: (context, box, widget) {
-                                              return ValueListenableBuilder(
-                                                  valueListenable:
-                                                      tasksBox.listenable(),
-                                                  builder:
-                                                      (context, box, widget) {
-                                                    return categoryCarousel();
-                                                  });
-                                            });
-                                      }),
-
-                                  // Row(
-                                  //   mainAxisAlignment: MainAxisAlignment.center,
-                                  //   children: carouselList.map((item) {
-                                  //     int index = carouselList.indexOf(item);
-                                  //     return Container(
-                                  //       width: 8.0,
-                                  //       height: 8.0,
-                                  //       margin: EdgeInsets.symmetric(
-                                  //           vertical: 10.0, horizontal: 2.0),
-                                  //       decoration: BoxDecoration(
-                                  //         shape: BoxShape.circle,
-                                  //         color: _current == index
-                                  //             ? Color.fromRGBO(0, 0, 0, 0.9)
-                                  //             : Color.fromRGBO(0, 0, 0, 0.4),
-                                  //       ),
-                                  //     );
-                                  //   }).toList(),
-                                  // ),
                                 ],
                               ),
                             ),
-                          )
-                        ],
-                      ),
+                            //*
+                            //* Category Carousel
+                            //*
+                            Expanded(
+                              child: Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    ValueListenableBuilder(
+                                        valueListenable:
+                                            Hive.box('flags').listenable(),
+                                        builder: (context, box, widget) {
+                                          return ValueListenableBuilder(
+                                              valueListenable:
+                                                  Hive.box('categories')
+                                                      .listenable(),
+                                              builder: (context, box, widget) {
+                                                return ValueListenableBuilder(
+                                                    valueListenable:
+                                                        tasksBox.listenable(),
+                                                    builder:
+                                                        (context, box, widget) {
+                                                      return categoryCarousel();
+                                                    });
+                                              });
+                                        }),
+
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.center,
+                                    //   children: carouselList.map((item) {
+                                    //     int index = carouselList.indexOf(item);
+                                    //     return Container(
+                                    //       width: 8.0,
+                                    //       height: 8.0,
+                                    //       margin: EdgeInsets.symmetric(
+                                    //           vertical: 10.0, horizontal: 2.0),
+                                    //       decoration: BoxDecoration(
+                                    //         shape: BoxShape.circle,
+                                    //         color: _current == index
+                                    //             ? Color.fromRGBO(0, 0, 0, 0.9)
+                                    //             : Color.fromRGBO(0, 0, 0, 0.4),
+                                    //       ),
+                                    //     );
+                                    //   }).toList(),
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
                     ),
                   ),
                 ),
-                // Container(
+              ),
+              // Container(
 
-                // ),
-              ],
-            )),
+              // ),
+            ])),
       ),
     );
   }

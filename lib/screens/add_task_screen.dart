@@ -350,11 +350,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     child: CarouselSlider(
                       carouselController: _carouselController,
                       options: CarouselOptions(
-                          viewportFraction: .38,
-                          aspectRatio: 11,
-                          enlargeCenterPage: true,
-                          enableInfiniteScroll: false,
-                          onPageChanged: (index, reason) {
+                        viewportFraction: .38,
+                        aspectRatio: 11,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: false,
+                        onPageChanged: (index, reason) {
+                          if (carouselCategoriesList.isNotEmpty) {
                             setState(() {
                               selectedCategory = (carouselCategoriesList
                                       .elementAt(index) as CarouselItem)
@@ -370,7 +371,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                           .categoryTitle));
                             });
                             // print(selectedCategory);
-                          }),
+                          }
+                        },
+                      ),
                       items: carouselCategoriesList,
                     ),
                   ),

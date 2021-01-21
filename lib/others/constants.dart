@@ -103,7 +103,7 @@ const TextStyle KDashboardScreenTitle = TextStyle(
 
 const TextStyle KDashboardScreenTitleDark = TextStyle(
   fontFamily: 'FrauncesBoldItalic',
-  color: KMainOrange,
+  color: Colors.white,
   fontSize: 43,
   shadows: [
     Shadow(
