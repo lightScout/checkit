@@ -32,8 +32,7 @@ class CarouselItemForTaskScreen extends StatefulWidget {
 }
 
 class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
-  bool isMenuOpen = false;
-
+  bool isSliderMenuOpen = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -67,7 +66,7 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   //*
-                  //* Title, full-screen mode and delete categoru button
+                  //* Title & Slider Menu
                   //*
 
                   Row(
@@ -89,74 +88,91 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                                         (Provider.of<ThemeNotifier>(context)
                                                     .getThemeMode ==
                                                 'dark')
-                                            ? KMainPurple
+                                            ? Colors.white
                                             : Colors.blue,
                                         Colors.white,
                                       ]),
                                   borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(30),
+                                    topRight: Radius.circular(0),
                                     bottomLeft: Radius.circular(50),
-                                    bottomRight: Radius.circular(30),
+                                    bottomRight: Radius.circular(50),
                                     topLeft: Radius.circular(15),
                                   ),
                                 ),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(14.0),
-                                      child: Text(
-                                        isMenuOpen ? '' : widget.category,
-                                        style: (Provider.of<ThemeNotifier>(
-                                                        context)
-                                                    .getThemeMode ==
-                                                'dark')
-                                            ? KCarouseItemForTaskScreenTitleStyleDark
-                                            : KCarouseItemForTaskScreenTitleStyle,
+                                    Opacity(
+                                      opacity: isSliderMenuOpen ? .05 : 1.0,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(14.0),
+                                        child: Text(
+                                          widget.category,
+                                          style: (Provider.of<ThemeNotifier>(
+                                                          context)
+                                                      .getThemeMode ==
+                                                  'dark')
+                                              ? KCarouseItemForTaskScreenTitleStyleDark
+                                              : KCarouseItemForTaskScreenTitleStyle,
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              SliderSideMenu(
-                                  function: () {
-                                    setState(() {
-                                      isMenuOpen = !isMenuOpen;
-                                    });
-                                    // print(isMenuOpen);
-                                  },
-                                  parentStartColor: Colors.white54,
-                                  parentEndColor: Colors.white54,
-                                  childrenData: [
-                                    MenuItem(
-                                      icon: Icon(
-                                        Icons.delete,
-                                        color: KMainPurple,
+                              //* slider menu
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 4.0),
+                                child: SliderSideMenu(
+                                    function: () {
+                                      setState(() {
+                                        isSliderMenuOpen = !isSliderMenuOpen;
+                                      });
+                                    },
+                                    parentStartColor: Colors.white54,
+                                    parentEndColor: Colors.white54,
+                                    childrenData: [
+                                      MenuItem(
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: (Provider.of<ThemeNotifier>(
+                                                          context)
+                                                      .getThemeMode ==
+                                                  'dark')
+                                              ? Colors.white
+                                              : KMainPurple,
+                                        ),
+                                        label: Text(""),
+                                        onPressed: () {
+                                          widget.function();
+                                        },
                                       ),
-                                      label: Text(""),
-                                      onPressed: () {
-                                        widget.function();
-                                      },
-                                    ),
-                                    MenuItem(
-                                      icon: Icon(
-                                        Icons.open_in_full,
-                                        color: KMainPurple,
-                                      ),
-                                      label: Text(""),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                FullScreenPage(
-                                              category: widget.category,
+                                      MenuItem(
+                                        icon: Icon(
+                                          Icons.open_in_full,
+                                          color: (Provider.of<ThemeNotifier>(
+                                                          context)
+                                                      .getThemeMode ==
+                                                  'dark')
+                                              ? Colors.white
+                                              : KMainPurple,
+                                        ),
+                                        label: Text(""),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FullScreenPage(
+                                                category: widget.category,
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    )
-                                  ],
-                                  description: "Sample tooltip message")
+                                          );
+                                        },
+                                      )
+                                    ],
+                                    description: "Category tools"),
+                              )
                             ],
                           ),
                         )
@@ -165,6 +181,7 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                   SizedBox(
                     height: 5,
                   ),
+                  //* Task list
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(

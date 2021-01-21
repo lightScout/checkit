@@ -17,7 +17,7 @@ class CirclePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     double centerX = size.width / 2.0;
-    double centerY = size.height / .5;
+    double centerY = size.height / .99;
     double maxRadius = hypot(centerX, centerY) - 10;
 
     double currentRadius = waveRadius;

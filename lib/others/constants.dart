@@ -23,7 +23,7 @@ const LinearGradient KDashboardBGGradient = LinearGradient(
 const LinearGradient KDashboardBGGradientDark = LinearGradient(
   begin: Alignment.topRight,
   end: Alignment.bottomLeft,
-  colors: [Color(0xFF13111B), Color(0xFF13111B)],
+  colors: [Color(0xFF54525E), Color(0xFF13111B)],
 );
 
 const LinearGradient KCarouselItemForTaskScreenBGGradient = LinearGradient(
@@ -34,8 +34,20 @@ const LinearGradient KCarouselItemForTaskScreenBGGradient = LinearGradient(
 const LinearGradient KCarouselItemForTaskScreenBGGradientDark = LinearGradient(
   begin: Alignment.center,
   end: Alignment.bottomLeft,
-  colors: [Color(0xFF13111B), Color(0xFF13111B)],
+  colors: [
+    Colors.transparent,
+    Colors.transparent,
+  ],
 );
+
+const List<Color> KButtonsBGGrandientColors = [
+  Colors.white,
+  Colors.white10,
+];
+const List<Color> KButtonsBGGrandientColorsDark = [
+  Color(0xFFFFB74D),
+  Color(0xFFEF6C00),
+];
 
 const TextStyle KCarouseItemForTaskScreenTitleStyle = TextStyle(
   color: KMainPurple,
@@ -77,10 +89,7 @@ const BoxShadow KCarouselItemBoxShadow = BoxShadow(
 );
 
 const BoxShadow KCarouselItemBoxShadowDark = BoxShadow(
-  color: Colors.black,
-  offset: Offset(0.0, 0.0), //(x,y)
-  blurRadius: 11.0,
-  spreadRadius: 5.0,
+  color: Colors.transparent,
 );
 
 const TextStyle KDashboardScreenTitle = TextStyle(

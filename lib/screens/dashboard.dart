@@ -479,16 +479,16 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                       width: 10,
                     ),
                     boxShadow: [
-                      // BoxShadow(
-                      //   color: Colors.pink[300],
-                      //   offset: Offset(0.0, -4.0), //(x,y)
-                      //   blurRadius: 100.0,
-                      // ),
-                      // BoxShadow(
-                      //   color: Colors.pink[700],
-                      //   offset: Offset(0.0, -2.0), //(x,y)
-                      //   blurRadius: 11.1,
-                      // ),
+                      BoxShadow(
+                        color: Colors.pink[300],
+                        offset: Offset(0.0, -4.0), //(x,y)
+                        blurRadius: 100.0,
+                      ),
+                      BoxShadow(
+                        color: Colors.pink[700],
+                        offset: Offset(0.0, -2.0), //(x,y)
+                        blurRadius: 11.1,
+                      ),
                     ],
                   ),
                   child: Container(
@@ -501,12 +501,13 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                         ),
                     child: Stack(
                       children: [
-                        //*
+                        //* Custom Paint
                         CustomPaint(
                           size: Size(double.infinity, double.infinity),
                           painter: CirclePainter(waveRadius),
                           child: Container(),
                         ),
+                        //* Page Content
                         Column(
                           children: <Widget>[
                             //*
@@ -534,14 +535,8 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                                           context)
                                                       .getThemeMode ==
                                                   'dark')
-                                              ? [
-                                                  Colors.white24,
-                                                  Colors.white12,
-                                                ]
-                                              : [
-                                                  Colors.white,
-                                                  Colors.white10,
-                                                ],
+                                              ? KButtonsBGGrandientColorsDark
+                                              : KButtonsBGGrandientColors,
                                           child: AnimateIcons(
                                             controller: _animateIconController,
                                             startIcon: categoriesBox.isNotEmpty
@@ -554,7 +549,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                                             context)
                                                         .getThemeMode ==
                                                     'dark')
-                                                ? KMainOrange
+                                                ? Colors.white
                                                 : Color(0xFF071F86),
                                             size: 33,
                                             onStartIconPress: () {

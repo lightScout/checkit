@@ -1,9 +1,11 @@
 import 'package:ciao_app/model/flags.dart';
+import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 
 enum Direction { LTR, RTL }
 
@@ -58,7 +60,7 @@ class _SliderSideMenuState extends State<SliderSideMenu>
   @override
   initState() {
     _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+        AnimationController(vsync: this, duration: Duration(milliseconds: 150))
           ..addListener(() {
             setState(() {});
           });
@@ -101,10 +103,17 @@ class _SliderSideMenuState extends State<SliderSideMenu>
           ? Alignment.bottomRight
           : Alignment.bottomLeft,
       child: Container(
-          width: 45,
-          height: viewHeight,
+          width: 35,
+          height: 54,
           decoration: BoxDecoration(
-              color: _buttonColor.value,
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors:
+                    (Provider.of<ThemeNotifier>(context).getThemeMode == 'dark')
+                        ? KButtonsBGGrandientColorsDark
+                        : KButtonsBGGrandientColors,
+              ),
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(
                       widget._direction == Direction.RTL ? viewHeight : 0.0),
@@ -112,8 +121,7 @@ class _SliderSideMenuState extends State<SliderSideMenu>
                       widget._direction == Direction.RTL ? viewHeight : 0.0),
                   topRight: Radius.circular(
                       widget._direction == Direction.RTL ? 0.0 : viewHeight),
-                  bottomRight: Radius.circular(
-                      widget._direction == Direction.RTL ? 0.0 : viewHeight))),
+                  bottomRight: Radius.circular(500))),
           child: IconButton(
             icon: RotationTransition(
               turns: _animateIcon,
@@ -121,7 +129,10 @@ class _SliderSideMenuState extends State<SliderSideMenu>
                 widget._direction == Direction.RTL
                     ? Icons.arrow_back_ios
                     : Icons.arrow_forward_ios,
-                color: KMainPurple,
+                color:
+                    (Provider.of<ThemeNotifier>(context).getThemeMode == 'dark')
+                        ? Colors.white
+                        : KMainPurple,
               ),
             ),
             onPressed: animate,
@@ -157,11 +168,21 @@ class _SliderSideMenuState extends State<SliderSideMenu>
             opacity: _translateButton.value,
             duration: Duration(milliseconds: 500),
             child: Container(
-              height: viewHeight,
+              height: viewHeight + 7,
+              width: 230,
               decoration: BoxDecoration(
-                  color: Colors.white54,
-                  borderRadius:
-                      BorderRadius.only(topLeft: Radius.circular(15))),
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                            'dark')
+                        ? KButtonsBGGrandientColorsDark
+                        : KButtonsBGGrandientColors,
+                  ),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      bottomLeft: Radius.circular(50),
+                      bottomRight: Radius.circular(50))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: _generateMenuItems(),
