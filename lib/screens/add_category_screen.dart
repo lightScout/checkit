@@ -347,7 +347,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                     mainAxisSize: MainAxisSize.max,
                                     children: <Widget>[
                                       SizedBox(
-                                        height: 30,
+                                        height: 28,
                                       ),
 
                                       //*                              <--- FIRST: TEXTFEILD 'ADD CATEGORY HERE'

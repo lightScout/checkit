@@ -1,5 +1,7 @@
+import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CarouselItem extends StatelessWidget {
   final String categoryTitle;
@@ -29,10 +31,13 @@ class CarouselItem extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomCenter,
-              colors: [
-                Colors.indigo[900],
-                Colors.purple,
-              ]),
+              colors:
+                  (Provider.of<ThemeNotifier>(context).getThemeMode == 'dark')
+                      ? KButtonsBGGrandientColorsDark
+                      : [
+                          Colors.indigo[900],
+                          Colors.purple,
+                        ]),
           borderRadius: BorderRadius.all(
             Radius.circular(50),
           ),

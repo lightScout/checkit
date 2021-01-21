@@ -615,16 +615,16 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                         //*
                                         //* Title
                                         //*
-                                        Text(
-                                          'checKit',
-                                          style: (Provider.of<ThemeNotifier>(
-                                                          context)
-                                                      .getThemeMode ==
-                                                  'dark')
-                                              ? Constant
-                                                  .KDashboardScreenTitleDark
-                                              : Constant.KDashboardScreenTitle,
-                                        ),
+                                        // Text(
+                                        //   'checKit',
+                                        //   style: (Provider.of<ThemeNotifier>(
+                                        //                   context)
+                                        //               .getThemeMode ==
+                                        //           'dark')
+                                        //       ? Constant
+                                        //           .KDashboardScreenTitleDark
+                                        //       : Constant.KDashboardScreenTitle,
+                                        // ),
                                       ],
                                     ),
                                   ),

@@ -2,7 +2,6 @@ library constants;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'colors.dart';
 
 const Color KMainPurple = Color(0xFF071F86);
 const Color KBabyBlue = Color(0xFF9bdeff);
