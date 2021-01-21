@@ -1,7 +1,9 @@
+import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class TaskTile extends StatefulWidget {
   final bool isBgGradientInverted;
@@ -11,9 +13,6 @@ class TaskTile extends StatefulWidget {
   final Function isCheckCallBack;
   final String category;
   final DateTime dueDate;
-  final Color _checkedColor1 = Color(0xFF00458E);
-  final Color _checkedColor2 = Color(0xFF000328);
-  final Color _uncheckedColor1 = Colors.indigoAccent;
 
   TaskTile(
       {this.title,
@@ -44,11 +43,9 @@ class _TaskTileState extends State<TaskTile> {
               margin: const EdgeInsets.only(bottom: 6.0), //
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.indigoAccent,
-                    offset: Offset(22.2, 11.1), //(x,y)
-                    blurRadius: 33.3,
-                  ),
+                  (Provider.of<ThemeNotifier>(context).getThemeMode == 'dark')
+                      ? KTaskTileBoxShadowDark
+                      : KTaskTileBoxShadow,
                 ],
                 borderRadius: BorderRadius.all(
                   Radius.circular(0),
@@ -81,21 +78,14 @@ class _TaskTileState extends State<TaskTile> {
                                       KMainPurple,
                                       Colors.cyan,
                                     ])
-                          : widget.isChecked
-                              ? LinearGradient(
-                                  begin: Alignment.topRight,
-                                  end: Alignment.bottomLeft,
-                                  colors: [
-                                      widget._checkedColor1,
-                                      widget._checkedColor2
-                                    ])
-                              : LinearGradient(
-                                  begin: Alignment.topRight,
-                                  end: Alignment.bottomLeft,
-                                  colors: [
-                                      KTopLinearGradientColor,
-                                      widget._uncheckedColor1
-                                    ]),
+                          : (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                                  'dark')
+                              ? widget.isChecked
+                                  ? KTaskTileForDashboardCheckedDark
+                                  : KTaskTileForDashboardDark
+                              : widget.isChecked
+                                  ? KTaskTileForDashboardChecked
+                                  : KTaskTileForDashboard,
                     ),
                     child: ListTile(
 //            * Task Title

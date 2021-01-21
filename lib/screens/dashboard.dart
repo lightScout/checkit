@@ -249,7 +249,10 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                 ringDiameter: MediaQuery.of(context).size.width * 0.75,
                 ringWidth: (MediaQuery.of(context).size.width * 0.7) * 0.22,
                 animationDuration: Duration(milliseconds: 300),
-                fabCloseColor: Color(0xFF071F86),
+                fabCloseColor:
+                    (Provider.of<ThemeNotifier>(context).getThemeMode == 'dark')
+                        ? KMainOrange
+                        : Color(0xFF071F86),
                 fabElevation: 6,
                 fabMargin: EdgeInsets.only(right: 47, bottom: 40),
                 fabOpenColor: Color(0xFFFF1d1d),

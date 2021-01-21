@@ -1,4 +1,5 @@
 import 'package:ciao_app/model/theme_manager.dart';
+import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/screens/info_screen.dart';
 import 'package:ciao_app/widgets/app_reset_alert.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     ThemeNotifier _theme = Provider.of<ThemeNotifier>(context);
+    bool _isDarkMode = _theme.getThemeMode == 'dark' ? true : false;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 22, vertical: 22),
@@ -76,34 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
           ),
-          Container(
-            child: Row(
-              children: [
-                RaisedButton(onPressed: () {
-                  bool _isDarkMode =
-                      _theme.getThemeMode == 'dark' ? true : false;
-                  if (_isDarkMode) {
-                    _theme.setLightMode();
-                  } else if (!_isDarkMode) {
-                    _theme.setDarkMode();
-                  }
-                }),
-                // ListTile(
-                //   leading: Icon(
-                //     Icons.star,
-                //     color: Colors.white,
-                //   ),
-                //   title: Text(
-                //     'Dark mode!',
-                //     style: TextStyle(
-                //         fontFamily: 'PressStart2P',
-                //         color: Colors.white,
-                //         fontSize: 12),
-                //   ),
-                // ),
-              ],
-            ),
-          ),
+
           ListTile(
             leading: Icon(
               Icons.star,
@@ -116,7 +91,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   color: Colors.white,
                   fontSize: 12),
             ),
-          )
+          ),
+          ListTile(
+            leading: Switch(
+              inactiveTrackColor: Colors.white12,
+              activeColor: KMainOrange,
+              value: _isDarkMode,
+              onChanged: (value) {
+                if (_isDarkMode) {
+                  _theme.setLightMode();
+                  _isDarkMode = false;
+                } else if (!_isDarkMode) {
+                  _theme.setDarkMode();
+                  _isDarkMode = true;
+                }
+              },
+            ),
+            title: Text(
+              'Dark mode',
+              style: TextStyle(
+                  fontFamily: 'PressStart2P',
+                  color: Colors.white,
+                  fontSize: 12),
+            ),
+          ),
+
 //          SizedBox(
 //            height: 20,
 //          ),

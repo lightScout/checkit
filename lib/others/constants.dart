@@ -40,6 +40,45 @@ const LinearGradient KCarouselItemForTaskScreenBGGradientDark = LinearGradient(
   ],
 );
 
+//! Task title
+
+//* Linear Gradients
+const LinearGradient KTaskTileForDashboard = LinearGradient(
+    begin: Alignment.topRight,
+    end: Alignment.bottomLeft,
+    colors: [KTopLinearGradientColor, Colors.indigoAccent]);
+
+const LinearGradient KTaskTileForDashboardDark = LinearGradient(
+    begin: Alignment.topRight,
+    end: Alignment.bottomLeft,
+    colors: [
+      Color(0xFFFFB74D),
+      Color(0xFFEF6C00),
+    ]);
+
+const LinearGradient KTaskTileForDashboardChecked = LinearGradient(
+    begin: Alignment.topRight,
+    end: Alignment.bottomLeft,
+    colors: [Color(0xFF00458E), Color(0xFF000328)]);
+
+const LinearGradient KTaskTileForDashboardCheckedDark = LinearGradient(
+    begin: Alignment.topRight,
+    end: Alignment.bottomLeft,
+    colors: [Colors.white10, Colors.white10]);
+
+//* Box Shadows
+
+const BoxShadow KTaskTileBoxShadow = BoxShadow(
+  color: Colors.indigoAccent,
+  offset: Offset(22.2, 11.1), //(x,y)
+  blurRadius: 33.3,
+);
+const BoxShadow KTaskTileBoxShadowDark = BoxShadow(
+  color: Colors.transparent,
+);
+
+//! Buttons BG Gradient
+
 const List<Color> KButtonsBGGrandientColors = [
   Colors.white,
   Colors.white10,
@@ -48,39 +87,6 @@ const List<Color> KButtonsBGGrandientColorsDark = [
   Color(0xFFFFB74D),
   Color(0xFFEF6C00),
 ];
-
-const TextStyle KCarouseItemForTaskScreenTitleStyle = TextStyle(
-  color: KMainPurple,
-  fontFamily: 'DMSerifTextRegular',
-  fontWeight: FontWeight.bold,
-  fontSize: 22,
-  shadows: [
-    Shadow(
-      blurRadius: 2.0,
-      color: Colors.blue,
-      offset: Offset(3.3, 3.3),
-    ),
-    Shadow(
-      color: Colors.white,
-      blurRadius: 6.0,
-      offset: Offset(2.0, 2.0),
-    ),
-  ],
-);
-
-const TextStyle KCarouseItemForTaskScreenTitleStyleDark = TextStyle(
-  color: Colors.white,
-  fontFamily: 'DMSerifTextRegular',
-  fontWeight: FontWeight.bold,
-  fontSize: 22,
-  shadows: [
-    Shadow(
-      color: Colors.white24,
-      blurRadius: 1.0,
-      offset: Offset(4.0, 4.0),
-    ),
-  ],
-);
 
 const BoxShadow KCarouselItemBoxShadow = BoxShadow(
   color: Color(0xFF448AFF),
@@ -172,6 +178,39 @@ const TextStyle KAddTaskScreenTitles = TextStyle(
   fontWeight: FontWeight.bold,
   fontFamily: 'PressStart2P',
   shadows: [],
+);
+
+const TextStyle KCarouseItemForTaskScreenTitleStyle = TextStyle(
+  color: KMainPurple,
+  fontFamily: 'DMSerifTextRegular',
+  fontWeight: FontWeight.bold,
+  fontSize: 22,
+  shadows: [
+    Shadow(
+      blurRadius: 2.0,
+      color: Colors.blue,
+      offset: Offset(3.3, 3.3),
+    ),
+    Shadow(
+      color: Colors.white,
+      blurRadius: 6.0,
+      offset: Offset(2.0, 2.0),
+    ),
+  ],
+);
+
+const TextStyle KCarouseItemForTaskScreenTitleStyleDark = TextStyle(
+  color: Colors.white,
+  fontFamily: 'DMSerifTextRegular',
+  fontWeight: FontWeight.bold,
+  fontSize: 22,
+  shadows: [
+    Shadow(
+      color: Colors.white24,
+      blurRadius: 1.0,
+      offset: Offset(4.0, 4.0),
+    ),
+  ],
 );
 
 const OutlineInputBorder KInputFieldRoundedCorners = OutlineInputBorder(

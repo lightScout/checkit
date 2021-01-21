@@ -93,7 +93,7 @@ class _CarouselItemForTaskScreenState extends State<CarouselItemForTaskScreen> {
                                         Colors.white,
                                       ]),
                                   borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(0),
+                                    topRight: Radius.circular(15),
                                     bottomLeft: Radius.circular(50),
                                     bottomRight: Radius.circular(50),
                                     topLeft: Radius.circular(15),
