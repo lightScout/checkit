@@ -83,11 +83,17 @@ class _SearchScreenState extends State<SearchScreen> {
             TextField(
               textCapitalization: TextCapitalization.sentences,
               controller: _textFieldController,
-              cursorColor: Colors.white,
+              cursorColor:
+                  (Provider.of<ThemeNotifier>(context).getThemeMode == 'dark')
+                      ? Colors.white
+                      : KMainPurple,
               style: Klogo.copyWith(
                 fontSize: 22,
-                fontFamily: 'DMSerifTextRegular',
-                color: Colors.white,
+                fontFamily: KTextFontFamily,
+                color:
+                    (Provider.of<ThemeNotifier>(context).getThemeMode == 'dark')
+                        ? Colors.white
+                        : KMainPurple,
                 shadows: [],
               ),
               maxLines: 1,
@@ -95,7 +101,10 @@ class _SearchScreenState extends State<SearchScreen> {
               decoration: InputDecoration(
                 hintText: 'Search here',
                 hintStyle: TextStyle(
-                  color: Colors.grey[350],
+                  color: (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                          'dark')
+                      ? Colors.white
+                      : KMainPurple.withOpacity(.5),
                 ),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -104,7 +113,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.white,
+                    color: (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                            'dark')
+                        ? Colors.white
+                        : KMainPurple,
                   ),
                 ),
                 filled: false,
@@ -158,6 +170,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               noNameAlert(context, 'Search');
                             } else {
                               search(newSearchName);
+                              FocusScope.of(context).unfocus();
                               //* flag for search in progress
                               Hive.box('flags').putAt(
                                   4,
