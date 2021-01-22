@@ -10,6 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:dynamic_overflow_menu_bar/dynamic_overflow_menu_bar.dart';
 import 'package:provider/provider.dart';
 import 'add_task_screen2.dart';
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 
 class FullScreenPage extends StatefulWidget {
   final String category;
@@ -28,6 +29,8 @@ class _FullScreenPageState extends State<FullScreenPage> {
   bool isPageMinimized = false;
   double topBorderRadius = 0;
   final GlobalKey<ListBuilderState> _listBuilderKey = GlobalKey();
+  CustomPopupMenuController _controller = CustomPopupMenuController();
+  List<ItemModel> menuItems;
 
   @override
   void initState() {
@@ -38,6 +41,31 @@ class _FullScreenPageState extends State<FullScreenPage> {
     _titleTextController.addListener(() {
       setState(() {});
     });
+
+    menuItems = [
+      ItemModel('Add task', Icons.add_rounded, () {
+        if (isPageMinimized) {
+          setState(() {
+            isPageMinimized = false;
+            yOffset = 0;
+            topBorderRadius = 0;
+          });
+        } else {
+          setState(() {
+            topBorderRadius = 50;
+            yOffset = MediaQuery.of(context).size.height / 2.5;
+            isPageMinimized = true;
+          });
+        }
+      }),
+      ItemModel('checKit all tasks', Icons.done_all_rounded, () {
+        _toggleAllTask();
+      }),
+      ItemModel('Delete all tasks', Icons.delete_rounded, () {
+        deleteCategoryAlert(
+            context, _listBuilderKey.currentState.emptyList, widget.category);
+      }),
+    ];
   }
 
   @override
@@ -60,82 +88,71 @@ class _FullScreenPageState extends State<FullScreenPage> {
           ),
           actions: <OverFlowMenuItem>[
             OverFlowMenuItem(
-                child: IconButton(
-                  tooltip: "Delete Category",
-                  icon: Icon(
-                    Icons.delete_forever,
-                    size: 33,
-                    color: KMainRed,
+              onPressed: () {},
+              label: 'Menu',
+              child: CustomPopupMenu(
+                showArrow: false,
+                child: Container(
+                  child: Icon(
+                    Icons.more_vert_rounded,
+                    size: 26,
                   ),
-                  onPressed: () {
-                    deleteCategoryAlert(
-                        context,
-                        _listBuilderKey.currentState.emptyList,
-                        widget.category);
-                  },
+                  padding: EdgeInsets.all(20),
                 ),
-                label: "Delete all",
-                onPressed: () {}),
-            OverFlowMenuItem(
-              child: IconButton(
-                splashColor: Color(0xFF000328).withBlue(-20),
-                splashRadius: 22.2,
-                tooltip: 'checKit all',
-                icon: Icon(
-                  Icons.done_all,
-                  size: 33,
-                  color: KPersinanGreen,
+                menuBuilder: () => ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    color: const Color(0xFF4C4C4C),
+                    child: IntrinsicWidth(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: menuItems
+                            .map(
+                              (item) => GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onTap: () {
+                                  _controller.hideMenu();
+                                  item.function();
+                                },
+                                child: Container(
+                                  height: 40,
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        item.icon,
+                                        size: 26,
+                                        color: Colors.white,
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          margin: EdgeInsets.only(left: 10),
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: Text(
+                                            item.title,
+                                            style: TextStyle(
+                                              fontFamily: KTextFontFamily,
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  _toggleAllTask();
-                },
+                pressType: PressType.singleClick,
+                verticalMargin: -10,
+                controller: _controller,
               ),
-              label: 'checKit all',
-              onPressed: () {
-                _toggleAllTask();
-              },
-            ),
-            OverFlowMenuItem(
-              child: IconButton(
-                  tooltip: 'Add task',
-                  splashColor: Color(0xFF000328).withBlue(-20),
-                  splashRadius: 22.2,
-                  onPressed: () {
-                    if (isPageMinimized) {
-                      setState(() {
-                        isPageMinimized = false;
-                        yOffset = 0;
-                        topBorderRadius = 0;
-                      });
-                    } else {
-                      setState(() {
-                        topBorderRadius = 50;
-                        yOffset = MediaQuery.of(context).size.height / 2.5;
-                        isPageMinimized = true;
-                      });
-                    }
-                  },
-                  icon: Icon(
-                    Icons.add,
-                    size: 33,
-                    color: Colors.blueAccent,
-                  )),
-              label: 'Add Task',
-              onPressed: () {
-                if (isPageMinimized) {
-                  setState(() {
-                    isPageMinimized = false;
-                    yOffset = 0;
-                    topBorderRadius = 0;
-                  });
-                } else {
-                  setState(() {
-                    topBorderRadius = 50;
-                    yOffset = MediaQuery.of(context).size.height / 2.5;
-                    isPageMinimized = true;
-                  });
-                }
-              },
             ),
           ],
         ),
@@ -241,4 +258,11 @@ class _FullScreenPageState extends State<FullScreenPage> {
       });
     }
   }
+}
+
+class ItemModel {
+  String title;
+  IconData icon;
+  Function function;
+  ItemModel(this.title, this.icon, this.function);
 }

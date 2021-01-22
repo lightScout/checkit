@@ -1,20 +1,16 @@
 import 'package:animate_icons/animate_icons.dart';
-
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/widgets/info_alert.dart';
-
 import 'package:ciao_app/widgets/no_name_alert.dart';
-import 'package:ciao_app/widgets/title_bubble.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ciao_app/widgets/custom_cliprrect.dart';
 import 'package:provider/provider.dart';
-import 'package:pattern_formatter/pattern_formatter.dart';
 
 class AddCategoryScreen extends StatefulWidget {
   const AddCategoryScreen({Key key}) : super(key: key);
