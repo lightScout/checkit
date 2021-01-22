@@ -1,4 +1,5 @@
 import 'package:ciao_app/model/task.dart';
+import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/widgets/delete_all_tasks_alert.dart';
 
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:dynamic_overflow_menu_bar/dynamic_overflow_menu_bar.dart';
+import 'package:provider/provider.dart';
 import 'add_task_screen2.dart';
 
 class FullScreenPage extends StatefulWidget {
@@ -174,10 +176,17 @@ class _FullScreenPageState extends State<FullScreenPage> {
                       ),
                       child: Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [Colors.indigo[900], Colors.indigo]),
+                            gradient: (Provider.of<ThemeNotifier>(context)
+                                        .getThemeMode ==
+                                    'dark')
+                                ? KBGGradientDark
+                                : LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                        Colors.indigo[900],
+                                        Colors.indigo
+                                      ]),
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(50),
                               topLeft: Radius.circular(50),
@@ -194,7 +203,12 @@ class _FullScreenPageState extends State<FullScreenPage> {
                                 key: _listBuilderKey,
                                 listCategory: category,
                                 tasksBox: Hive.box('tasks'),
-                                isBgGradientInverted: true,
+                                isBgGradientInverted:
+                                    (Provider.of<ThemeNotifier>(context)
+                                                .getThemeMode ==
+                                            'dark')
+                                        ? false
+                                        : true,
                                 isTaskScreen: false,
                               );
                             },

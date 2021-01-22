@@ -1,7 +1,10 @@
 import 'package:animate_icons/animate_icons.dart';
 
 import 'package:ciao_app/model/task.dart';
+import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/others/constants.dart';
+import 'package:ciao_app/widgets/custom_cliprrect.dart';
+import 'package:ciao_app/widgets/info_alert.dart';
 
 import 'package:ciao_app/widgets/no_name_alert.dart';
 
@@ -15,6 +18,7 @@ import 'package:ciao_app/main.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:ciao_app/widgets/custom_cliprrect.dart' as CustomClipRRect;
+import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -140,10 +144,16 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                 gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    colors: [
-                      Colors.transparent.withOpacity(.80),
-                      Colors.blueAccent
-                    ]),
+                    colors: (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                            'dark')
+                        ? [
+                            Colors.transparent.withOpacity(.80),
+                            Color(0xFF54525E)
+                          ]
+                        : [
+                            Colors.transparent.withOpacity(.80),
+                            Colors.blueAccent
+                          ]),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50.0),
                   topRight: Radius.circular(50.0),
@@ -163,8 +173,17 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                     children: [
                       CircleAvatar(
                         radius: 40,
+                        backgroundColor:
+                            (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                                    'dark')
+                                ? KMainRed
+                                : KMainPurple,
                         child: GestureDetector(
-                            child: Icon(Icons.remove),
+                            child: Icon(
+                              Icons.remove_rounded,
+                              color: Colors.white,
+                              size: 33,
+                            ),
                             onTap: () {
                               setState(() {
                                 notificationOn = false;
@@ -190,7 +209,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                           radius: 60,
                           backgroundColor: KMainOrange,
                           child: Icon(
-                            Icons.add,
+                            Icons.add_rounded,
+                            color: Colors.white,
                             size: 60,
                           ),
                         ),
@@ -203,8 +223,8 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                         textTheme: CupertinoTextThemeData(
                           dateTimePickerTextStyle: TextStyle(
                             color: Colors.white,
-                            fontFamily: KPageTitleFontFamily,
-                            fontSize: 15,
+                            fontFamily: KTextFontFamily,
+                            fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -264,279 +284,315 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                     color: Colors.white54,
                     width: 10,
                   ),
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.indigo[900], Colors.indigo])),
+                  gradient: (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                          'dark')
+                      ? KBGGradientDark
+                      : LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.indigo[900], Colors.indigo])),
               child: Column(
                 children: [
                   ListView(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              SizedBox(
-                                height: 15,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 15,
+                            ),
+
+                            //*
+                            //* Notification Button & Info button
+                            //*
+
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                right: 20.0,
+                                left: 22.0,
+                                bottom: 20,
                               ),
-
-                              //*
-                              //* Notification Button & Screen title
-                              //*
-
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 20.0,
-                                  left: 22.0,
-                                  bottom: 20,
-                                ),
-                                child: Container(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      //*
-                                      //* BUTTON
-                                      //*
-                                      CustomClipRRect.customClipRRect(
-                                        colors: [
-                                          KMainPurple,
-                                          Colors.teal,
-                                        ],
-                                        child: AnimateIcons(
-                                          controller: _animateIconController,
-                                          startIcon: notificationOn
-                                              ? Icons.check
-                                              : Icons.notifications,
-                                          startTooltip: 'Icons.add',
-                                          endTooltip: 'Icons.close',
-                                          endIcon: notificationOn
-                                              ? Icons.check
-                                              : Icons.notifications,
-                                          color: Colors.blue[50],
-                                          size: 31,
-                                          onStartIconPress: () {
-                                            selectedDate = DateTime.now();
-                                            _selectDate(context);
-                                            return true;
-                                          },
-                                          onEndIconPress: () {
-                                            selectedDate = DateTime.now();
-                                            _selectDate(context);
-                                            return true;
-                                          },
-                                        ),
+                              child: Container(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    //*
+                                    //* BUTTON
+                                    //*
+                                    CustomClipRRect.customClipRRect(
+                                      colors:
+                                          (Provider.of<ThemeNotifier>(context)
+                                                      .getThemeMode ==
+                                                  'dark')
+                                              ? KButtonsBGGrandientColorsDark
+                                              : [
+                                                  KMainPurple,
+                                                  Colors.teal,
+                                                ],
+                                      child: AnimateIcons(
+                                        controller: _animateIconController,
+                                        startIcon: notificationOn
+                                            ? Icons.check
+                                            : Icons.notifications,
+                                        startTooltip: 'Icons.add',
+                                        endTooltip: 'Icons.close',
+                                        endIcon: notificationOn
+                                            ? Icons.check
+                                            : Icons.notifications,
+                                        color: Colors.blue[50],
+                                        size: 31,
+                                        onStartIconPress: () {
+                                          selectedDate = DateTime.now();
+                                          _selectDate(context);
+                                          return true;
+                                        },
+                                        onEndIconPress: () {
+                                          selectedDate = DateTime.now();
+                                          _selectDate(context);
+                                          return true;
+                                        },
                                       ),
-                                      //*
-                                      //* SCREEN TITLE
-                                      //*
-                                      Text(
-                                        'Add task',
-                                        style: Klogo.copyWith(
-                                          fontSize: 33,
-                                          shadows: [
-                                            Shadow(
-                                              color: KMainPurple,
-                                              blurRadius: 1,
-                                              offset: Offset(5.0, 5.0),
-                                            )
-                                          ],
-                                          color: Colors.blue[50],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-
-                              //*
-                              //* FIRST: TEXTFEILD 'ADD TASK HERE'
-                              //*
-                              TextField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                controller: textFieldController,
-                                style: Klogo.copyWith(
-                                  fontFamily: 'DMSerifTextRegular',
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  shadows: [],
-                                ),
-                                maxLines: 1,
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  hintText: 'Task name here',
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey[350],
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(50),
                                     ),
-                                    borderSide: BorderSide(
-                                        color: Colors.white70, width: 5.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.white70, width: 5.0),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(50),
-                                    ),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.blue[900],
-                                ),
-                                autofocus: false,
-                                onChanged: (value) {
-                                  newTaskTitle = value;
-                                  // print(newTaskTitle);
-                                },
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              //*
-                              //* SECOND: Notification buttom
-                              //*
 
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Row(
-                                    children: [],
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 0,
-                              ),
-                              //*
-                              //*THIRD: ADD TASK BUTTON
-                              //*
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(90)),
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              .13,
-                                      width:
-                                          MediaQuery.of(context).size.height *
-                                              .13,
-                                      decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: KTopLinearGradientColor,
-                                            offset:
-                                                Offset(-10.0, -15.0), //(x,y)
-                                            blurRadius: 22.0,
-                                          ),
-                                        ],
-                                      ),
+                                    //* INFO BUTTON
+                                    customClipRRect(
+                                      colors: [
+                                        Colors.yellow[50].withOpacity(.5),
+                                        Colors.white12
+                                      ],
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: FloatingActionButton(
-                                            splashColor: KMainOrange,
-                                            backgroundColor: KMainPurple,
-                                            onPressed: () async {
-                                              if (newTaskTitle == null ||
-                                                  newTaskTitle.trim() == '') {
-                                                noNameAlert(
-                                                  context,
-                                                  'Task',
-                                                );
-                                              } else {
-                                                if (notificationOn &&
-                                                    _validateSelectedDate(
-                                                        context)) {
-                                                  Task task = Task();
-                                                  task.name = newTaskTitle;
-                                                  task.category = category;
-                                                  task.dueDateTime =
-                                                      notificationOn
-                                                          ? selectedDate
-                                                          : null;
-                                                  task.isDone = false;
-                                                  addTask(task);
-                                                  _scheduleNotification(
-                                                      category, newTaskTitle);
-                                                  setState(() {
-                                                    newTaskTitle = null;
-                                                    notificationOn = false;
-                                                  });
-
-                                                  Flushbar(
-                                                    duration: Duration(
-                                                        milliseconds: 1500),
-                                                    messageText: Text(
-                                                      'Task and reminder added successfuly.',
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              KTextFontFamily,
-                                                          color: Colors.white,
-                                                          shadows: [],
-                                                          fontSize: 14),
-                                                    ),
-                                                    flushbarStyle:
-                                                        FlushbarStyle.FLOATING,
-                                                  ).show(context);
-                                                  textFieldController.clear();
-                                                  FocusScope.of(context)
-                                                      .unfocus();
-                                                } else if (!notificationOn) {
-                                                  Task task = Task();
-                                                  task.name = newTaskTitle;
-                                                  task.category = category;
-                                                  task.dueDateTime = null;
-                                                  task.isDone = false;
-                                                  addTask(task);
-                                                  setState(() {
-                                                    newTaskTitle = null;
-                                                  });
-
-                                                  Flushbar(
-                                                    duration: Duration(
-                                                        milliseconds: 1500),
-                                                    messageText: Text(
-                                                      'Task added successfuly.',
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              KTextFontFamily,
-                                                          color: Colors.white,
-                                                          shadows: [],
-                                                          fontSize: 14),
-                                                    ),
-                                                    flushbarStyle:
-                                                        FlushbarStyle.FLOATING,
-                                                  ).show(context);
-                                                  textFieldController.clear();
-                                                  FocusScope.of(context)
-                                                      .unfocus();
-                                                }
-                                              }
-                                            },
-                                            child: Icon(
-                                              Icons.fingerprint,
-                                              size: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  .09,
-                                              color: Colors.greenAccent,
-                                            )),
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: InkWell(
+                                          onTap: () {
+                                            infoAlert(
+                                                context,
+                                                'Add task to selected category',
+                                                'AddTask');
+                                          },
+                                          child: Icon(
+                                              Icons.error_outline_rounded,
+                                              color: Colors.white60),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    //*
+                                    //* SCREEN TITLE
+                                    //*
+                                    // Text(
+                                    //   'Add task',
+                                    //   style: Klogo.copyWith(
+                                    //     fontSize: 33,
+                                    //     shadows: [
+                                    //       Shadow(
+                                    //         color: KMainPurple,
+                                    //         blurRadius: 1,
+                                    //         offset: Offset(5.0, 5.0),
+                                    //       )
+                                    //     ],
+                                    //     color: Colors.blue[50],
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
+
+                            //*
+                            //* FIRST: TEXTFEILD 'ADD TASK HERE'
+                            //*
+                            TextField(
+                              cursorColor: Colors.white,
+                              textCapitalization: TextCapitalization.sentences,
+                              controller: textFieldController,
+                              style: Klogo.copyWith(
+                                fontSize: 22,
+                                fontFamily: 'DMSerifTextRegular',
+                                color: Colors.white,
+                                shadows: [],
+                              ),
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                              decoration: InputDecoration(
+                                hintText: 'Category name here',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[350],
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.transparent,
+                                  ),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                filled: false,
+                                fillColor: Colors.white24,
+                              ),
+                              autofocus: false,
+                              onChanged: (value) {
+                                newTaskTitle = value;
+                                // print(newTaskTitle);
+                              },
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            //*
+                            //* SECOND: Notification buttom
+                            //*
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Row(
+                                  children: [],
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 0,
+                            ),
+                            //*
+                            //*THIRD: ADD TASK BUTTON
+                            //*
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(90)),
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        .13,
+                                    width: MediaQuery.of(context).size.height *
+                                        .13,
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: (Provider.of<ThemeNotifier>(
+                                                          context)
+                                                      .getThemeMode ==
+                                                  'dark')
+                                              ? Colors.white
+                                              : KTopLinearGradientColor,
+                                          offset: Offset(-10.0, -15.0), //(x,y)
+                                          blurRadius: 22.0,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: FloatingActionButton(
+                                          splashColor: KMainOrange,
+                                          backgroundColor:
+                                              (Provider.of<ThemeNotifier>(
+                                                              context)
+                                                          .getThemeMode ==
+                                                      'dark')
+                                                  ? KMainOrange
+                                                  : KMainPurple,
+                                          onPressed: () async {
+                                            if (newTaskTitle == null ||
+                                                newTaskTitle.trim() == '') {
+                                              noNameAlert(
+                                                context,
+                                                'Task',
+                                              );
+                                            } else {
+                                              if (notificationOn &&
+                                                  _validateSelectedDate(
+                                                      context)) {
+                                                Task task = Task();
+                                                task.name = newTaskTitle;
+                                                task.category = category;
+                                                task.dueDateTime =
+                                                    notificationOn
+                                                        ? selectedDate
+                                                        : null;
+                                                task.isDone = false;
+                                                addTask(task);
+                                                _scheduleNotification(
+                                                    category, newTaskTitle);
+                                                setState(() {
+                                                  newTaskTitle = null;
+                                                  notificationOn = false;
+                                                });
+
+                                                Flushbar(
+                                                  duration: Duration(
+                                                      milliseconds: 1500),
+                                                  messageText: Text(
+                                                    'Task and reminder added successfuly.',
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            KTextFontFamily,
+                                                        color: Colors.white,
+                                                        shadows: [],
+                                                        fontSize: 14),
+                                                  ),
+                                                  flushbarStyle:
+                                                      FlushbarStyle.FLOATING,
+                                                ).show(context);
+                                                textFieldController.clear();
+                                                FocusScope.of(context)
+                                                    .unfocus();
+                                              } else if (!notificationOn) {
+                                                Task task = Task();
+                                                task.name = newTaskTitle;
+                                                task.category = category;
+                                                task.dueDateTime = null;
+                                                task.isDone = false;
+                                                addTask(task);
+                                                setState(() {
+                                                  newTaskTitle = null;
+                                                });
+
+                                                Flushbar(
+                                                  duration: Duration(
+                                                      milliseconds: 1500),
+                                                  messageText: Text(
+                                                    'Task added successfuly.',
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            KTextFontFamily,
+                                                        color: Colors.white,
+                                                        shadows: [],
+                                                        fontSize: 14),
+                                                  ),
+                                                  flushbarStyle:
+                                                      FlushbarStyle.FLOATING,
+                                                ).show(context);
+                                                textFieldController.clear();
+                                                FocusScope.of(context)
+                                                    .unfocus();
+                                              }
+                                            }
+                                          },
+                                          child: Icon(
+                                            Icons.fingerprint,
+                                            size: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                .09,
+                                            color: (Provider.of<ThemeNotifier>(
+                                                            context)
+                                                        .getThemeMode ==
+                                                    'dark')
+                                                ? Colors.white
+                                                : Colors.greenAccent,
+                                          )),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ]),
                 ],
