@@ -633,8 +633,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       'dark')
                                   ? BoxShadow(
                                       color: Colors.white,
-                                      offset: Offset(0, 0), //(x,y)
-                                      blurRadius: .5,
+                                      offset: Offset(-10.0, -15.0), //(x,y)
+                                      blurRadius: 22.0,
                                     )
                                   : BoxShadow(
                                       color: Colors.purple[800],

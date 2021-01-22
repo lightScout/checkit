@@ -1,5 +1,6 @@
 import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/model/task.dart';
+import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:ciao_app/widgets/list_builder.dart';
 import 'package:ciao_app/widgets/no_name_alert.dart';
@@ -7,6 +8,7 @@ import 'package:ciao_app/widgets/simple_list_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   final double topBorderRadius;
@@ -62,15 +64,17 @@ class _SearchScreenState extends State<SearchScreen> {
     checkState();
     return Container(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 60),
+        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 60),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(topBorderRadius)),
-          gradient: KDashboardBGGradient,
-          image: DecorationImage(
-            image: AssetImage('assets/textures/search_screen_texture.png'),
-          ),
+          gradient: (Provider.of<ThemeNotifier>(context).getThemeMode == 'dark')
+              ? KBGGradientDark
+              : KDashboardBGGradient,
+          // image: DecorationImage(
+          //   image: AssetImage('assets/textures/search_screen_texture.png'),
+          // ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -79,10 +83,11 @@ class _SearchScreenState extends State<SearchScreen> {
             TextField(
               textCapitalization: TextCapitalization.sentences,
               controller: _textFieldController,
-              style: TextStyle(
-                fontSize: 20,
-                fontFamily: KTextFontFamily,
-                color: KMainPurple,
+              cursorColor: Colors.white,
+              style: Klogo.copyWith(
+                fontSize: 22,
+                fontFamily: 'DMSerifTextRegular',
+                color: Colors.white,
                 shadows: [],
               ),
               maxLines: 1,
@@ -90,22 +95,20 @@ class _SearchScreenState extends State<SearchScreen> {
               decoration: InputDecoration(
                 hintText: 'Search here',
                 hintStyle: TextStyle(
-                  color: KMainPurple.withOpacity(.3),
+                  color: Colors.grey[350],
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50),
-                  ),
-                  borderSide: BorderSide(color: Colors.white70, width: 5.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white70, width: 5.0),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.transparent,
                   ),
                 ),
-                filled: true,
-                fillColor: Colors.pink[50],
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                filled: false,
+                fillColor: Colors.white24,
               ),
               autofocus: false,
               onChanged: (value) {
@@ -129,7 +132,11 @@ class _SearchScreenState extends State<SearchScreen> {
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: KTopLinearGradientColor,
+                          color: (Provider.of<ThemeNotifier>(context)
+                                      .getThemeMode ==
+                                  'dark')
+                              ? Colors.white
+                              : KTopLinearGradientColor,
                           offset: Offset(-10.0, -15.0), //(x,y)
                           blurRadius: 22.0,
                         ),
@@ -140,7 +147,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: FloatingActionButton(
                           heroTag: 'SEARCHCONTAINERFAB',
                           splashColor: KMainOrange,
-                          backgroundColor: KMainPurple,
+                          backgroundColor: (Provider.of<ThemeNotifier>(context)
+                                      .getThemeMode ==
+                                  'dark')
+                              ? KMainOrange
+                              : KMainPurple,
                           onPressed: () {
                             if (newSearchName == null ||
                                 newSearchName.trim() == '') {
@@ -177,7 +188,11 @@ class _SearchScreenState extends State<SearchScreen> {
                           'Nothing found',
                           style: TextStyle(
                             fontSize: 22,
-                            color: KMainPurple.withOpacity(.3),
+                            color: (Provider.of<ThemeNotifier>(context)
+                                        .getThemeMode ==
+                                    'dark')
+                                ? Colors.white
+                                : KMainPurple.withOpacity(.3),
                             fontFamily: KTextFontFamily,
                           ),
                         ),
@@ -203,7 +218,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               builder: (context, box, widget) {
                                 return SimpleListBuilder(
                                   taskList: searchResultsList,
-                                  isBgGradientInverted: true,
+                                  isBgGradientInverted: false,
                                   tasksBox: Hive.box('tasks'),
                                 );
                               },
