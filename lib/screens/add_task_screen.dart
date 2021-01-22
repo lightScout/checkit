@@ -144,10 +144,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    colors: [
-                      Colors.transparent.withOpacity(.80),
-                      Colors.indigo
-                    ]),
+                    colors: (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                            'dark')
+                        ? [
+                            Colors.transparent.withOpacity(.80),
+                            Color(0xFF54525E)
+                          ]
+                        : [Colors.transparent.withOpacity(.80), Colors.indigo]),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50.0),
                   topRight: Radius.circular(50.0),
@@ -166,10 +169,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       CircleAvatar(
-                        backgroundColor: KMainPurple,
+                        backgroundColor:
+                            (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                                    'dark')
+                                ? KMainRed
+                                : KMainPurple,
                         radius: 40,
                         child: GestureDetector(
-                            child: Icon(Icons.remove_rounded),
+                            child: Icon(
+                              Icons.remove_rounded,
+                              size: 33,
+                              color: Colors.white,
+                            ),
                             onTap: () {
                               setState(() {
                                 notificationOn = false;
@@ -197,6 +208,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           backgroundColor: KMainOrange,
                           child: Icon(
                             Icons.add_rounded,
+                            color: Colors.white,
                             size: 60,
                           ),
                         ),
