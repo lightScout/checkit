@@ -402,8 +402,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             body: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image:
-                      AssetImage('assets/textures/add_task_screen_texture.png'),
+                  image: (Provider.of<ThemeNotifier>(context).getThemeMode ==
+                          'dark')
+                      ? AssetImage(
+                          'assets/textures/add_task_screen_texture_dark.png')
+                      : AssetImage(
+                          'assets/textures/add_task_screen_texture.png'),
                 ),
                 border: Border.all(
                   color: Colors.white54,
@@ -616,7 +620,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                           .getThemeMode ==
                                       'dark')
                                   ? BoxShadow(
-                                      color: Colors.white60,
+                                      color: Colors.white,
                                       offset: Offset(0, 0), //(x,y)
                                       blurRadius: .5,
                                     )
@@ -704,7 +708,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                   Icons.fingerprint_rounded,
                                   size:
                                       MediaQuery.of(context).size.height * .06,
-                                  color: Colors.pink[100],
+                                  color: (Provider.of<ThemeNotifier>(context)
+                                              .getThemeMode ==
+                                          'dark')
+                                      ? Colors.white
+                                      : Colors.pink[100],
                                 )),
                           ),
                         ),

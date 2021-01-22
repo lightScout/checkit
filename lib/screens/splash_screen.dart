@@ -38,13 +38,14 @@ class _SplashScreenState extends State<SplashScreen>
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.center,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Color(0xFF000000),
-                    Colors.indigo[900],
-                  ]),
+              color: Colors.white,
+              // gradient: LinearGradient(
+              //     begin: Alignment.center,
+              //     end: Alignment.topCenter,
+              //     colors: [
+              //       Color(0xFF000000),
+              //       Colors.indigo[900],
+              //     ]),
             ),
             child: Container(
               child: Column(
@@ -57,8 +58,7 @@ class _SplashScreenState extends State<SplashScreen>
                       height: 180,
                       width: 180,
                       child: Image(
-                        image: AssetImage(
-                            'assets/textures/splash_screen_texture.png'),
+                        image: AssetImage('assets/icon/app_icon_v2.png'),
                       ),
                     ),
                   ),

@@ -96,7 +96,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
     _glowAnimationController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 1750));
     _glowAnimation =
-        Tween(begin: 1.0, end: 77.0).animate(_glowAnimationController)
+        Tween(begin: 1.0, end: 66.0).animate(_glowAnimationController)
           ..addListener(() {
             setState(() {});
           });
@@ -157,16 +157,20 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                         boxShadow: [
                           BoxShadow(
                             color: Colors.limeAccent[100],
-                            offset: Offset(0.0, -4.0), //(x,y)
-                            blurRadius: 10.1,
+                            blurRadius: (Provider.of<ThemeNotifier>(context)
+                                        .getThemeMode ==
+                                    'dark')
+                                ? 100.0
+                                : 5.0,
                           ),
                           BoxShadow(
                             color: Colors.yellow[900],
-                            offset: Offset(0.0, -2.0), //(x,y)
-                            blurRadius: 5.1,
+                            offset: Offset(0.0, -2.0),
+                            blurRadius: 11.1,
                           ),
                         ],
                       ),
+                      //* <-- Stack
                       child: Stack(
                         children: [
                           //*BG Texture
@@ -181,8 +185,13 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                               child: Container(
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/textures/add_category_screen_texture2.png'),
+                                    image: (Provider.of<ThemeNotifier>(context)
+                                                .getThemeMode ==
+                                            'dark')
+                                        ? AssetImage(
+                                            'assets/textures/add_category_screen_texture2_dark.png')
+                                        : AssetImage(
+                                            'assets/textures/add_category_screen_texture2.png'),
                                   ),
                                 ),
                               ),
@@ -405,7 +414,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                               shape: BoxShape.circle,
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color: Colors.white60,
+                                                  color: Colors.white,
                                                   offset: Offset(0, 0), //(x,y)
                                                   blurRadius: .5,
                                                 ),
