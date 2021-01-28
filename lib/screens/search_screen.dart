@@ -2,7 +2,6 @@ import 'package:ciao_app/model/flags.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/model/theme_manager.dart';
 import 'package:ciao_app/others/constants.dart';
-import 'package:ciao_app/widgets/list_builder.dart';
 import 'package:ciao_app/widgets/no_name_alert.dart';
 import 'package:ciao_app/widgets/simple_list_builder.dart';
 import 'package:flutter/material.dart';

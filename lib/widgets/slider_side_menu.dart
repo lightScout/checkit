@@ -103,7 +103,7 @@ class _SliderSideMenuState extends State<SliderSideMenu>
           ? Alignment.bottomRight
           : Alignment.bottomLeft,
       child: Container(
-          width: 35,
+          width: 45,
           height: 54,
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -119,9 +119,8 @@ class _SliderSideMenuState extends State<SliderSideMenu>
                       widget._direction == Direction.RTL ? viewHeight : 0.0),
                   bottomLeft: Radius.circular(
                       widget._direction == Direction.RTL ? viewHeight : 0.0),
-                  topRight: Radius.circular(
-                      widget._direction == Direction.RTL ? 0.0 : viewHeight),
-                  bottomRight: Radius.circular(500))),
+                  topRight: Radius.circular(15),
+                  bottomRight: Radius.circular(15))),
           child: IconButton(
             icon: RotationTransition(
               turns: _animateIcon,
@@ -169,7 +168,7 @@ class _SliderSideMenuState extends State<SliderSideMenu>
             duration: Duration(milliseconds: 500),
             child: Container(
               height: viewHeight + 7,
-              width: 230,
+              width: 250,
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topRight,
@@ -181,8 +180,9 @@ class _SliderSideMenuState extends State<SliderSideMenu>
                   ),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
                       bottomLeft: Radius.circular(50),
-                      bottomRight: Radius.circular(50))),
+                      bottomRight: Radius.circular(15))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: _generateMenuItems(),
