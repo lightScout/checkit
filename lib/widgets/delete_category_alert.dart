@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:ciao_app/model/category.dart';
 import 'package:ciao_app/model/task.dart';
 import 'package:ciao_app/others/constants.dart';
@@ -13,116 +14,48 @@ void deleteTaskUnderCategory(int categoryKey) {
       Hive.box('tasks').delete(element);
     }
   });
+  Hive.box('categories').delete(categoryKey);
 }
 
 void deleteCategoryAlert(BuildContext context, int categoryKey) {
-  // flutter defined function
-  showDialog(
+  AwesomeDialog(
     context: context,
-    builder: (BuildContext context) {
-      // return object of type Dialog
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(32.0),
-          ),
-        ),
-        backgroundColor: Colors.red[800].withOpacity(0.75),
-        title: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            "Attetion!",
-            textAlign: TextAlign.center,
-            style: Klogo.copyWith(
-              fontSize: 16,
-              shadows: [
-                Shadow(
-                  blurRadius: 2.0,
-                  color: Colors.red,
-                  offset: Offset(5.0, 5.0),
-                ),
-              ],
-              color: Colors.white,
-            ),
-          ),
-        ),
-        content: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Are you sure you want to delete this category?",
-            style: Klogo.copyWith(
-              fontSize: 18,
-              shadows: [
-                Shadow(
-                  blurRadius: 2.0,
-                  color: Colors.red,
-                  offset: Offset(5.0, 5.0),
-                ),
-              ],
-              color: Colors.yellowAccent[700],
-            ),
-          ),
-        ),
-        actions: <Widget>[
+    dialogType: DialogType.WARNING,
+    animType: AnimType.LEFTSLIDE,
+    btnOkOnPress: () {
+      deleteTaskUnderCategory(categoryKey);
+    },
+    btnOkColor: KMainOrange,
+    btnCancelOnPress: () =>
+        Navigator.of(context).popUntil((route) => route.isCurrent),
+    headerAnimationLoop: false,
+    body: Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                FloatingActionButton(
-                  heroTag: 'deleteCategoryFAB1',
-                  splashColor: Colors.blue,
-                  backgroundColor: Colors.white38,
-                  onPressed: () {
-                    deleteTaskUnderCategory(categoryKey);
-                    Hive.box('categories').delete(categoryKey);
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    'Yes',
-                    style: Klogo.copyWith(
-                      color: Colors.white,
-                      fontSize: 14,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(5, 5),
-                          color: Colors.red[700],
-                          blurRadius: 1,
-                        )
-                      ],
-                    ),
+            padding: const EdgeInsets.all(6.0),
+            child: Text(
+              'Are you sure you want to delete this category?',
+              textAlign: TextAlign.center,
+              style: Klogo.copyWith(
+                fontFamily: KTextFontFamily,
+                fontSize: 22,
+                shadows: [
+                  Shadow(
+                    blurRadius: 2.0,
+                    color: Colors.red,
+                    offset: Offset(5.0, 5.0),
                   ),
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                FloatingActionButton(
-                  heroTag: 'deleteCategoryFAB2',
-                  splashColor: Colors.blue,
-                  backgroundColor: Colors.white38,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    'No',
-                    style: Klogo.copyWith(
-                      color: Colors.white,
-                      fontSize: 16,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(5, 5),
-                          color: Colors.red[700],
-                          blurRadius: 1,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                ],
+                color: Colors.white,
+              ),
             ),
           ),
         ],
-      );
-    },
-  );
+      ),
+    ),
+    dialogBackgroundColor: Colors.red[800].withOpacity(0.75),
+  )..show();
 }

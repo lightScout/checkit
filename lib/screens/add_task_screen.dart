@@ -504,7 +504,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                   infoAlert(
                                     context,
                                     'Choose your category and add your task',
-                                    'AddTask',
                                   );
                                 },
                                 child: Icon(Icons.error_outline_rounded,

@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:ciao_app/others/constants.dart';
 import 'package:flutter/material.dart';
 
-AwesomeDialog infoAlert(BuildContext context, String information, String page) {
+AwesomeDialog infoAlert(BuildContext context, String information) {
   return AwesomeDialog(
     context: context,
     dialogType: DialogType.NO_HEADER,

@@ -369,9 +369,9 @@ class _AddTaskScreen2State extends State<AddTaskScreen2> {
                                         child: InkWell(
                                           onTap: () {
                                             infoAlert(
-                                                context,
-                                                'Add task to selected category',
-                                                'AddTask');
+                                              context,
+                                              'Add task to selected category',
+                                            );
                                           },
                                           child: Icon(
                                               Icons.error_outline_rounded,

@@ -302,9 +302,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
                                                   child: InkWell(
                                                     onTap: () {
                                                       infoAlert(
-                                                          context,
-                                                          'Create catgory to organize tasks',
-                                                          'AddCategory');
+                                                        context,
+                                                        'Create catgory to organize tasks',
+                                                      );
                                                     },
                                                     child: Icon(
                                                         Icons

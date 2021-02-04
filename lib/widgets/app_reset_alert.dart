@@ -17,6 +17,7 @@ AwesomeDialog animatedDialog(BuildContext context) {
       Hive.box('tasks').clear();
       Navigator.of(context).popUntil((route) => route.isCurrent);
     },
+    btnOkColor: KMainOrange,
     btnCancelOnPress: () {
       Navigator.of(context).popUntil((route) => route.isCurrent);
     },
