@@ -5,18 +5,7 @@ import 'package:flutter/material.dart';
 AwesomeDialog infoAlert(BuildContext context, String information, String page) {
   return AwesomeDialog(
     context: context,
-    customHeader: Container(
-      height: 100,
-      width: 100,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          //TODO: update add task icon to one with more opacity
-          image: (page == 'AddCategory')
-              ? AssetImage('assets/textures/add_category_screen_texture2.png')
-              : AssetImage('assets/textures/add_task_screen_texture.png'),
-        ),
-      ),
-    ),
+    dialogType: DialogType.NO_HEADER,
     animType: AnimType.LEFTSLIDE,
     btnOkOnPress: () {
       Navigator.of(context).popUntil((route) => route.isCurrent);
